@@ -1,42 +1,31 @@
 import React from 'react';
-import {Text, StyleSheet, TouchableOpacity} from 'react-native';
-
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+const button_base = {
+  marginBottom: 16,
+  borderRadius: 3,
+  width: '100%',
+  height: 64,
+  justifyContent: 'center',
+  alignItems: 'center',
+  flex: 1,
+  flexDirection: 'row',
+};
 const styles = StyleSheet.create({
   button: {
-    marginBottom: 16,
+    ...button_base,
     backgroundColor: '#24F4C4',
-    borderRadius: 3,
-    width: '100%',
-    height: 64,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   button_facebook: {
-    marginBottom: 16,
+    ...button_base,
     backgroundColor: '#3240E6',
-    borderRadius: 3,
-    width: '100%',
-    height: 64,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   button_google: {
-    marginBottom: 16,
+    ...button_base,
     backgroundColor: '#FC5345',
-    borderRadius: 3,
-    width: '100%',
-    height: 64,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   button_simple: {
-    marginBottom: 16,
+    ...button_base,
     backgroundColor: '#EDEEF4',
-    borderRadius: 3,
-    width: '100%',
-    height: 64,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   text: {
     textAlign: 'center',
@@ -49,6 +38,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Rockwell',
     color: 'black',
     fontSize: 18,
+  },
+  leftIcon: {
+    position: 'absolute',
+    left: 32,
   },
 });
 
@@ -66,6 +59,8 @@ function CustomButton(props) {
       }
       onPress={props.onPress}
       underlayColor="#fff">
+      <View style={styles.leftIcon}>{props.left_icon}</View>
+
       <Text
         style={
           props.button_style === 'primary' ||
