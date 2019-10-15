@@ -23,18 +23,18 @@ class Login extends React.Component {
             Para usar las funciones extras inicia sesión
           </Text>
           <CustomButton
-            title="Regístrate con Facebook"
+            title="Inicia sesión con Facebook"
             button_style="facebook"
             left_icon={<FacebookLogo width={12} height={22} />}
           />
           <CustomButton
-            title="Regístrate con Google"
+            title="Inicia sesión con Google"
             button_style="google"
             left_icon={<GoogleLogo width={32} height={32} />}
           />
 
           <CustomButton
-            title="Regístrate con tu Correo"
+            title="Inicia sesión con tu Correo"
             button_style="simple"
           />
           <Text style={styles.description}>

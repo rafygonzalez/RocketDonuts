@@ -35,6 +35,7 @@ class Register extends React.Component {
           <CustomButton
             title="Regístrate con tu Correo"
             button_style="simple"
+            onPress={() => this.props.navigation.navigate('RegisterWithEmail')}
           />
           <Text style={styles.description}>
             Los pedidos solo están disponibles de Miércoles a Sábado, hasta las
