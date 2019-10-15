@@ -1,22 +1,21 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react'
-import { store, persistor } from './store';
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
-import HomeScreen from './src/screens/containers/Home'
-import Loading from './src/sections/components/loading'
+import {StyleSheet, SafeAreaView} from 'react-native';
+import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
+import {store, persistor} from './store';
+import {createAppContainer} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
+import WelcomeScreen from './src/screens/containers/Welcome';
+import Loading from './src/sections/components/loading';
 import firebase from 'react-native-firebase';
 
 const AppNavigator = createStackNavigator({
-  Home: {
-    screen: HomeScreen,
+  Welcome: {
+    screen: WelcomeScreen,
   },
 });
 
 const AppContainer = createAppContainer(AppNavigator);
-
 
 export default class App extends React.Component {
   constructor() {
@@ -28,19 +27,13 @@ export default class App extends React.Component {
     // TODO: You: Do firebase things
     // const { user } = await firebase.auth().signInAnonymously();
     // console.warn('User -> ', user.toJSON());
-
     // await firebase.analytics().logEvent('foo', { bar: '123'});
   }
 
   render() {
     return (
-      <Provider
-        store={store}
-      >
-        <PersistGate
-          loading={<Loading />}
-          persistor={persistor}
-        >
+      <Provider store={store}>
+        <PersistGate loading={<Loading />} persistor={persistor}>
           <AppContainer />
         </PersistGate>
       </Provider>
@@ -83,5 +76,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: 4,
     textAlign: 'center',
-  }
+  },
 });
