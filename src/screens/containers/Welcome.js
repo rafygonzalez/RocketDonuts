@@ -5,9 +5,13 @@ import Estrellas from '../../../assets/svg/Estrellas.svg';
 import Logo from '../../../assets/svg/LogoH.svg';
 import CustomButton from '../components/button';
 class Home extends React.Component {
+  constructor(props) {
+    super(props);
+  }
   static navigationOptions = {
     header: null,
   };
+
   render() {
     return (
       <View style={styles.background}>
@@ -20,8 +24,20 @@ class Home extends React.Component {
             p.m.
           </Text>
 
-          <CustomButton title="Registrarse" />
-          <CustomButton title="Iniciar Sesión" simple />
+          <CustomButton
+            title="Registrarse"
+            button_style="primary"
+            onPress={() => {
+              this.props.navigation.navigate('Register');
+            }}
+          />
+          <CustomButton
+            title="Iniciar Sesión"
+            onPress={() => {
+              this.props.navigation.navigate('Login');
+            }}
+            simple
+          />
         </View>
       </View>
     );
@@ -46,7 +62,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#fff',
     textAlign: 'center',
-    marginVertical: 16,
+    marginVertical: 32,
     marginHorizontal: 16,
   },
 });

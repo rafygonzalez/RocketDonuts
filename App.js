@@ -6,12 +6,20 @@ import {store, persistor} from './store';
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import WelcomeScreen from './src/screens/containers/Welcome';
+import LoginScreen from './src/screens/containers/Login';
+import RegisterScreen from './src/screens/containers/Register';
 import Loading from './src/sections/components/loading';
 import firebase from 'react-native-firebase';
 
 const AppNavigator = createStackNavigator({
   Welcome: {
     screen: WelcomeScreen,
+  },
+  Login: {
+    screen: LoginScreen,
+  },
+  Register: {
+    screen: RegisterScreen,
   },
 });
 
