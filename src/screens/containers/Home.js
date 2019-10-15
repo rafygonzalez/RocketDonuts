@@ -13,7 +13,8 @@ class Home extends React.Component {
                 <Estrellas width={386} height={528} />
                 <Logo width={244} height={84} />
                 <Text style={styles.description}>
-                    Rocket
+                    Los pedidos solo están disponibles de Miércoles a Sábado, hasta las 11:00 a.m. Puedes elegir tu hora de entrega desde
+     1:00 p.m. a 5:00 p.m.
                 </Text>
             </View>
         )
@@ -30,8 +31,8 @@ const styles = StyleSheet.create({
     },
     description: {
         fontFamily: "Rockwell",
-        fontSize: 32
-
+        fontSize: 16,
+        color: "#fff"
     }
 })
 export default Home;
