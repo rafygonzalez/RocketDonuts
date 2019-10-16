@@ -3,6 +3,7 @@ import {StyleSheet, Dimensions, View} from 'react-native';
 import Button from '../../screens/components/button';
 import First_part_of_register from '../components/First_part_of_Register_With_Email';
 import Second_part_of_register from '../components/Second_part_of_Register_With_Email';
+import Third_part_of_register from '../components/Third_part_of_Register_With_Email';
 var {width} = Dimensions.get('window');
 var box_count = 2.2;
 var box_width = width / box_count;
@@ -20,7 +21,8 @@ class RegisterWithEmail extends React.Component {
       steps: 3,
     };
     this.Global_OnChange = this.Global_OnChange.bind(this);
-    this.nextStep = this.nextStep.bind(this);
+    this.NextStep = this.NextStep.bind(this);
+    this.PreviousStep = this.PreviousStep.bind(this);
   }
   static navigationOptions = {
     header: null,
@@ -28,8 +30,11 @@ class RegisterWithEmail extends React.Component {
   Global_OnChange(text, name) {
     this.setState({[name]: text});
   }
-  nextStep() {
+  NextStep() {
     this.setState({step: this.state.step + 1});
+  }
+  PreviousStep() {
+    this.setState({step: this.state.step - 1});
   }
   render() {
     const {name, lastname, email, pass, repass, step, steps} = this.state;
@@ -46,11 +51,19 @@ class RegisterWithEmail extends React.Component {
             styles={styles}
           />
         ) : step == 2 ? (
-          <Second_part_of_register styles={styles} />
-        ) : step == 3 ? null : null}
+          <Second_part_of_register
+            HeaderBanner_OnBack={() => this.PreviousStep()}
+            styles={styles}
+          />
+        ) : step == 3 ? (
+          <Third_part_of_register
+            HeaderBanner_OnBack={() => this.PreviousStep()}
+            styles={styles}
+          />
+        ) : null}
 
         <Button
-          onPress={() => this.nextStep()}
+          onPress={() => this.NextStep()}
           title={`Siguiente (${step}/${steps})`}
           button_style="primary"
         />
