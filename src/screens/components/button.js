@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
 const button_base = {
-  marginBottom: 16,
+  marginVertical: 8,
   borderRadius: 3,
   width: '100%',
   height: 64,

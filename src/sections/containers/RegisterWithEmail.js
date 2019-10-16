@@ -1,15 +1,12 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
-import PhotoCamera from '../../../assets/svg/photo-camera.svg';
-import TextInput from '../../screens/components/TextInput';
+import {StyleSheet, Dimensions, View} from 'react-native';
 import Button from '../../screens/components/button';
+import First_part_of_register from '../components/First_part_of_Register_With_Email';
+var {width} = Dimensions.get('window');
+
+var box_count = 2.2;
+var box_width = width / box_count;
+
 class RegisterWithEmail extends React.Component {
   constructor(props) {
     super(props);
@@ -28,70 +25,34 @@ class RegisterWithEmail extends React.Component {
   Global_OnChange(text, name) {
     this.setState({[name]: text});
   }
+
   render() {
+    const {name, lastname, email, pass, repass} = this.state;
     return (
-      <SafeAreaView style={styles.area_container}>
-        <View style={styles.photo_container}>
-          <TouchableOpacity>
-            <View style={styles.photo_circle}>
-              <PhotoCamera width={32} height={32} />
-            </View>
-          </TouchableOpacity>
-          <Text style={styles.photo_text}>Sube una foto de perfil</Text>
-        </View>
-
-        <ScrollView style={styles.info_container}>
-          <Text style={styles.description}>Información Personal</Text>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}>
-            <TextInput
-              title="Nombre"
-              onChangeText={text => this.Global_OnChange(text, 'name')}
-              value={this.state.name}
-              autoCompleteType="username"
-            />
-            <TextInput
-              title="Apellido"
-              onChangeText={text => this.Global_OnChange(text, 'lastname')}
-              value={this.state.lastname}
-              autoCompleteType="username"
-            />
-          </View>
-
-          <TextInput
-            title="Correo Electrónico"
-            onChangeText={text => this.Global_OnChange(text, 'email')}
-            value={this.state.email}
-            autoCompleteType="email"
-          />
-          <TextInput
-            title="Contraseña"
-            onChangeText={text => this.Global_OnChange(text, 'pass')}
-            value={this.state.pass}
-            autoCompleteType="password"
-            secureTextEntry={true}
-          />
-          <TextInput
-            title="Repite la Contraseña"
-            onChangeText={text => this.Global_OnChange(text, 'repass')}
-            value={this.state.repass}
-            autoCompleteType="password"
-            secureTextEntry={true}
-          />
-          <Button title="Siguiente (1/3)" button_style="primary" />
-        </ScrollView>
-      </SafeAreaView>
+      <First_part_of_register
+        Global_OnChange={this.Global_OnChange}
+        name={name}
+        lastname={lastname}
+        email={email}
+        pass={pass}
+        repass={repass}
+        styles={styles}
+      />
     );
   }
 }
 const styles = StyleSheet.create({
+  box_container: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  box: {
+    width: box_width,
+  },
   photo_container: {
     width: '100%',
-    height: 175,
+    height: 150,
     backgroundColor: '#313045',
     alignItems: 'center',
     justifyContent: 'center',
@@ -115,10 +76,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Bold',
     fontSize: 28,
     color: '#313045',
+    marginHorizontal: 16,
+    marginVertical: 16,
   },
   info_container: {
     marginHorizontal: 16,
-    marginVertical: 32,
     height: '100%',
     backgroundColor: '#ECEDF2',
   },
