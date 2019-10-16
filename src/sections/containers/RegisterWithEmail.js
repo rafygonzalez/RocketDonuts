@@ -2,8 +2,8 @@ import React from 'react';
 import {StyleSheet, Dimensions, View} from 'react-native';
 import Button from '../../screens/components/button';
 import First_part_of_register from '../components/First_part_of_Register_With_Email';
+import Second_part_of_register from '../components/Second_part_of_Register_With_Email';
 var {width} = Dimensions.get('window');
-
 var box_count = 2.2;
 var box_width = width / box_count;
 
@@ -16,8 +16,11 @@ class RegisterWithEmail extends React.Component {
       email: 'ejemplo@gmail.com',
       pass: '',
       repass: '',
+      step: 1,
+      steps: 3,
     };
     this.Global_OnChange = this.Global_OnChange.bind(this);
+    this.nextStep = this.nextStep.bind(this);
   }
   static navigationOptions = {
     header: null,
@@ -25,21 +28,32 @@ class RegisterWithEmail extends React.Component {
   Global_OnChange(text, name) {
     this.setState({[name]: text});
   }
-
+  nextStep() {
+    this.setState({step: this.state.step + 1});
+  }
   render() {
-    const {name, lastname, email, pass, repass} = this.state;
+    const {name, lastname, email, pass, repass, step, steps} = this.state;
     return (
       <View style={{flex: 1, backgroundColor: '#ECEDF2'}}>
-        <First_part_of_register
-          Global_OnChange={this.Global_OnChange}
-          name={name}
-          lastname={lastname}
-          email={email}
-          pass={pass}
-          repass={repass}
-          styles={styles}
+        {step == 1 ? (
+          <First_part_of_register
+            Global_OnChange={this.Global_OnChange}
+            name={name}
+            lastname={lastname}
+            email={email}
+            pass={pass}
+            repass={repass}
+            styles={styles}
+          />
+        ) : step == 2 ? (
+          <Second_part_of_register styles={styles} />
+        ) : step == 3 ? null : null}
+
+        <Button
+          onPress={() => this.nextStep()}
+          title={`Siguiente (${step}/${steps})`}
+          button_style="primary"
         />
-        <Button title="Siguiente (1/3)" button_style="primary" />
       </View>
     );
   }
