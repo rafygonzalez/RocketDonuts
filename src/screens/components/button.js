@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+
 const button_base = {
   marginBottom: 16,
   borderRadius: 3,
@@ -10,6 +11,7 @@ const button_base = {
   flex: 1,
   flexDirection: 'row',
 };
+
 const styles = StyleSheet.create({
   button: {
     ...button_base,
