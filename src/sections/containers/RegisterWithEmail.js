@@ -29,7 +29,7 @@ class RegisterWithEmail extends React.Component {
   render() {
     const {name, lastname, email, pass, repass} = this.state;
     return (
-      <View style={{flex: 1}}>
+      <View style={{flex: 1, backgroundColor: '#ECEDF2'}}>
         <First_part_of_register
           Global_OnChange={this.Global_OnChange}
           name={name}
@@ -39,9 +39,7 @@ class RegisterWithEmail extends React.Component {
           repass={repass}
           styles={styles}
         />
-        <View style={{flex: 0.1}}>
-          <Button title="Siguiente (1/3)" button_style="primary" />
-        </View>
+        <Button title="Siguiente (1/3)" button_style="primary" />
       </View>
     );
   }
