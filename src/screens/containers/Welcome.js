@@ -3,7 +3,7 @@ import {View, Text, StyleSheet} from 'react-native';
 
 import Estrellas from '../../../assets/svg/Estrellas.svg';
 import Logo from '../../../assets/svg/LogoH.svg';
-import CustomButton from '../components/button';
+import CustomButton from '../../ui/components/button';
 class Home extends React.Component {
   constructor(props) {
     super(props);

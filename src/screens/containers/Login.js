@@ -4,7 +4,7 @@ import {View, Text, StyleSheet} from 'react-native';
 import Estrellas from '../../../assets/svg/Estrellas.svg';
 import Logo from '../../../assets/svg/LogoH.svg';
 import AstronautaConfundido from '../../../assets/svg/AstronautaConfundido.svg';
-import CustomButton from '../components/button';
+import CustomButton from '../../ui/components/button';
 import FacebookLogo from '../../../assets/svg/facebook-logo.svg';
 import GoogleLogo from '../../../assets/svg/google-logo.svg';
 class Login extends React.Component {

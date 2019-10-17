@@ -11,7 +11,7 @@ import LoginScreen from './src/screens/containers/Login';
 import RegisterScreen from './src/screens/containers/Register';
 import RegisterWithEmail from './src/sections/containers/RegisterWithEmail';
 //
-import Loading from './src/sections/components/loading';
+import Loading from './src/ui/components/loading';
 import firebase from 'react-native-firebase';
 
 const AppNavigator = createStackNavigator({

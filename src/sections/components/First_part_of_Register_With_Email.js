@@ -7,7 +7,7 @@ import {
   ScrollView,
 } from 'react-native';
 import PhotoCamera from '../../../assets/svg/photo-camera.svg';
-import TextInput from '../../screens/components/TextInput';
+import TextInput from '../../ui/components/TextInput';
 import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
 
 export default First_part_of_register = props => (
