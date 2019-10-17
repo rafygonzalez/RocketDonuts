@@ -19,35 +19,37 @@ class Register extends React.Component {
           <Logo width={244} height={84} />
           <AstronautaConfundido width={156} height={115} />
           <Text style={styles.description}>
-            Para usar las funciones extras registrate
+            Para usar las funciones extras inicia sesión
           </Text>
           <CustomButton
             title="Regístrate con Facebook"
             button_style="facebook"
             left_icon={<FacebookLogo width={12} height={22} />}
+            extra_style={styles.buttons}
           />
           <CustomButton
             title="Regístrate con Google"
             button_style="google"
             left_icon={<GoogleLogo width={32} height={32} />}
+            extra_style={styles.buttons}
           />
 
           <CustomButton
             title="Regístrate con tu Correo"
             button_style="simple"
             onPress={() => this.props.navigation.navigate('RegisterWithEmail')}
+            extra_style={styles.buttons}
           />
-          <Text style={styles.description}>
-            Los pedidos solo están disponibles de Miércoles a Sábado, hasta las
-            11:00 a.m. Puedes elegir tu hora de entrega desde 1:00 p.m. a 5:00
-            p.m.
-          </Text>
         </View>
       </View>
     );
   }
 }
+
 const styles = StyleSheet.create({
+  buttons: {
+    marginVertical: 8,
+  },
   background: {
     backgroundColor: '#313045',
     height: '100%',
@@ -59,7 +61,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 16,
+    marginHorizontal: 8,
   },
   description: {
     fontFamily: 'Rockwell',

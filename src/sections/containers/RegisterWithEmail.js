@@ -61,17 +61,21 @@ class RegisterWithEmail extends React.Component {
             styles={styles}
           />
         ) : null}
-
-        <Button
-          onPress={() => this.NextStep()}
-          title={`Siguiente (${step}/${steps})`}
-          button_style="primary"
-        />
+        <View style={{flex: 0.1}}>
+          <Button
+            onPress={() => this.NextStep()}
+            title={`Siguiente (${step}/${steps})`}
+            button_style="primary"
+          />
+        </View>
       </View>
     );
   }
 }
 const styles = StyleSheet.create({
+  button_container: {
+    paddingHorizontal: 8,
+  },
   box_container: {
     flex: 1,
     flexDirection: 'row',
@@ -79,6 +83,7 @@ const styles = StyleSheet.create({
   },
   box: {
     width: box_width,
+    marginRight: 8,
   },
   photo_container: {
     width: '100%',
@@ -104,7 +109,7 @@ const styles = StyleSheet.create({
   },
   description: {
     fontFamily: 'Poppins-Bold',
-    fontSize: 28,
+    fontSize: 24,
     color: '#313045',
     marginVertical: 16,
   },

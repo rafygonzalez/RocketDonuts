@@ -30,6 +30,7 @@ class Home extends React.Component {
             onPress={() => {
               this.props.navigation.navigate('Register');
             }}
+            extra_style={styles.buttons}
           />
           <CustomButton
             title="Iniciar Sesión"
@@ -37,6 +38,7 @@ class Home extends React.Component {
               this.props.navigation.navigate('Login');
             }}
             simple
+            extra_style={styles.buttons}
           />
         </View>
       </View>
@@ -44,6 +46,9 @@ class Home extends React.Component {
   }
 }
 const styles = StyleSheet.create({
+  buttons: {
+    marginVertical: 8,
+  },
   background: {
     backgroundColor: '#313045',
     height: '100%',

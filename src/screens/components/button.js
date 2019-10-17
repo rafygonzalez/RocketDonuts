@@ -2,11 +2,9 @@ import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
 const button_base = {
-  marginVertical: 8,
   borderRadius: 3,
   width: '100%',
-  minHeight: 64,
-  maxHeight: 65,
+  minHeight: 48,
   justifyContent: 'center',
   alignItems: 'center',
   flex: 1,
@@ -51,15 +49,16 @@ const styles = StyleSheet.create({
 function CustomButton(props) {
   return (
     <TouchableOpacity
-      style={
+      style={[
         props.button_style === 'primary'
           ? styles.button
           : props.button_style === 'facebook'
           ? styles.button_facebook
           : props.button_style === 'google'
           ? styles.button_google
-          : styles.button_simple
-      }
+          : styles.button_simple,
+        props.extra_style,
+      ]}
       onPress={props.onPress}
       underlayColor="#fff">
       <View style={styles.leftIcon}>{props.left_icon}</View>
