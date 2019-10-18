@@ -37,6 +37,7 @@ class Login extends React.Component {
 
           <CustomButton
             title="Inicia sesión con tu Correo"
+            onPress={() => this.props.navigation.navigate('LoginWithEmail')}
             button_style="simple"
             extra_style={styles.buttons}
           />

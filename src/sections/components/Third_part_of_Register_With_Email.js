@@ -37,6 +37,7 @@ export default Third_part_of_register = props => (
           onChangeText={text => props.Global_OnChange(text, 'verificationCode')}
           value={props.verificationCode}
         />
+
         <Button
           onPress={() => props.NextStep()}
           title={`Siguiente (${props.step}/${props.steps})`}

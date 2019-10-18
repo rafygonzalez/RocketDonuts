@@ -8,6 +8,8 @@ import {createStackNavigator} from 'react-navigation-stack';
 //Screns
 import WelcomeScreen from './src/screens/containers/Welcome';
 import LoginScreen from './src/screens/containers/Login';
+
+import LoginWithEmail from './src/sections/containers/LoginWithEmail';
 import RegisterScreen from './src/screens/containers/Register';
 import RegisterWithEmail from './src/sections/containers/RegisterWithEmail';
 //
@@ -20,6 +22,9 @@ const AppNavigator = createStackNavigator({
   },
   Login: {
     screen: LoginScreen,
+  },
+  LoginWithEmail: {
+    screen: LoginWithEmail,
   },
   Register: {
     screen: RegisterScreen,

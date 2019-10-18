@@ -50,9 +50,11 @@ class HeaderBanner extends React.Component {
           preserveAspectRatio="xMidYMid meet"
           viewBox={'0 0 414 180'}
         />
-        <TouchableOpacity style={styles.Touchable} onPress={props.onPress}>
-          <BackArrowSvg width={24} height={24} />
-        </TouchableOpacity>
+        {props.back_button && (
+          <TouchableOpacity style={styles.Touchable} onPress={props.onPress}>
+            <BackArrowSvg width={24} height={24} />
+          </TouchableOpacity>
+        )}
       </View>
     );
   }

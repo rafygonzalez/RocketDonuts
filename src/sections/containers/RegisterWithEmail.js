@@ -1,6 +1,5 @@
 import React from 'react';
 import {StyleSheet, Dimensions, View} from 'react-native';
-import Button from '../../ui/components/button';
 import First_part_of_register from '../components/First_part_of_Register_With_Email';
 import Second_part_of_register from '../components/Second_part_of_Register_With_Email';
 import Third_part_of_register from '../components/Third_part_of_Register_With_Email';
