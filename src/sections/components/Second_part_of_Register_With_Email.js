@@ -2,8 +2,8 @@ import React from 'react';
 import {SafeAreaView, View, Text, ScrollView} from 'react-native';
 import HeaderBanner from './Header_Banner';
 import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
-
 import DatePicker from '../../ui/components/datePicker';
+import Picker from '../../ui/components/picker';
 const Second_part_of_register = props => {
   return (
     <SafeAreaView style={props.styles.area_container}>
@@ -16,7 +16,34 @@ const Second_part_of_register = props => {
           </View>
 
           <View>
-            <DatePicker value={props.birthDate} setBirthDate={props.setBirthDate} />
+            <DatePicker
+              value={props.birthDate}
+              setBirthDate={props.setBirthDate}
+            />
+            <Picker
+              title={'País'}
+              selectedValue={props.country}
+              onValueChange={(itemValue, itemIndex) =>
+                props.pickerOnChangeValue(itemValue, 'country')
+              }
+              Picker_Items={[{label: 'Venezuela', value: 'Venezuela'}]}
+            />
+            <Picker
+              title={'Estado'}
+              selectedValue={props.state}
+              onValueChange={(itemValue, itemIndex) =>
+                props.pickerOnChangeValue(itemValue, 'state')
+              }
+              Picker_Items={[{label: 'Anzoátegui', value: 'Anzoategui'}]}
+            />
+            <Picker
+              title={'Ciudad'}
+              selectedValue={props.city}
+              onValueChange={(itemValue, itemIndex) =>
+                props.pickerOnChangeValue(itemValue, 'state')
+              }
+              Picker_Items={[{label: 'Lechería', value: 'Lecheria'}]}
+            />
           </View>
         </View>
       </ScrollView>

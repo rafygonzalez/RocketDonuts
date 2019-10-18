@@ -27,6 +27,7 @@ class RegisterWithEmail extends React.Component {
       steps: 3,
     };
     this.Global_OnChange = this.Global_OnChange.bind(this);
+    this.pickerOnChangeValue = this.pickerOnChangeValue.bind(this);
     this.NextStep = this.NextStep.bind(this);
     this.PreviousStep = this.PreviousStep.bind(this);
     this.setBirthDate = this.setBirthDate.bind(this);
@@ -39,6 +40,9 @@ class RegisterWithEmail extends React.Component {
   }
   Global_OnChange(text, name) {
     this.setState({[name]: text});
+  }
+  pickerOnChangeValue(value, name) {
+    this.setState({[name]: value});
   }
   NextStep() {
     console.log(this.state);
@@ -55,6 +59,9 @@ class RegisterWithEmail extends React.Component {
       password,
       repassword,
       birthDate,
+      country,
+      state,
+      city,
       step,
       steps,
     } = this.state;
@@ -76,6 +83,10 @@ class RegisterWithEmail extends React.Component {
             styles={styles}
             setBirthDate={this.setBirthDate}
             birthDate={birthDate}
+            country={country}
+            state={state}
+            city={city}
+            pickerOnChangeValue={this.pickerOnChangeValue}
           />
         ) : step == 3 ? (
           <Third_part_of_register
