@@ -14,30 +14,50 @@ class RegisterWithEmail extends React.Component {
     this.state = {
       name: '',
       lastname: '',
-      email: 'ejemplo@gmail.com',
-      pass: '',
-      repass: '',
+      email: '',
+      password: '',
+      repassword: '',
+      birthDate: '',
+      country: '',
+      state: '',
+      city: '',
+      phoneNumer: '',
+      userid: '',
       step: 1,
       steps: 3,
     };
     this.Global_OnChange = this.Global_OnChange.bind(this);
     this.NextStep = this.NextStep.bind(this);
     this.PreviousStep = this.PreviousStep.bind(this);
+    this.setBirthDate = this.setBirthDate.bind(this);
   }
   static navigationOptions = {
     header: null,
   };
+  setBirthDate(date) {
+    this.setState({birthDate: date});
+  }
   Global_OnChange(text, name) {
     this.setState({[name]: text});
   }
   NextStep() {
+    console.log(this.state);
     this.setState({step: this.state.step + 1});
   }
   PreviousStep() {
     this.setState({step: this.state.step - 1});
   }
   render() {
-    const {name, lastname, email, pass, repass, step, steps} = this.state;
+    const {
+      name,
+      lastname,
+      email,
+      password,
+      repassword,
+      birthDate,
+      step,
+      steps,
+    } = this.state;
     return (
       <View style={{flex: 1, backgroundColor: '#ECEDF2'}}>
         {step == 1 ? (
@@ -46,14 +66,16 @@ class RegisterWithEmail extends React.Component {
             name={name}
             lastname={lastname}
             email={email}
-            pass={pass}
-            repass={repass}
+            password={password}
+            repassword={repassword}
             styles={styles}
           />
         ) : step == 2 ? (
           <Second_part_of_register
             HeaderBanner_OnBack={() => this.PreviousStep()}
             styles={styles}
+            setBirthDate={this.setBirthDate}
+            birthDate={birthDate}
           />
         ) : step == 3 ? (
           <Third_part_of_register

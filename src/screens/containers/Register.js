@@ -25,13 +25,13 @@ class Register extends React.Component {
             privacidad
           </Text>
           <CustomButton
-            title="Regístrate con Facebook"
+            title="Continuar con Facebook"
             button_style="facebook"
             left_icon={<FacebookLogo width={12} height={22} />}
             extra_style={styles.buttons}
           />
           <CustomButton
-            title="Regístrate con Google"
+            title="Continuar con Google"
             button_style="google"
             left_icon={<GoogleLogo width={32} height={32} />}
             extra_style={styles.buttons}

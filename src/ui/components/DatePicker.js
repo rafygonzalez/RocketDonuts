@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {connect} from 'react-redux';
+import * as signActions from '../../../redux/actions/signActions';
 import {
   View,
   Text,
@@ -7,48 +9,37 @@ import {
   StyleSheet,
 } from 'react-native';
 
-class DatePicker extends React.Component {
-  constructor(props) {
-    super(props);
-    this.setDate = this.setDate.bind(this);
-    this.state = {
-      chosenDate: new Date(),
-      androidDate: `${new Date().getUTCDate()}/${new Date().getUTCMonth() +
-        1}/${new Date().getUTCFullYear()}`,
-      value: 50,
-    };
-  }
-  setDate(newDate) {
-    this.setState({chosenDate: newDate});
-  }
+const DatePicker = props => {
+  const [chosenDate, setChosenDate] = useState(new Date());
+  setDate = newDate => {
+    setChosenDate(newDate);
+  };
   setDateAndroid = async () => {
     try {
       const {action, year, month, day} = await DatePickerAndroid.open({
         date: new Date(),
       });
       if (action !== DatePickerAndroid.dismissedAction) {
-        this.setState({androidDate: `${day}/${month + 1}/${year}`});
+        props.setBirthDate(`${day}/${month + 1}/${year}`);
       }
     } catch ({code, message}) {
       console.warn('Cannot open date picker', message);
     }
   };
-  render() {
-    const {androidDate} = this.state;
-    return (
-      <View>
-        <Text style={styles.title}>Fecha de Nacimiento</Text>
-        <TouchableOpacity
-          onPress={() => this.setDateAndroid()}
-          style={styles.DatePicker}>
-          <View style={styles.DatePicker_TextContainer}>
-            <Text style={styles.DatePicker_Text}>{androidDate}</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    );
-  }
-}
+  return (
+    <View>
+      <Text style={styles.title}>Fecha de Nacimiento</Text>
+      <TouchableOpacity
+        onPress={() => setDateAndroid()}
+        style={styles.DatePicker}>
+        <View style={styles.DatePicker_TextContainer}>
+          <Text style={styles.DatePicker_Text}>{props.value}</Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
   title: {
     fontFamily: 'Poppins-Regular',
@@ -69,4 +60,11 @@ const styles = StyleSheet.create({
   },
   DatePicker_TextContainer: {},
 });
-export default DatePicker;
+const mapStateToProps = reducers => {
+  return reducers.signReducer;
+};
+
+export default connect(
+  mapStateToProps,
+  signActions,
+)(DatePicker);

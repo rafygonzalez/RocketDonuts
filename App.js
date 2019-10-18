@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, SafeAreaView} from 'react-native';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
-import {store, persistor} from './store';
+import {store, persistor} from './redux/store';
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 //Screns
