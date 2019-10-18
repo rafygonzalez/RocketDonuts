@@ -55,14 +55,14 @@ export default First_part_of_register = props => (
         />
         <TextInput
           title="Contraseña"
-          onChangeText={text => props.Global_OnChange(text, 'pass')}
+          onChangeText={text => props.Global_OnChange(text, 'password')}
           value={props.password}
           autoCompleteType="password"
           secureTextEntry={true}
         />
         <TextInput
           title="Repite la Contraseña"
-          onChangeText={text => props.Global_OnChange(text, 'repass')}
+          onChangeText={text => props.Global_OnChange(text, 'repassword')}
           value={props.repassword}
           autoCompleteType="password"
           secureTextEntry={true}
