@@ -114,8 +114,11 @@ class RegisterWithEmail extends React.Component {
   }
 }
 const styles = StyleSheet.create({
+  Button_NextStep: {
+    marginVertical: 32,
+  },
   button_verification_code: {
-    height: 40,
+    marginTop: 32,
   },
   button_container: {
     paddingHorizontal: 8,

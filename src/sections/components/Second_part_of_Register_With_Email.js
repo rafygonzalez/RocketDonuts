@@ -47,6 +47,7 @@ const Second_part_of_register = props => {
             onPress={() => props.NextStep()}
             title={`Siguiente (${props.step}/${props.steps})`}
             button_style="primary"
+            extra_style={props.styles.Button_NextStep}
           />
         </View>
       </ScrollView>

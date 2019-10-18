@@ -27,15 +27,21 @@ export default Third_part_of_register = props => (
             <Button
               onPress={() => {}}
               title={`Enviar Codigo`}
-              button_style="primary"
+              button_style="simple"
               extra_style={props.styles.button_verification_code}
             />
           </View>
         </View>
+        <TextInput
+          title="Ingresa el código de verificación de 6 digitos"
+          onChangeText={text => props.Global_OnChange(text, 'verificationCode')}
+          value={props.verificationCode}
+        />
         <Button
           onPress={() => props.NextStep()}
           title={`Siguiente (${props.step}/${props.steps})`}
           button_style="primary"
+          extra_style={props.styles.Button_NextStep}
         />
       </View>
     </ScrollView>
