@@ -5,6 +5,7 @@ const button_base = {
   borderRadius: 3,
   width: '100%',
   minHeight: 48,
+  maxHeight: 49,
   justifyContent: 'center',
   alignItems: 'center',
   flex: 1,

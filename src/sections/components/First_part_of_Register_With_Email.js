@@ -9,7 +9,7 @@ import {
 import PhotoCamera from '../../../assets/svg/photo-camera.svg';
 import TextInput from '../../ui/components/TextInput';
 import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
-
+import Button from '../../ui/components/button';
 export default First_part_of_register = props => (
   <SafeAreaView style={props.styles.area_container}>
     <ScrollView style={props.styles.info_container}>
@@ -22,7 +22,7 @@ export default First_part_of_register = props => (
 
         <Text style={props.styles.photo_text}>Sube una foto de perfil</Text>
       </View>
-      <View style={{flex: 1, marginHorizontal: 16}}>
+      <View style={{marginHorizontal: 16}}>
         <Text style={props.styles.description}>Información Personal</Text>
         <View style={{position: 'absolute'}}>
           <Estrellas width={386} height={528} />
@@ -66,6 +66,11 @@ export default First_part_of_register = props => (
           value={props.repassword}
           autoCompleteType="password"
           secureTextEntry={true}
+        />
+        <Button
+          onPress={() => props.NextStep()}
+          title={`Siguiente (${props.step}/${props.steps})`}
+          button_style="primary"
         />
       </View>
     </ScrollView>

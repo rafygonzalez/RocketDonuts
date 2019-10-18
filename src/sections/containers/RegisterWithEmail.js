@@ -21,7 +21,8 @@ class RegisterWithEmail extends React.Component {
       country: '',
       state: '',
       city: '',
-      phoneNumer: '',
+      phoneNumber: '',
+      verificationCode: '',
       userid: '',
       step: 1,
       steps: 3,
@@ -62,6 +63,8 @@ class RegisterWithEmail extends React.Component {
       country,
       state,
       city,
+      phoneNumber,
+      verificationCode,
       step,
       steps,
     } = this.state;
@@ -76,6 +79,9 @@ class RegisterWithEmail extends React.Component {
             password={password}
             repassword={repassword}
             styles={styles}
+            NextStep={this.NextStep}
+            step={step}
+            steps={steps}
           />
         ) : step == 2 ? (
           <Second_part_of_register
@@ -87,25 +93,30 @@ class RegisterWithEmail extends React.Component {
             state={state}
             city={city}
             pickerOnChangeValue={this.pickerOnChangeValue}
+            NextStep={this.NextStep}
+            step={step}
+            steps={steps}
           />
         ) : step == 3 ? (
           <Third_part_of_register
             HeaderBanner_OnBack={() => this.PreviousStep()}
+            Global_OnChange={this.Global_OnChange}
             styles={styles}
+            phoneNumber={phoneNumber}
+            verificationCode={verificationCode}
+            NextStep={this.NextStep}
+            step={step}
+            steps={steps}
           />
         ) : null}
-        <View style={{flex: 0.1}}>
-          <Button
-            onPress={() => this.NextStep()}
-            title={`Siguiente (${step}/${steps})`}
-            button_style="primary"
-          />
-        </View>
       </View>
     );
   }
 }
 const styles = StyleSheet.create({
+  button_verification_code: {
+    height: 40,
+  },
   button_container: {
     paddingHorizontal: 8,
   },
