@@ -40,6 +40,14 @@ class Home extends React.Component {
             simple
             extra_style={styles.buttons}
           />
+          <CustomButton
+            title="Iniciar Sesión"
+            onPress={() => {
+              this.props.navigation.navigate('Splash');
+            }}
+            simple
+            extra_style={styles.buttons}
+          />
         </View>
       </View>
     );
