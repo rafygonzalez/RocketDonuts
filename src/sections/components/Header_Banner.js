@@ -39,6 +39,25 @@ class HeaderBanner extends React.Component {
     Dimensions.addEventListener('change', () => {
       this.getOrientation();
     });
+
+    const dona = {
+      topping: 'Chispas de chocolate',
+      relleno: 'Crema',
+      Cubierta: 'Chocolate',
+    };
+
+    const dona1 = {
+      topping: 'Chispa de chocolate',
+      relleno: 'Crma',
+      Cubierta: 'Chocolate',
+    };
+
+    const dona2 = {
+      topping: 'Chispas de chocole',
+      relleno: 'Crea',
+      Cubierta: 'Choclate',
+    };
+    const areglo = [dona, dona1, dona2];
   }
   render() {
     const {props} = this;

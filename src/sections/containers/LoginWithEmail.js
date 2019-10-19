@@ -38,6 +38,7 @@ class LoginWithEmail extends React.Component {
               onChangeText={text => this.Global_OnChange(text, 'email')}
               value={email}
               autoCompleteType="email"
+              autoFocus={true}
             />
             <TextInput
               title="Contraseña"
@@ -45,12 +46,18 @@ class LoginWithEmail extends React.Component {
               value={password}
               autoCompleteType="password"
               secureTextEntry={true}
+              autoFocus={true}
             />
             <Button
               onPress={() => {}}
               title={`Entrar`}
               button_style="primary"
-              extra_style={styles.Button}
+              extra_style={styles.Button_SignIn}
+            />
+            <Button
+              onPress={() => {}}
+              title={`Olvidé mi contraseña`}
+              button_style="simple"
             />
           </View>
         </ScrollView>
@@ -59,7 +66,7 @@ class LoginWithEmail extends React.Component {
   }
 }
 const styles = StyleSheet.create({
-  Button: {
+  Button_SignIn: {
     marginVertical: 32,
   },
   description: {

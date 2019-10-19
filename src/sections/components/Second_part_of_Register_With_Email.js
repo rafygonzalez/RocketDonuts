@@ -8,7 +8,7 @@ import Button from '../../ui/components/button';
 const Second_part_of_register = props => {
   return (
     <SafeAreaView style={props.styles.area_container}>
-      <HeaderBanner onPress={props.HeaderBanner_OnBack} />
+      <HeaderBanner onPress={props.HeaderBanner_OnBack} back_button={true} />
       <ScrollView style={props.styles.info_container}>
         <View style={{marginHorizontal: 16}}>
           <Text style={props.styles.description}>Información Personal</Text>

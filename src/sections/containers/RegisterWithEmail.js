@@ -3,9 +3,11 @@ import {StyleSheet, Dimensions, View} from 'react-native';
 import First_part_of_register from '../components/First_part_of_Register_With_Email';
 import Second_part_of_register from '../components/Second_part_of_Register_With_Email';
 import Third_part_of_register from '../components/Third_part_of_Register_With_Email';
+import Register_finished from '../components/Register_Finished';
 var {width} = Dimensions.get('window');
 var box_count = 2.2;
 var box_width = width / box_count;
+//ToastAndroid.show("Success", ToastAndroid.SHORT)
 
 class RegisterWithEmail extends React.Component {
   constructor(props) {
@@ -107,12 +109,40 @@ class RegisterWithEmail extends React.Component {
             step={step}
             steps={steps}
           />
-        ) : null}
+        ) : (
+          step == 4 && <Register_finished styles={styles} />
+        )}
       </View>
     );
   }
 }
 const styles = StyleSheet.create({
+  title_congratulations: {
+    fontFamily: 'Poppins-Bold',
+    fontSize: 24,
+    color: '#313045',
+
+    textAlign: 'center',
+  },
+  description_congratulations: {
+    marginTop: 32,
+    fontFamily: 'Poppins-Regular',
+    fontSize: 20,
+    color: '#313045',
+    textAlign: 'center',
+  },
+  background: {
+    height: '100%',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  container: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 16,
+  },
   Button_NextStep: {
     marginVertical: 32,
   },
