@@ -1,25 +1,34 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import Splash from '../../../assets/svg/Splash.svg';
-class SplashScreen extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  static navigationOptions = {
-    header: null,
-  };
-
-  render() {
-    return (
-      <View style={styles.background}>
-        <View style={styles.container}>
-          <Splash />
+import {View, StyleSheet, ActivityIndicator} from 'react-native';
+import Stars from '../../../assets/svg/Stars.svg';
+import Logo from '../../../assets/svg/LogoV.svg';
+import LinearGradient from 'react-native-linear-gradient';
+const SplashScreen = props => {
+  return (
+    <LinearGradient colors={['#242441', '#55537B']} style={styles.background}>
+      <View style={styles.container}>
+        <Stars />
+        <View style={styles.Logo_Container}>
+          <Logo width={244} height={84} />
+          <ActivityIndicator
+            size="large"
+            color="#EDEEF4"
+            style={styles.ActivityIndicator}
+          />
         </View>
       </View>
-    );
-  }
-}
+    </LinearGradient>
+  );
+};
 const styles = StyleSheet.create({
+  ActivityIndicator: {
+    marginTop: 32,
+  },
+  Logo_Container: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   background: {
     backgroundColor: '#313045',
     height: '100%',
