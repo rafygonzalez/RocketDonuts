@@ -11,7 +11,7 @@ import HeaderBanner from '../../sections/components/Header_Banner';
 import {Product_Box, Product_Box_Large} from '../components/Product_Box';
 
 import Donut from '../../../assets/svg/Dona.svg';
-import Rosquilla from '../../../assets/svg/Rosquilla.svg';
+import Bagel from '../../../assets/svg/Rosquilla.svg';
 
 class Home extends Component {
   constructor(props) {
@@ -44,6 +44,12 @@ class Home extends Component {
   }
 
   render() {
+    //<Product_Box item={<Rosquilla />} item_name={'Rosquillas'} />
+
+    const Dona = props => <Donut width={props.width} height={props.height} />;
+    const Rosquilla = props => (
+      <Bagel width={props.width} height={props.height} />
+    );
     return (
       <SafeAreaView style={styles.area_container}>
         <ScrollView>
@@ -52,8 +58,8 @@ class Home extends Component {
             <Estrellas width={386} height={528} />
           </View>
           <View style={styles.products_container}>
-            <Product_Box item={<Donut />} item_name={'Donas'} />
-            <Product_Box item={<Rosquilla />} item_name={'Rosquillas'} />
+            <Product_Box item={Dona} item_name={'Donas'} />
+            <Product_Box item={Rosquilla} item_name={'Rosquilla'} />
           </View>
         </ScrollView>
       </SafeAreaView>
