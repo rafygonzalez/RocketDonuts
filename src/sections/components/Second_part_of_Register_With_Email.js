@@ -13,7 +13,7 @@ const Second_part_of_register = props => {
         <View style={{marginHorizontal: 16}}>
           <Text style={props.styles.description}>Información Personal</Text>
           <View style={{position: 'absolute'}}>
-            <Estrellas width={386} height={528} />
+            <Estrellas width={'100%'} height={'100%'} />
           </View>
           <DatePicker
             value={props.birthDate}

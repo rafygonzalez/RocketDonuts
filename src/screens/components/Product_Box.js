@@ -41,25 +41,53 @@ export class Product_Box extends React.Component {
     const {props} = this;
     const {box_width, box_heigth, item_width, item_heigth} = this.state;
     const Item = props.item;
-    return (
-      <TouchableOpacity
-        onPress={props.onPress}
-        style={[
-          styles.item_box_container,
-          {width: box_width, height: box_heigth},
-        ]}>
-        <View style={[styles.svg_container]}>
-          <Item width={item_width} height={item_heigth} />
-        </View>
-        <View style={styles.item_name_container}>
-          <Text style={styles.item_name_text}>{props.item_name}</Text>
-        </View>
-      </TouchableOpacity>
-    );
+    if (props.imageBackground) {
+      return (
+        <TouchableOpacity
+          onPress={props.onPress}
+          style={[
+            styles.item_box_lg_container,
+            {width: box_width * 2 + 16, height: box_heigth - 50},
+          ]}>
+          <Image
+            source={props.imgSrc}
+            style={{width: box_width * 2 + 16, height: box_heigth - 50}}
+          />
+
+          <View style={styles.item_name_lgcontainer}>
+            <Text style={styles.item_name_lgtext}>{props.item_name}</Text>
+          </View>
+        </TouchableOpacity>
+      );
+    } else {
+      return (
+        <TouchableOpacity
+          onPress={props.onPress}
+          style={[
+            styles.item_box_container,
+            {width: box_width, height: box_heigth},
+          ]}>
+          <View style={[styles.svg_container]}>
+            <Item width={item_width} height={item_heigth} />
+          </View>
+          <View style={styles.item_name_container}>
+            <Text style={styles.item_name_text}>{props.item_name}</Text>
+          </View>
+        </TouchableOpacity>
+      );
+    }
   }
 }
 
 const styles = StyleSheet.create({
+  img: {},
+  item_name_lgtext: {
+    fontFamily: 'Rockwell',
+    fontSize: 30,
+    color: 'white',
+    paddingVertical: 8,
+    paddingHorizontal: 8,
+  },
   item_name_text: {
     fontFamily: 'Rockwell',
     fontSize: 30,
@@ -69,13 +97,12 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     borderWidth: 0.5,
     borderColor: '#C7C8D6',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
     marginVertical: 8,
     marginHorizontal: 8,
-    width: 342,
-    height: 138,
   },
+
   item_box_container: {
     borderRadius: 3,
     borderWidth: 0.5,
@@ -89,6 +116,12 @@ const styles = StyleSheet.create({
   svg_container: {
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  item_name_lgcontainer: {
+    marginTop: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
   },
   item_name_container: {
     marginTop: 8,

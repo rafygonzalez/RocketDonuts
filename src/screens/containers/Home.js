@@ -5,8 +5,10 @@ import {
   StyleSheet,
   ScrollView,
   Dimensions,
+  Text,
+  TouchableOpacity,
 } from 'react-native';
-import Estrellas from '../../../assets/svg/Estrellas';
+import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
 import HeaderBanner from '../../sections/components/Header_Banner';
 import {Product_Box, Product_Box_Large} from '../components/Product_Box';
 
@@ -16,15 +18,23 @@ import Bagel from '../../../assets/svg/Rosquilla.svg';
 class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = {orientation: '', header_width: 0, header_heigth: 0};
+    this.state = {
+      orientation: '',
+      header_width: 0,
+      header_heigth: 0,
+      screen_width: 0,
+
+      screen_height: 0,
+    };
   }
   static navigationOptions = {
     header: null,
   };
   getOrientation = () => {
-    var {width} = Dimensions.get('window');
-
+    var {width, height} = Dimensions.get('window');
     this.setState({
+      screen_width: width,
+      screen_height: height,
       header_width: width,
       header_heigth: (39.61 * width) / 100,
     });
@@ -52,14 +62,36 @@ class Home extends Component {
     );
     return (
       <SafeAreaView style={styles.area_container}>
-        <ScrollView>
+        <ScrollView contentContainerStyle={{flexGrow: 1}}>
           <HeaderBanner withTitle />
-          <View style={styles.stars_container}>
-            <Estrellas width={386} height={528} />
+          <View
+            style={[styles.stars_container, {top: this.state.header_heigth}]}>
+            <Estrellas
+              width={this.state.screen_width}
+              height={this.state.screen_height}
+              preserveAspectRatio="xMidYMid meet"
+            />
           </View>
           <View style={styles.products_container}>
             <Product_Box item={Dona} item_name={'Donas'} />
             <Product_Box item={Rosquilla} item_name={'Rosquilla'} />
+            <Product_Box
+              imageBackground
+              imgSrc={require('../../../assets/img/Donut.jpg')}
+              item_name={'Promo Espacial'}
+            />
+          </View>
+          <View
+            style={{
+              flex: 1,
+              position: 'relative',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              marginVertical: 8,
+            }}>
+            <TouchableOpacity>
+              <Text>Términos y condiciones | Ayuda</Text>
+            </TouchableOpacity>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -74,12 +106,18 @@ const styles = StyleSheet.create({
   products_container: {
     flexWrap: 'wrap',
     flexDirection: 'row',
-    backgroundColor: '#ECEDF2',
     marginVertical: 8,
     marginHorizontal: 8,
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'stretch',
+  },
+  background: {
+    backgroundColor: '#313045',
+
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   stars_container: {
     position: 'absolute',
