@@ -49,7 +49,7 @@ class LoginWithEmail extends React.Component {
               autoFocus={true}
             />
             <Button
-              onPress={() => {}}
+              onPress={() => this.props.navigation.navigate('Home')}
               title={`Entrar`}
               button_style="primary"
               extra_style={styles.Button_SignIn}

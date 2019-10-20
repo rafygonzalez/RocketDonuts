@@ -13,11 +13,15 @@ import LoginWithEmail from './src/sections/containers/LoginWithEmail';
 import RegisterScreen from './src/screens/containers/Register';
 import RegisterWithEmail from './src/sections/containers/RegisterWithEmail';
 import SplashScreen from './src/screens/containers/Splash';
+import HomeScreen from './src/screens/containers/Home';
 //
 import Loading from './src/screens/containers/Splash';
 import firebase from 'react-native-firebase';
 
 const AppNavigator = createStackNavigator({
+  Home: {
+    screen: HomeScreen,
+  },
   Welcome: {
     screen: WelcomeScreen,
   },
@@ -32,6 +36,9 @@ const AppNavigator = createStackNavigator({
   },
   RegisterWithEmail: {
     screen: RegisterWithEmail,
+  },
+  Splash: {
+    screen: SplashScreen,
   },
 });
 

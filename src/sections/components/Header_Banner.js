@@ -1,17 +1,14 @@
 import React from 'react';
-import {TouchableOpacity, StyleSheet, View, Dimensions} from 'react-native';
+import {
+  TouchableOpacity,
+  StyleSheet,
+  View,
+  Dimensions,
+  Text,
+} from 'react-native';
 import BackArrowSvg from '../../../assets/svg/BackArrow.svg';
 import HeaderBannerSvg from '../../../assets/svg/Header_Banner.svg';
-
-const styles = StyleSheet.create({
-  Touchable: {
-    flex: 1,
-    flexDirection: 'row',
-    position: 'absolute',
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-  },
-});
+import HeaderBannerWithTitle from '../../../assets/svg/Header_Banner_With_Title.svg';
 
 class HeaderBanner extends React.Component {
   constructor(props) {
@@ -39,36 +36,27 @@ class HeaderBanner extends React.Component {
     Dimensions.addEventListener('change', () => {
       this.getOrientation();
     });
-
-    const dona = {
-      topping: 'Chispas de chocolate',
-      relleno: 'Crema',
-      Cubierta: 'Chocolate',
-    };
-
-    const dona1 = {
-      topping: 'Chispa de chocolate',
-      relleno: 'Crma',
-      Cubierta: 'Chocolate',
-    };
-
-    const dona2 = {
-      topping: 'Chispas de chocole',
-      relleno: 'Crea',
-      Cubierta: 'Choclate',
-    };
-    const areglo = [dona, dona1, dona2];
   }
   render() {
     const {props} = this;
     return (
       <View>
-        <HeaderBannerSvg
-          width={this.state.header_width}
-          height={this.state.header_heigth}
-          preserveAspectRatio="xMidYMid meet"
-          viewBox={'0 0 414 180'}
-        />
+        {props.withTitle ? (
+          <HeaderBannerWithTitle
+            width={this.state.header_width}
+            height={this.state.header_heigth}
+            preserveAspectRatio="xMidYMid meet"
+            viewBox={'0 0 414 180'}
+          />
+        ) : (
+          <HeaderBannerSvg
+            width={this.state.header_width}
+            height={this.state.header_heigth}
+            preserveAspectRatio="xMidYMid meet"
+            viewBox={'0 0 414 180'}
+          />
+        )}
+
         {props.back_button && (
           <TouchableOpacity style={styles.Touchable} onPress={props.onPress}>
             <BackArrowSvg width={24} height={24} />
@@ -78,4 +66,14 @@ class HeaderBanner extends React.Component {
     );
   }
 }
+const styles = StyleSheet.create({
+  Touchable: {
+    flex: 1,
+    flexDirection: 'row',
+    position: 'absolute',
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+  },
+});
+
 export default HeaderBanner;

@@ -12,8 +12,10 @@ const CustomPicker = props => {
           style={styles.picker}
           selectedValue={props.selectedValue}
           onValueChange={props.onValueChange}>
-          {props.Picker_Items.map(Item => {
-            return <Picker.Item label={Item.label} value={Item.value} />;
+          {props.Picker_Items.map((Item, index) => {
+            return (
+              <Picker.Item key={index} label={Item.label} value={Item.value} />
+            );
           })}
         </Picker>
       </View>
