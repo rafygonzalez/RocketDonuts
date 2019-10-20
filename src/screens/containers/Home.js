@@ -2,8 +2,11 @@ import React, {Component} from 'react';
 import {View, SafeAreaView, StyleSheet, ScrollView} from 'react-native';
 import Estrellas from '../../../assets/svg/Estrellas';
 import HeaderBanner from '../../sections/components/Header_Banner';
-import ProductBox from '../components/Product_Box';
+import {Product_Box} from '../components/Product_Box';
+
 import Donut from '../../../assets/svg/Dona.svg';
+import Rosquilla from '../../../assets/svg/Rosquilla.svg';
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -21,8 +24,8 @@ class Home extends Component {
             <Estrellas width={386} height={528} />
           </View>
           <View style={styles.products_container}>
-            <ProductBox item={<Donut />} item_name={'Donas'} />
-            <ProductBox item={<Donut />} item_name={'Donas'} />
+            <Product_Box item={<Donut />} item_name={'Donas'} />
+            <Product_Box item={<Rosquilla />} item_name={'Rosquillas'} />
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -37,8 +40,10 @@ const styles = StyleSheet.create({
   products_container: {
     flexDirection: 'row',
     backgroundColor: '#ECEDF2',
-    marginVertical: 16,
-    marginHorizontal: 16,
+    marginVertical: 8,
+    marginHorizontal: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   stars_container: {
     position: 'absolute',
