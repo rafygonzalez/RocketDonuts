@@ -15,15 +15,20 @@ import Item_Box from '../components/Item_Box';
 
 // Products
 import {Dona, Rosquilla, DonaSola} from '../components/Products';
-// Covers
+// Filling
 import {
   RChocolate,
   RArequipe,
   RChocolateB,
   RCPastelera,
-  Prueba2,
 } from '../components/Donuts_Filling';
-
+// Covers
+import {
+  CChocolate,
+  CArequipe,
+  CChocolateB,
+  CGlaseado,
+} from '../components/Donuts_Covers';
 //
 
 class Home extends Component {
@@ -37,8 +42,15 @@ class Home extends Component {
       screen_height: 0,
       selectedProduct: '',
       customizeDonut: false,
+      customizeSteps: 3,
+      customizeStep: 0,
+      fillingDonut: '',
+      coverDonut: '',
+      toppingDonut: '',
     };
     this.onSelectedProduct = this.onSelectedProduct.bind(this);
+    this.onSelectedItem = this.onSelectedItem.bind(this);
+    this.HeaderBanner_OnBack = this.HeaderBanner_OnBack.bind(this);
   }
   static navigationOptions = {
     header: null,
@@ -66,36 +78,104 @@ class Home extends Component {
     });
   }
   onSelectedProduct(name) {
-    this.setState({selectedProduct: name, customizeDonut: true});
+    this.setState({
+      selectedProduct: name,
+      customizeDonut: true,
+      customizeStep: this.state.customizeStep + 1,
+    });
+  }
+  HeaderBanner_OnBack() {
+    this.setState({customizeDonut: false});
+  }
+  onSelectedItem(name, type) {
+    this.setState({customizeStep: this.state.customizeStep + 1});
+    switch (type) {
+      case 'filling':
+        this.setState({fillingDonut: name});
+        break;
+      case 'cover':
+        this.setState({coverDonut: name});
+        break;
+      case 'topping':
+        this.setState({toppingDonut: name});
+        break;
+      default:
+        console.error('Error customizing donut');
+    }
   }
   render() {
     const Rellenos = [RChocolate, RArequipe, RChocolateB, RCPastelera];
-    console.log(Prueba2);
+    const Cubiertas = [CChocolate, CArequipe, CChocolateB, CGlaseado];
+
+    const {
+      customizeDonut,
+      customizeStep,
+      customizeSteps,
+      fillingDonut,
+      coverDonut,
+      screen_height,
+      screen_width,
+      header_heigth,
+    } = this.state;
+
+    const fillOfDonut = ({name}) => name == fillingDonut;
+    const coverOfDonut = ({name}) => name == coverDonut;
     return (
       <SafeAreaView style={styles.area_container}>
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
-          <HeaderBanner withTitle />
-          <View
-            style={[styles.stars_container, {top: this.state.header_heigth}]}>
+          <HeaderBanner
+            withTitle
+            onPress={this.HeaderBanner_OnBack}
+            back_button={customizeDonut ? true : false}
+          />
+          <View style={[styles.stars_container, {top: header_heigth}]}>
             <Estrellas
-              width={this.state.screen_width}
-              height={this.state.screen_height}
+              width={screen_width}
+              height={screen_height}
               preserveAspectRatio="xMidYMid meet"
             />
           </View>
-          {this.state.customizeDonut ? (
+          {customizeDonut ? (
             <View style={styles.products_container}>
               <Item_Box item={DonaSola} item_name={'Dona'} />
-
-              {Rellenos.map(Relleno => {
-                return (
-                  <Product_Box
-                    onPress={() => this.onSelectedProduct('Donut')}
-                    item={Relleno.component}
-                    item_name={Relleno.name}
-                  />
-                );
-              })}
+              {customizeStep >= 2 && (
+                <Item_Box
+                  item={Rellenos.filter(fillOfDonut)[0].component}
+                  item_name={Rellenos.filter(fillOfDonut)[0].name}
+                />
+              )}
+              {customizeStep >= 3 && (
+                <Item_Box
+                  item={Cubiertas.filter(coverOfDonut)[0].component}
+                  item_name={Cubiertas.filter(coverOfDonut)[0].name}
+                />
+              )}
+              {customizeStep == 1
+                ? Rellenos.map((Relleno, index) => {
+                    return (
+                      <Product_Box
+                        onPress={() =>
+                          this.onSelectedItem(Relleno.name, 'filling')
+                        }
+                        item={Relleno.component}
+                        item_name={Relleno.name}
+                        key={index}
+                      />
+                    );
+                  })
+                : customizeStep == 2 &&
+                  Cubiertas.map((Cubierta, index) => {
+                    return (
+                      <Product_Box
+                        onPress={() =>
+                          this.onSelectedItem(Cubierta.name, 'cover')
+                        }
+                        item={Cubierta.component}
+                        item_name={Cubierta.name}
+                        key={index}
+                      />
+                    );
+                  })}
             </View>
           ) : (
             <View style={styles.products_container}>

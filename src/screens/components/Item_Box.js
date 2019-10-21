@@ -51,6 +51,7 @@ class Item_Box extends Component {
 }
 const styles = StyleSheet.create({
   container: {
+    marginTop: 16,
     backgroundColor: '#48475B',
     paddingHorizontal: 16,
     paddingVertical: 16,
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
   svgContainer: {justifyContent: 'center', alignItems: 'center'},
   textContainer: {
     justifyContent: 'center',
-    marginLeft: '20%',
+    marginLeft: '10%',
     width: '100%',
   },
   text: {fontFamily: 'Rockwell', color: 'white', fontSize: 30},
