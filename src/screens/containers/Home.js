@@ -30,6 +30,13 @@ import {
   CGlaseado,
 } from '../components/Donuts_Covers';
 //
+import {
+  TChocolate,
+  TChRosadas,
+  TCoco,
+  TColores,
+  TMani,
+} from '../components/Donuts_Toppings';
 
 class Home extends Component {
   constructor(props) {
@@ -104,15 +111,16 @@ class Home extends Component {
     }
   }
   render() {
-    const Rellenos = [RChocolate, RArequipe, RChocolateB, RCPastelera];
-    const Cubiertas = [CChocolate, CArequipe, CChocolateB, CGlaseado];
-
+    const Rellenos = [RChocolate, RChocolateB, RArequipe, RCPastelera];
+    const Cubiertas = [CChocolate, CChocolateB, CArequipe, CGlaseado];
+    const Toppings = [TChocolate, TChRosadas, TCoco, TColores, TMani];
     const {
       customizeDonut,
       customizeStep,
       customizeSteps,
       fillingDonut,
       coverDonut,
+      toppingDonut,
       screen_height,
       screen_width,
       header_heigth,
@@ -120,6 +128,7 @@ class Home extends Component {
 
     const fillOfDonut = ({name}) => name == fillingDonut;
     const coverOfDonut = ({name}) => name == coverDonut;
+    const toppingOfDonut = ({name}) => name == toppingDonut;
     return (
       <SafeAreaView style={styles.area_container}>
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
@@ -150,6 +159,13 @@ class Home extends Component {
                   item_name={Cubiertas.filter(coverOfDonut)[0].name}
                 />
               )}
+              {customizeStep >= 4 && (
+                <Item_Box
+                  item={Toppings.filter(toppingOfDonut)[0].component}
+                  item_name={Toppings.filter(toppingOfDonut)[0].name}
+                />
+              )}
+
               {customizeStep == 1
                 ? Rellenos.map((Relleno, index) => {
                     return (
@@ -163,8 +179,8 @@ class Home extends Component {
                       />
                     );
                   })
-                : customizeStep == 2 &&
-                  Cubiertas.map((Cubierta, index) => {
+                : customizeStep == 2
+                ? Cubiertas.map((Cubierta, index) => {
                     return (
                       <Product_Box
                         onPress={() =>
@@ -172,6 +188,19 @@ class Home extends Component {
                         }
                         item={Cubierta.component}
                         item_name={Cubierta.name}
+                        key={index}
+                      />
+                    );
+                  })
+                : customizeStep == 3 &&
+                  Toppings.map((Topping, index) => {
+                    return (
+                      <Product_Box
+                        onPress={() =>
+                          this.onSelectedItem(Topping.name, 'topping')
+                        }
+                        item={Topping.component}
+                        item_name={Topping.name}
                         key={index}
                       />
                     );
