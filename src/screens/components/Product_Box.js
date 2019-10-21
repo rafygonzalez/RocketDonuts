@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   },
   item_name_text: {
     fontFamily: 'Rockwell',
-    fontSize: 30,
+    fontSize: 24,
     textAlign: 'center',
   },
   item_box_lg_container: {
