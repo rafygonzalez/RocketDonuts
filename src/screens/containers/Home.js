@@ -10,10 +10,21 @@ import {
 } from 'react-native';
 import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
 import HeaderBanner from '../../sections/components/Header_Banner';
-import {Product_Box, Product_Box_Large} from '../components/Product_Box';
+import {Product_Box} from '../components/Product_Box';
+import Item_Box from '../components/Item_Box';
 
-import Donut from '../../../assets/svg/Dona.svg';
-import Bagel from '../../../assets/svg/Rosquilla.svg';
+// Products
+import {Dona, Rosquilla, DonaSola} from '../components/Products';
+// Covers
+import {
+  RChocolate,
+  RArequipe,
+  RChocolateB,
+  RCPastelera,
+  Prueba2,
+} from '../components/Donuts_Filling';
+
+//
 
 class Home extends Component {
   constructor(props) {
@@ -23,9 +34,11 @@ class Home extends Component {
       header_width: 0,
       header_heigth: 0,
       screen_width: 0,
-
       screen_height: 0,
+      selectedProduct: '',
+      customizeDonut: false,
     };
+    this.onSelectedProduct = this.onSelectedProduct.bind(this);
   }
   static navigationOptions = {
     header: null,
@@ -52,14 +65,12 @@ class Home extends Component {
       this.getOrientation();
     });
   }
-
+  onSelectedProduct(name) {
+    this.setState({selectedProduct: name, customizeDonut: true});
+  }
   render() {
-    //<Product_Box item={<Rosquilla />} item_name={'Rosquillas'} />
-
-    const Dona = props => <Donut width={props.width} height={props.height} />;
-    const Rosquilla = props => (
-      <Bagel width={props.width} height={props.height} />
-    );
+    const Rellenos = [RChocolate, RArequipe, RChocolateB, RCPastelera];
+    console.log(Prueba2);
     return (
       <SafeAreaView style={styles.area_container}>
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
@@ -72,15 +83,36 @@ class Home extends Component {
               preserveAspectRatio="xMidYMid meet"
             />
           </View>
-          <View style={styles.products_container}>
-            <Product_Box item={Dona} item_name={'Donas'} />
-            <Product_Box item={Rosquilla} item_name={'Rosquilla'} />
-            <Product_Box
-              imageBackground
-              imgSrc={require('../../../assets/img/Donut.jpg')}
-              item_name={'Promo Espacial'}
-            />
-          </View>
+          {this.state.customizeDonut ? (
+            <View style={styles.products_container}>
+              <Item_Box item={DonaSola} item_name={'Dona'} />
+
+              {Rellenos.map(Relleno => {
+                return (
+                  <Product_Box
+                    onPress={() => this.onSelectedProduct('Donut')}
+                    item={Relleno.component}
+                    item_name={Relleno.name}
+                  />
+                );
+              })}
+            </View>
+          ) : (
+            <View style={styles.products_container}>
+              <Product_Box
+                onPress={() => this.onSelectedProduct('Donut')}
+                item={Dona}
+                item_name={'Donas'}
+              />
+              <Product_Box item={Rosquilla} item_name={'Rosquilla'} />
+              <Product_Box
+                imageBackground
+                imgSrc={require('../../../assets/img/Donut.jpg')}
+                item_name={'Promo Espacial'}
+              />
+            </View>
+          )}
+
           <View
             style={{
               flex: 1,
