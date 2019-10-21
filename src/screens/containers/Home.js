@@ -29,11 +29,7 @@ import {
   CChocolateB,
   CGlaseado,
 } from '../components/Donuts_Covers';
-<<<<<<< HEAD
 // Topings
-=======
-//
->>>>>>> bffe8320f9f675a21b1184a0f74641563f1fc18b
 import {
   TChocolate,
   TChRosadas,
@@ -207,13 +203,8 @@ class Home extends Component {
                       />
                     );
                   })
-<<<<<<< HEAD
                 : customizeStep == 3
                 ? Toppings.map((Topping, index) => {
-=======
-                : customizeStep == 3 &&
-                  Toppings.map((Topping, index) => {
->>>>>>> bffe8320f9f675a21b1184a0f74641563f1fc18b
                     return (
                       <Product_Box
                         onPress={() =>
@@ -224,7 +215,6 @@ class Home extends Component {
                         key={index}
                       />
                     );
-<<<<<<< HEAD
                   })
                 : customizeStep == 4 && (
                     <View
@@ -249,9 +239,6 @@ class Home extends Component {
                       />
                     </View>
                   )}
-=======
-                  })}
->>>>>>> bffe8320f9f675a21b1184a0f74641563f1fc18b
             </View>
           ) : (
             <View style={styles.products_container}>

@@ -22,11 +22,7 @@ export const Mani = props => (
 );
 
 export const TChocolate = {
-<<<<<<< HEAD
   name: 'Chocolate',
-=======
-  name: 'Chispas de Chocolate',
->>>>>>> bffe8320f9f675a21b1184a0f74641563f1fc18b
   component: Chocolate,
 };
 export const TChRosadas = {
