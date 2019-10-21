@@ -18,15 +18,15 @@ export const CPastelera = props => (
 );
 
 export const RChocolate = {
-  name: 'Relleno de Chocolate',
+  name: 'Chocolate',
   component: Chocolate,
 };
 export const RArequipe = {
-  name: 'Relleno de Arequipe',
+  name: 'Arequipe',
   component: Arequipe,
 };
 export const RChocolateB = {
-  name: 'Relleno de Choc.Blanco',
+  name: 'Choc.Blanco',
   component: ChocolateB,
 };
 export const RCPastelera = {

@@ -12,7 +12,7 @@ import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
 import HeaderBanner from '../../sections/components/Header_Banner';
 import {Product_Box} from '../components/Product_Box';
 import Item_Box from '../components/Item_Box';
-
+import Button from '../../ui/components/button';
 // Products
 import {Dona, Rosquilla, DonaSola} from '../components/Products';
 // Filling
@@ -29,7 +29,14 @@ import {
   CChocolateB,
   CGlaseado,
 } from '../components/Donuts_Covers';
-//
+// Topings
+import {
+  TChocolate,
+  TChRosadas,
+  TCoco,
+  TColores,
+  TMani,
+} from '../components/Donuts_Toppings';
 
 class Home extends Component {
   constructor(props) {
@@ -51,6 +58,7 @@ class Home extends Component {
     this.onSelectedProduct = this.onSelectedProduct.bind(this);
     this.onSelectedItem = this.onSelectedItem.bind(this);
     this.HeaderBanner_OnBack = this.HeaderBanner_OnBack.bind(this);
+    this.CancelCustomization = this.CancelCustomization.bind(this);
   }
   static navigationOptions = {
     header: null,
@@ -103,16 +111,27 @@ class Home extends Component {
         console.error('Error customizing donut');
     }
   }
+  CancelCustomization() {
+    this.setState({
+      selectedProduct: '',
+      customizeDonut: false,
+      customizeStep: 0,
+      fillingDonut: '',
+      coverDonut: '',
+      toppingDonut: '',
+    });
+  }
   render() {
-    const Rellenos = [RChocolate, RArequipe, RChocolateB, RCPastelera];
-    const Cubiertas = [CChocolate, CArequipe, CChocolateB, CGlaseado];
-
+    const Rellenos = [RChocolate, RChocolateB, RArequipe, RCPastelera];
+    const Cubiertas = [CChocolate, CChocolateB, CArequipe, CGlaseado];
+    const Toppings = [TChocolate, TChRosadas, TCoco, TColores, TMani];
     const {
       customizeDonut,
       customizeStep,
       customizeSteps,
       fillingDonut,
       coverDonut,
+      toppingDonut,
       screen_height,
       screen_width,
       header_heigth,
@@ -120,6 +139,7 @@ class Home extends Component {
 
     const fillOfDonut = ({name}) => name == fillingDonut;
     const coverOfDonut = ({name}) => name == coverDonut;
+    const toppingOfDonut = ({name}) => name == toppingDonut;
     return (
       <SafeAreaView style={styles.area_container}>
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
@@ -150,6 +170,13 @@ class Home extends Component {
                   item_name={Cubiertas.filter(coverOfDonut)[0].name}
                 />
               )}
+              {customizeStep >= 4 && (
+                <Item_Box
+                  item={Toppings.filter(toppingOfDonut)[0].component}
+                  item_name={Toppings.filter(toppingOfDonut)[0].name}
+                />
+              )}
+
               {customizeStep == 1
                 ? Rellenos.map((Relleno, index) => {
                     return (
@@ -163,8 +190,8 @@ class Home extends Component {
                       />
                     );
                   })
-                : customizeStep == 2 &&
-                  Cubiertas.map((Cubierta, index) => {
+                : customizeStep == 2
+                ? Cubiertas.map((Cubierta, index) => {
                     return (
                       <Product_Box
                         onPress={() =>
@@ -175,7 +202,43 @@ class Home extends Component {
                         key={index}
                       />
                     );
-                  })}
+                  })
+                : customizeStep == 3
+                ? Toppings.map((Topping, index) => {
+                    return (
+                      <Product_Box
+                        onPress={() =>
+                          this.onSelectedItem(Topping.name, 'topping')
+                        }
+                        item={Topping.component}
+                        item_name={Topping.name}
+                        key={index}
+                      />
+                    );
+                  })
+                : customizeStep == 4 && (
+                    <View
+                      style={{
+                        position: 'relative',
+                        width: '90%',
+                        marginTop: '10%',
+                      }}>
+                      <Button
+                        title="Finalizar"
+                        button_style="primary"
+                        onPress={() => {
+                          this.FinishCustomization();
+                        }}
+                      />
+                      <Button
+                        title="Cancelar"
+                        button_style="simple"
+                        onPress={() => {
+                          this.CancelCustomization();
+                        }}
+                      />
+                    </View>
+                  )}
             </View>
           ) : (
             <View style={styles.products_container}>

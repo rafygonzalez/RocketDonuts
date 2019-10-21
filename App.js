@@ -25,6 +25,7 @@ const AppNavigator = createStackNavigator({
   Welcome: {
     screen: WelcomeScreen,
   },
+
   Login: {
     screen: LoginScreen,
   },

@@ -18,15 +18,15 @@ export const Glaseado = props => (
 );
 
 export const CChocolate = {
-  name: 'Cubierta de Chocolate',
+  name: 'Chocolate',
   component: Chocolate,
 };
 export const CArequipe = {
-  name: 'Cubierta de Arequipe',
+  name: 'Arequipe',
   component: Arequipe,
 };
 export const CChocolateB = {
-  name: 'Cubierta de Choc.Blanco',
+  name: 'Choc.Blanco',
   component: ChocolateB,
 };
 export const CGlaseado = {
