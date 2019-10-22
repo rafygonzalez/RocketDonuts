@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1073288557699",
+    "firebase_url": "https://rocketdonuts-ve.firebaseio.com",
+    "project_id": "rocketdonuts-ve",
+    "storage_bucket": "rocketdonuts-ve.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1073288557699:android:594781c7415627f684d7b6",
+        "android_client_info": {
+          "package_name": "com.rocketdonuts.rocketdonuts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1073288557699-ursk91gbv0lkgjbfa4p81b1ag4d5edj7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBx3JSr1L4-bK8VsDkiEuzqlDji6bAQa5M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1073288557699-ursk91gbv0lkgjbfa4p81b1ag4d5edj7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
