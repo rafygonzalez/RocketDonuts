@@ -20,12 +20,13 @@ import Loading from './src/screens/containers/Splash';
 import firebase from 'react-native-firebase';
 
 const AppNavigator = createStackNavigator({
-  Order: {
-    screen: OrderScreen,
-  },
   Home: {
     screen: HomeScreen,
   },
+  Order: {
+    screen: OrderScreen,
+  },
+
   Welcome: {
     screen: WelcomeScreen,
   },

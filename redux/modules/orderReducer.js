@@ -8,7 +8,17 @@ export default (state = initialState, action) => {
     case CUSTOM_DONUT: {
       return {
         ...state,
-        CustomDonut: action.payload,
+        order: [
+          ...state.order,
+          {
+            type: action.payload.type,
+            filling: action.payload.fillingDonut,
+            cover: action.payload.coverDonut,
+            topping: action.payload.toppingDonut,
+            name: action.payload.name,
+            quantity: action.payload.quantity,
+          },
+        ],
       };
     }
     default:

@@ -117,11 +117,19 @@ class Home extends Component {
         console.error('Error customizing donut');
     }
   }
-  FinishCustomization() {
+  FinishCustomization(type) {
     this.props.dispatch({
       type: 'CUSTOM_DONUT',
-      payload: `${this.state.coverDonut} ${this.state.toppingDonut}`,
+      payload: {
+        type: type,
+        fillingDonut: this.state.fillingDonut,
+        coverDonut: this.state.coverDonut,
+        toppingDonut: this.state.toppingDonut,
+        name: `${this.state.coverDonut} ${this.state.toppingDonut}`,
+        quantity: 1,
+      },
     });
+    this.props.navigation.navigate('Order');
   }
   CancelCustomization() {
     this.setState({
@@ -151,7 +159,7 @@ class Home extends Component {
     const fillOfDonut = ({name}) => name == fillingDonut;
     const coverOfDonut = ({name}) => name == coverDonut;
     const toppingOfDonut = ({name}) => name == toppingDonut;
-    console.log(this.props);
+
     return (
       <SafeAreaView style={styles.area_container}>
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
@@ -239,7 +247,7 @@ class Home extends Component {
                         title="Finalizar"
                         button_style="primary"
                         onPress={() => {
-                          this.FinishCustomization();
+                          this.FinishCustomization('Dona');
                         }}
                       />
                       <Button

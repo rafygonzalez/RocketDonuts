@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
 import HeaderBanner from '../../sections/components/Header_Banner';
-import Item_Box from '../components/Item_Box';
+import Item_Box_Order from '../components/Item_Box_Order';
 import Button from '../../ui/components/button';
 
 import {getDonut} from '../components/Donuts_List';
@@ -69,6 +69,17 @@ class Order extends Component {
               height={screen_height}
               preserveAspectRatio="xMidYMid meet"
             />
+          </View>
+          <View style={styles.products_container}>
+            {this.props.order.map((Donut, index) => {
+              return (
+                <Item_Box_Order
+                  item={getDonut(Donut.cover, Donut.topping)}
+                  item_name={`${Donut.type} x ${Donut.quantity}`}
+                  key={index}
+                />
+              );
+            })}
           </View>
           <View
             style={{

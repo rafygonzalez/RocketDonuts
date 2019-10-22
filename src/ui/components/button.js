@@ -29,6 +29,14 @@ const styles = StyleSheet.create({
     ...button_base,
     backgroundColor: '#EDEEF4',
   },
+  button_positive: {
+    ...button_base,
+    backgroundColor: '#34E64F',
+  },
+  button_negative: {
+    ...button_base,
+    backgroundColor: '#D9343A',
+  },
   text: {
     textAlign: 'center',
     fontFamily: 'Rockwell',
@@ -57,6 +65,10 @@ function CustomButton(props) {
           ? styles.button_facebook
           : props.button_style === 'google'
           ? styles.button_google
+          : props.button_style === 'positive'
+          ? styles.button_positive
+          : props.button_style === 'negative'
+          ? styles.button_negative
           : styles.button_simple,
         props.extra_style,
       ]}
@@ -66,7 +78,10 @@ function CustomButton(props) {
 
       <Text
         style={
-          props.button_style === 'primary' || props.button_style === 'facebook'
+          props.button_style === 'primary' ||
+          props.button_style === 'facebook' ||
+          props.button_style === 'positive' ||
+          props.button_style === 'negative'
             ? styles.text
             : styles.text_simple
         }>
