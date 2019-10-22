@@ -37,31 +37,20 @@ class Item_Box_Order extends Component {
     const Item = props.item;
     const {box_width, box_heigth, item_width, item_heigth} = this.state;
     return (
-      <View style={{marginHorizontal: '5%', flexDirection: 'row'}}>
-        <View
-          style={[styles.container, {width: box_width, height: box_heigth}]}>
-          <View style={styles.svgContainer}>
-            <Item width={item_width} height={item_heigth} />
-          </View>
-          <View style={styles.textContainer}>
-            <Text style={[styles.text, {fontSize: this.state.fontSize}]}>
-              {props.item_name}
-            </Text>
-          </View>
+      <View style={[styles.container, {width: box_width, height: box_heigth}]}>
+        <View style={styles.svgContainer}>
+          <Item width={item_width} height={item_heigth} />
         </View>
-        <View style={styles.buttons_container}>
-          <Button onPress={() => {}} title={`+`} button_style="positive" />
-          <Button onPress={() => {}} title={`-`} button_style="negative" />
+        <View style={styles.textContainer}>
+          <Text style={[styles.text, {fontSize: this.state.fontSize}]}>
+            {props.item_name}
+          </Text>
         </View>
       </View>
     );
   }
 }
 const styles = StyleSheet.create({
-  buttons_container: {
-    flex: 1,
-    flexDirection: 'row',
-  },
   container: {
     marginTop: 16,
     backgroundColor: '#48475B',

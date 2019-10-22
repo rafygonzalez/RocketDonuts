@@ -1,14 +1,84 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 
+class CustomButton extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      button_width: 0,
+      button_height: 0,
+      fontSize: 0,
+    };
+  }
+
+  getOrientation = () => {
+    var {width} = Dimensions.get('window');
+    var buttonw_calc = (76.81 * width) / 100;
+    this.setState({
+      button_width: buttonw_calc,
+      button_height: (13 * buttonw_calc) / 100,
+      fontSize: (5 * width) / 100,
+    });
+  };
+
+  componentDidMount() {
+    this.getOrientation();
+    Dimensions.addEventListener('change', () => {
+      this.getOrientation();
+    });
+  }
+
+  render() {
+    const {props} = this;
+    return (
+      <TouchableOpacity
+        style={[
+          props.button_style === 'primary'
+            ? styles.button
+            : props.button_style === 'facebook'
+            ? styles.button_facebook
+            : props.button_style === 'google'
+            ? styles.button_google
+            : props.button_style === 'positive'
+            ? styles.button_positive
+            : props.button_style === 'negative'
+            ? styles.button_negative
+            : styles.button_simple,
+          props.extra_style,
+          {maxHeight: this.state.button_height},
+        ]}
+        onPress={props.onPress}
+        underlayColor="#fff">
+        <View style={styles.leftIcon}>{props.left_icon}</View>
+
+        <Text
+          style={[
+            props.button_style === 'primary' ||
+            props.button_style === 'facebook' ||
+            props.button_style === 'positive' ||
+            props.button_style === 'negative'
+              ? styles.text
+              : styles.text_simple,
+            {fontSize: this.state.fontSize},
+          ]}>
+          {props.title}
+        </Text>
+      </TouchableOpacity>
+    );
+  }
+}
 const button_base = {
   borderRadius: 3,
-  width: '100%',
-  minHeight: 48,
-  maxHeight: 49,
   justifyContent: 'center',
   alignItems: 'center',
   flex: 1,
+  width: '100%',
   flexDirection: 'row',
 };
 
@@ -41,54 +111,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Rockwell',
     color: 'white',
-    fontSize: 18,
   },
   text_simple: {
     textAlign: 'center',
     fontFamily: 'Rockwell',
     color: 'black',
-    fontSize: 18,
   },
   leftIcon: {
     position: 'absolute',
     left: 32,
   },
 });
-
-function CustomButton(props) {
-  return (
-    <TouchableOpacity
-      style={[
-        props.button_style === 'primary'
-          ? styles.button
-          : props.button_style === 'facebook'
-          ? styles.button_facebook
-          : props.button_style === 'google'
-          ? styles.button_google
-          : props.button_style === 'positive'
-          ? styles.button_positive
-          : props.button_style === 'negative'
-          ? styles.button_negative
-          : styles.button_simple,
-        props.extra_style,
-      ]}
-      onPress={props.onPress}
-      underlayColor="#fff">
-      <View style={styles.leftIcon}>{props.left_icon}</View>
-
-      <Text
-        style={
-          props.button_style === 'primary' ||
-          props.button_style === 'facebook' ||
-          props.button_style === 'positive' ||
-          props.button_style === 'negative'
-            ? styles.text
-            : styles.text_simple
-        }>
-        {props.title}
-      </Text>
-    </TouchableOpacity>
-  );
-}
-
 export default CustomButton;
