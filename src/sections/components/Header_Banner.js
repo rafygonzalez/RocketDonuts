@@ -9,7 +9,7 @@ import {
 import BackArrowSvg from '../../../assets/svg/BackArrow.svg';
 import HeaderBannerSvg from '../../../assets/svg/Header_Banner.svg';
 import HeaderBannerWithTitle from '../../../assets/svg/Header_Banner_With_Title.svg';
-
+import HeaderBannerWithTitleOrder from '../../../assets/svg/Header_Banner_With_Title_Order.svg';
 class HeaderBanner extends React.Component {
   constructor(props) {
     super(props);
@@ -43,6 +43,13 @@ class HeaderBanner extends React.Component {
       <View>
         {props.withTitle ? (
           <HeaderBannerWithTitle
+            width={this.state.header_width}
+            height={this.state.header_heigth}
+            preserveAspectRatio="xMidYMid meet"
+            viewBox={'0 0 414 180'}
+          />
+        ) : props.withOrder ? (
+          <HeaderBannerWithTitleOrder
             width={this.state.header_width}
             height={this.state.header_heigth}
             preserveAspectRatio="xMidYMid meet"

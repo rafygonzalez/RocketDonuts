@@ -42,7 +42,6 @@ import {getDonut} from '../components/Donuts_List';
 
 //Redux
 import {connect} from 'react-redux';
-import * as orderActions from '../../../redux/actions/orderActions';
 
 class Home extends Component {
   constructor(props) {

@@ -14,11 +14,15 @@ import RegisterScreen from './src/screens/containers/Register';
 import RegisterWithEmail from './src/sections/containers/RegisterWithEmail';
 import SplashScreen from './src/screens/containers/Splash';
 import HomeScreen from './src/screens/containers/Home';
+import OrderScreen from './src/screens/containers/Order';
 //
 import Loading from './src/screens/containers/Splash';
 import firebase from 'react-native-firebase';
 
 const AppNavigator = createStackNavigator({
+  Order: {
+    screen: OrderScreen,
+  },
   Home: {
     screen: HomeScreen,
   },
