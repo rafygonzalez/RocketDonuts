@@ -38,6 +38,12 @@ import {
   TMani,
 } from '../components/Donuts_Toppings';
 
+import {getDonut} from '../components/Donuts_List';
+
+//Redux
+import {connect} from 'react-redux';
+import * as orderActions from '../../../redux/actions/orderActions';
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -58,6 +64,7 @@ class Home extends Component {
     this.onSelectedProduct = this.onSelectedProduct.bind(this);
     this.onSelectedItem = this.onSelectedItem.bind(this);
     this.HeaderBanner_OnBack = this.HeaderBanner_OnBack.bind(this);
+    this.FinishCustomization = this.FinishCustomization.bind(this);
     this.CancelCustomization = this.CancelCustomization.bind(this);
   }
   static navigationOptions = {
@@ -111,6 +118,12 @@ class Home extends Component {
         console.error('Error customizing donut');
     }
   }
+  FinishCustomization() {
+    this.props.dispatch({
+      type: 'CUSTOM_DONUT',
+      payload: `${this.state.coverDonut} ${this.state.toppingDonut}`,
+    });
+  }
   CancelCustomization() {
     this.setState({
       selectedProduct: '',
@@ -128,7 +141,6 @@ class Home extends Component {
     const {
       customizeDonut,
       customizeStep,
-      customizeSteps,
       fillingDonut,
       coverDonut,
       toppingDonut,
@@ -140,6 +152,7 @@ class Home extends Component {
     const fillOfDonut = ({name}) => name == fillingDonut;
     const coverOfDonut = ({name}) => name == coverDonut;
     const toppingOfDonut = ({name}) => name == toppingDonut;
+    console.log(this.props);
     return (
       <SafeAreaView style={styles.area_container}>
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
@@ -298,4 +311,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
 });
-export default Home;
+const mapStateToProps = reducers => {
+  return reducers.orderReducer;
+};
+export default connect(mapStateToProps)(Home);

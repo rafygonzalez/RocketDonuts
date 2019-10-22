@@ -28,7 +28,7 @@ import Dona_CAreq_TRosa from '../../../assets/svg/Donuts/Dona_CAreq_TRosa.svg';
 
 import Dona_Glaseado from '../../../assets/svg/Donuts/Dona_Glaseado.svg';
 
-export default function DonutsSVG(cubierta, topping) {
+export function getDonut(cubierta, topping) {
   const Dona = `${cubierta} ${topping}`;
   switch (Dona) {
     // Donas de Chocolate y Toppings
@@ -67,5 +67,7 @@ export default function DonutsSVG(cubierta, topping) {
     // Glaseada
     case `${CGlaseado.name}`:
       return Dona_Glaseado;
+    default:
+      return 'No hay una combinación disponible';
   }
 }
