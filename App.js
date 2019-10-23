@@ -15,6 +15,7 @@ import RegisterWithEmail from './src/sections/containers/RegisterWithEmail';
 import SplashScreen from './src/screens/containers/Splash';
 import HomeScreen from './src/screens/containers/Home';
 import OrderScreen from './src/screens/containers/Order';
+import CustomDonut from './src/screens/containers/CustomDonut';
 //
 import Loading from './src/screens/containers/Splash';
 import firebase from 'react-native-firebase';
@@ -22,6 +23,9 @@ import firebase from 'react-native-firebase';
 const AppNavigator = createStackNavigator({
   Home: {
     screen: HomeScreen,
+  },
+  CustomDonut: {
+    screen: CustomDonut,
   },
   Order: {
     screen: OrderScreen,

@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 const orderPersistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['order'],
+  blacklist: ['order'],
 };
 
 const reducer = combineReducers({
