@@ -31,6 +31,9 @@ class Item_Box extends Component {
       this.getOrientation();
     });
   }
+  componentWillUnmount() {
+    Dimensions.removeEventListener('change');
+  }
   render() {
     const {props} = this;
     const Item = props.item;

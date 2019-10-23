@@ -37,6 +37,9 @@ export class Product_Box extends React.Component {
       this.getOrientation();
     });
   }
+  componentWillUnmount() {
+    Dimensions.removeEventListener('change');
+  }
   render() {
     const {props} = this;
     const {box_width, box_heigth, item_width, item_heigth} = this.state;

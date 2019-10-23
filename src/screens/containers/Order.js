@@ -115,6 +115,9 @@ class Order extends Component {
       type: 'SET_ORDER',
       payload: {orderArray: orderArray},
     });
+    if (orderArray.length === 0) {
+      this.props.navigation.goBack();
+    }
   }
   HeaderBanner_OnBack() {}
   render() {
@@ -144,15 +147,27 @@ class Order extends Component {
               );
             })}
           </View>
+
           <View
             style={{
-              flex: 1,
-              position: 'relative',
+              flex: 2,
               justifyContent: 'flex-end',
               alignItems: 'center',
-              marginVertical: 8,
+              marginVertical: 16,
+              marginHorizontal: '9%',
+              width: '82%',
             }}>
-            <TouchableOpacity>
+            <Button
+              title="Realizar Pedido"
+              button_style="primary"
+              onPress={() => {}}
+            />
+            <Button
+              title="Cancelar Pedido"
+              button_style="simple"
+              onPress={() => {}}
+            />
+            <TouchableOpacity style={{marginTop: '5%'}}>
               <Text>Términos y condiciones | Ayuda</Text>
             </TouchableOpacity>
           </View>

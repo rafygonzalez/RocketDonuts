@@ -51,7 +51,10 @@ class CustomButton extends React.Component {
             ? styles.button_negative
             : styles.button_simple,
           props.extra_style,
-          {maxHeight: this.state.button_height},
+          {
+            maxHeight: this.state.button_height,
+            minHeight: this.state.button_height,
+          },
         ]}
         onPress={props.onPress}
         underlayColor="#fff">

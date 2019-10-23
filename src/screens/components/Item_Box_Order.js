@@ -32,6 +32,9 @@ class Item_Box_Order extends Component {
       this.getOrientation();
     });
   }
+  componentWillUnmount() {
+    Dimensions.removeEventListener('change');
+  }
   render() {
     const {props} = this;
     const Item = props.item;
