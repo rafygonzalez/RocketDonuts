@@ -7,6 +7,7 @@ import {
   Dimensions,
   Text,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
 import HeaderBanner from '../../sections/components/Header_Banner';
@@ -32,6 +33,7 @@ class Order extends Component {
     this.HeaderBanner_OnBack = this.HeaderBanner_OnBack.bind(this);
     this.DonutIncrement = this.DonutIncrement.bind(this);
     this.DonutDecrement = this.DonutDecrement.bind(this);
+    this.DeleteDonut = this.DeleteDonut.bind(this);
   }
   static navigationOptions = {
     header: null,
@@ -83,14 +85,40 @@ class Order extends Component {
       this.setState({order: orderArray});
       this.props.dispatch({
         type: 'SET_ORDER',
-        payload: orderArray,
+        payload: {orderArray: orderArray},
       });
+    } else {
+      Alert.alert(
+        `¿Deseas eliminar tu ${orderArray[index].type} personalizada?`,
+        `Si aceptas, puedes eliminar tu ${orderArray[index].type} y personalizar otra.`,
+        [
+          {
+            text: 'Cancel',
+            onPress: () => {},
+            style: 'cancel',
+          },
+          {text: 'OK', onPress: () => this.DeleteDonut(id)},
+        ],
+        {cancelable: false},
+      );
     }
+  }
+  DeleteDonut(id) {
+    const idDonut = id;
+    let orderArray = this.state.order;
+    const isDonut = ({id}) => id == idDonut;
+    const index = orderArray.findIndex(isDonut);
+    orderArray.splice(index, 1);
+    console.log(orderArray);
+    this.setState({order: orderArray});
+    this.props.dispatch({
+      type: 'SET_ORDER',
+      payload: {orderArray: orderArray},
+    });
   }
   HeaderBanner_OnBack() {}
   render() {
     const {screen_height, screen_width, header_heigth} = this.state;
-    console.log(this.state);
     return (
       <SafeAreaView style={styles.area_container}>
         <ScrollView contentContainerStyle={{flexGrow: 1}}>

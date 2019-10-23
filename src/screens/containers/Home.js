@@ -136,6 +136,14 @@ class Home extends Component {
         id: id,
       },
     });
+    this.setState({
+      selectedProduct: '',
+      customizeDonut: false,
+      customizeStep: 0,
+      fillingDonut: '',
+      coverDonut: '',
+      toppingDonut: '',
+    });
     this.props.navigation.navigate('Order');
   }
   CancelCustomization() {
