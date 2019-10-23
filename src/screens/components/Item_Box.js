@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
   textContainer: {
     justifyContent: 'center',
     marginLeft: '10%',
-    width: '100%',
   },
   text: {fontFamily: 'Rockwell', color: 'white', fontSize: 30},
 });

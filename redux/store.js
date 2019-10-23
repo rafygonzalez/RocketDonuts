@@ -1,21 +1,24 @@
 import {createStore} from 'redux';
 import {persistStore, persistReducer} from 'redux-persist';
-import reducer from './modules/index';
+import {combineReducers} from 'redux';
+import signReducer from './modules/signReducer';
+import orderReducer from './modules/orderReducer';
 import AsyncStorage from '@react-native-community/async-storage';
-// const store = createStore(reducer, {
-//   suggestionList: [],
-//   categoryList: [],
-// })
 
-const persistConfig = {
+const orderPersistConfig = {
   key: 'root',
   storage: AsyncStorage,
+  whitelist: [],
 };
 
-const persistedReducer = persistReducer(persistConfig, reducer);
+const reducer = combineReducers({
+  signReducer: persistReducer(orderPersistConfig, signReducer),
+  order: persistReducer(orderPersistConfig, orderReducer),
+});
+
 const initialState = {};
 
-const store = createStore(persistedReducer, initialState);
+const store = createStore(reducer, initialState);
 const persistor = persistStore(store);
 
 export {store, persistor};

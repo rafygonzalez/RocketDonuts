@@ -1,8 +1,11 @@
 export const CUSTOM_DONUT = 'CUSTOM_DONUT';
+export const SET_ORDER = 'SET_ORDER';
+export const NAVIGATION = 'NAVIGATION';
 const initialState = {
   order: [],
   CustomDonut: '',
 };
+
 export default (state = initialState, action) => {
   switch (action.type) {
     case CUSTOM_DONUT: {
@@ -17,9 +20,19 @@ export default (state = initialState, action) => {
             topping: action.payload.toppingDonut,
             name: action.payload.name,
             quantity: action.payload.quantity,
+            id: action.payload.id,
           },
         ],
       };
+    }
+    case SET_ORDER: {
+      return {
+        ...state,
+        order: action.payload.orderArray,
+      };
+    }
+    case 'NAVIGATION': {
+      return {...state, ...action.payload};
     }
     default:
       return state;

@@ -15,7 +15,7 @@ class Item_Box_Order extends Component {
   }
   getOrientation = () => {
     var {width} = Dimensions.get('window');
-    var boxw_calc = (68.36 * width) / 100;
+    var boxw_calc = (82.85 * width) / 100;
     var itemw_calc = (14.85 * boxw_calc) / 100;
     var fontS = (5.8 * width) / 100;
     this.setState({
@@ -36,6 +36,7 @@ class Item_Box_Order extends Component {
     const {props} = this;
     const Item = props.item;
     const {box_width, box_heigth, item_width, item_heigth} = this.state;
+
     return (
       <View style={[styles.container, {width: box_width, height: box_heigth}]}>
         <View style={styles.svgContainer}>
@@ -46,6 +47,17 @@ class Item_Box_Order extends Component {
             {props.item_name}
           </Text>
         </View>
+        <Button
+          title="+"
+          button_style="positive"
+          extra_style={{marginHorizontal: '2%'}}
+          onPress={() => this.props.DonutIncrement(this.props.id)}
+        />
+        <Button
+          title="-"
+          button_style="negative"
+          onPress={() => this.props.DonutDecrement(this.props.id)}
+        />
       </View>
     );
   }
@@ -61,8 +73,7 @@ const styles = StyleSheet.create({
   svgContainer: {justifyContent: 'center', alignItems: 'center'},
   textContainer: {
     justifyContent: 'center',
-    marginLeft: '10%',
-    width: '100%',
+    marginHorizontal: '10%',
   },
   text: {fontFamily: 'Rockwell', color: 'white', fontSize: 30},
 });

@@ -47,7 +47,6 @@ class RegisterWithEmail extends React.Component {
     this.setState({[name]: value});
   }
   NextStep() {
-    console.log(this.state);
     this.setState({step: this.state.step + 1});
   }
   PreviousStep() {

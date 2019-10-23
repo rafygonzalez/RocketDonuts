@@ -91,6 +91,9 @@ class Home extends Component {
       this.getOrientation();
     });
   }
+  componentWillUnmount() {
+    Dimensions.removeEventListener('change');
+  }
   onSelectedProduct(name) {
     this.setState({
       selectedProduct: name,
@@ -118,6 +121,9 @@ class Home extends Component {
     }
   }
   FinishCustomization(type) {
+    let id = Math.random()
+      .toString(36)
+      .substring(7);
     this.props.dispatch({
       type: 'CUSTOM_DONUT',
       payload: {
@@ -127,6 +133,7 @@ class Home extends Component {
         toppingDonut: this.state.toppingDonut,
         name: `${this.state.coverDonut} ${this.state.toppingDonut}`,
         quantity: 1,
+        id: id,
       },
     });
     this.props.navigation.navigate('Order');
@@ -176,89 +183,92 @@ class Home extends Component {
             />
           </View>
           {customizeDonut ? (
-            <View style={styles.products_container}>
-              <Item_Box item={DonaSola} item_name={'Dona'} />
-              {customizeStep >= 2 && (
-                <Item_Box
-                  item={Rellenos.filter(fillOfDonut)[0].component}
-                  item_name={Rellenos.filter(fillOfDonut)[0].name}
-                />
-              )}
-              {customizeStep >= 3 && (
-                <Item_Box
-                  item={Cubiertas.filter(coverOfDonut)[0].component}
-                  item_name={Cubiertas.filter(coverOfDonut)[0].name}
-                />
-              )}
-              {customizeStep >= 4 && (
-                <Item_Box
-                  item={Toppings.filter(toppingOfDonut)[0].component}
-                  item_name={Toppings.filter(toppingOfDonut)[0].name}
-                />
-              )}
-
-              {customizeStep == 1
-                ? Rellenos.map((Relleno, index) => {
-                    return (
-                      <Product_Box
-                        onPress={() =>
-                          this.onSelectedItem(Relleno.name, 'filling')
-                        }
-                        item={Relleno.component}
-                        item_name={Relleno.name}
-                        key={index}
-                      />
-                    );
-                  })
-                : customizeStep == 2
-                ? Cubiertas.map((Cubierta, index) => {
-                    return (
-                      <Product_Box
-                        onPress={() =>
-                          this.onSelectedItem(Cubierta.name, 'cover')
-                        }
-                        item={Cubierta.component}
-                        item_name={Cubierta.name}
-                        key={index}
-                      />
-                    );
-                  })
-                : customizeStep == 3
-                ? Toppings.map((Topping, index) => {
-                    return (
-                      <Product_Box
-                        onPress={() =>
-                          this.onSelectedItem(Topping.name, 'topping')
-                        }
-                        item={Topping.component}
-                        item_name={Topping.name}
-                        key={index}
-                      />
-                    );
-                  })
-                : customizeStep == 4 && (
-                    <View
-                      style={{
-                        position: 'relative',
-                        width: '90%',
-                        marginTop: '10%',
-                      }}>
-                      <Button
-                        title="Finalizar"
-                        button_style="primary"
-                        onPress={() => {
-                          this.FinishCustomization('Dona');
-                        }}
-                      />
-                      <Button
-                        title="Cancelar"
-                        button_style="simple"
-                        onPress={() => {
-                          this.CancelCustomization();
-                        }}
-                      />
-                    </View>
-                  )}
+            <View>
+              <View style={styles.item_box_container}>
+                <Item_Box item={DonaSola} item_name={'Dona'} />
+                {customizeStep >= 2 && (
+                  <Item_Box
+                    item={Rellenos.filter(fillOfDonut)[0].component}
+                    item_name={Rellenos.filter(fillOfDonut)[0].name}
+                  />
+                )}
+                {customizeStep >= 3 && (
+                  <Item_Box
+                    item={Cubiertas.filter(coverOfDonut)[0].component}
+                    item_name={Cubiertas.filter(coverOfDonut)[0].name}
+                  />
+                )}
+                {customizeStep >= 4 && (
+                  <Item_Box
+                    item={Toppings.filter(toppingOfDonut)[0].component}
+                    item_name={Toppings.filter(toppingOfDonut)[0].name}
+                  />
+                )}
+              </View>
+              <View style={styles.products_container}>
+                {customizeStep == 1
+                  ? Rellenos.map((Relleno, index) => {
+                      return (
+                        <Product_Box
+                          onPress={() =>
+                            this.onSelectedItem(Relleno.name, 'filling')
+                          }
+                          item={Relleno.component}
+                          item_name={Relleno.name}
+                          key={index}
+                        />
+                      );
+                    })
+                  : customizeStep == 2
+                  ? Cubiertas.map((Cubierta, index) => {
+                      return (
+                        <Product_Box
+                          onPress={() =>
+                            this.onSelectedItem(Cubierta.name, 'cover')
+                          }
+                          item={Cubierta.component}
+                          item_name={Cubierta.name}
+                          key={index}
+                        />
+                      );
+                    })
+                  : customizeStep == 3
+                  ? Toppings.map((Topping, index) => {
+                      return (
+                        <Product_Box
+                          onPress={() =>
+                            this.onSelectedItem(Topping.name, 'topping')
+                          }
+                          item={Topping.component}
+                          item_name={Topping.name}
+                          key={index}
+                        />
+                      );
+                    })
+                  : customizeStep == 4 && (
+                      <View
+                        style={{
+                          position: 'relative',
+                          width: '90%',
+                          marginTop: '10%',
+                        }}>
+                        <Button
+                          title="Finalizar"
+                          button_style="primary"
+                          onPress={() => {
+                            this.FinishCustomization('Dona');
+                          }}
+                        />
+                        <Button
+                          title="Cancelar"
+                          button_style="simple"
+                          onPress={() => {
+                            this.CancelCustomization();
+                          }}
+                        />
+                      </View>
+                    )}
+              </View>
             </View>
           ) : (
             <View style={styles.products_container}>
@@ -298,6 +308,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ECEDF2',
   },
+  item_box_container: {
+    marginVertical: 8,
+    marginHorizontal: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'stretch',
+  },
   products_container: {
     flexWrap: 'wrap',
     flexDirection: 'row',
@@ -319,6 +336,6 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = reducers => {
-  return reducers.orderReducer;
+  return reducers.order;
 };
 export default connect(mapStateToProps)(Home);

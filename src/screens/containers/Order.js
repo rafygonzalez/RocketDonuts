@@ -27,8 +27,11 @@ class Order extends Component {
       header_heigth: 0,
       screen_width: 0,
       screen_height: 0,
+      order: this.props.order,
     };
     this.HeaderBanner_OnBack = this.HeaderBanner_OnBack.bind(this);
+    this.DonutIncrement = this.DonutIncrement.bind(this);
+    this.DonutDecrement = this.DonutDecrement.bind(this);
   }
   static navigationOptions = {
     header: null,
@@ -55,10 +58,39 @@ class Order extends Component {
       this.getOrientation();
     });
   }
+  componentWillUnmount() {
+    Dimensions.removeEventListener('change');
+  }
+  DonutIncrement(id) {
+    const idDonut = id;
+    let orderArray = this.state.order;
+    const isDonut = ({id}) => id == idDonut;
+    const index = orderArray.findIndex(isDonut);
+    orderArray[index].quantity += 1;
+    this.setState({order: orderArray});
+    this.props.dispatch({
+      type: 'SET_ORDER',
+      payload: {orderArray: orderArray},
+    });
+  }
+  DonutDecrement(id) {
+    const idDonut = id;
+    let orderArray = this.state.order;
+    const isDonut = ({id}) => id == idDonut;
+    const index = orderArray.findIndex(isDonut);
+    if (orderArray[index].quantity > 1) {
+      orderArray[index].quantity -= 1;
+      this.setState({order: orderArray});
+      this.props.dispatch({
+        type: 'SET_ORDER',
+        payload: orderArray,
+      });
+    }
+  }
   HeaderBanner_OnBack() {}
   render() {
     const {screen_height, screen_width, header_heigth} = this.state;
-    console.log(this.props);
+    console.log(this.state);
     return (
       <SafeAreaView style={styles.area_container}>
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
@@ -71,12 +103,15 @@ class Order extends Component {
             />
           </View>
           <View style={styles.products_container}>
-            {this.props.order.map((Donut, index) => {
+            {this.state.order.map((Donut, index) => {
               return (
                 <Item_Box_Order
                   item={getDonut(Donut.cover, Donut.topping)}
                   item_name={`${Donut.type} x ${Donut.quantity}`}
                   key={index}
+                  id={Donut.id}
+                  DonutIncrement={this.DonutIncrement}
+                  DonutDecrement={this.DonutDecrement}
                 />
               );
             })}
@@ -105,7 +140,6 @@ const styles = StyleSheet.create({
   },
   products_container: {
     flexWrap: 'wrap',
-    flexDirection: 'row',
     marginVertical: 8,
     marginHorizontal: 8,
     justifyContent: 'center',
@@ -124,6 +158,6 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = reducers => {
-  return reducers.orderReducer;
+  return reducers.order;
 };
 export default connect(mapStateToProps)(Order);
