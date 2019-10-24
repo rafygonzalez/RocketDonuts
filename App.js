@@ -22,12 +22,13 @@ import Loading from './src/screens/containers/Splash';
 import firebase from 'react-native-firebase';
 
 const AppNavigator = createStackNavigator({
-  ShoppingCart: {
-    screen: ShoppingCart,
-  },
   Home: {
     screen: HomeScreen,
   },
+  ShoppingCart: {
+    screen: ShoppingCart,
+  },
+
   CustomDonut: {
     screen: CustomDonut,
   },

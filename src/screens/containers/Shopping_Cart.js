@@ -21,6 +21,8 @@ import {Dona, Rosquilla} from '../components/Products';
 //Redux
 import {connect} from 'react-redux';
 
+import Layout from '../components/Layout';
+
 class ShoppingCart extends Component {
   constructor(props) {
     super(props);
@@ -89,25 +91,32 @@ class ShoppingCart extends Component {
           </View>
           <View
             style={{
-              top: '5%',
+              marginTop: '5%',
               justifyContent: 'center',
               alignItems: 'center',
             }}>
             <View style={styles.order_container}>
-              <OrderDetail
-                item={Dona}
-                item_name={'Dona x 2'}
-                description="Rellena con chocolate, cubierta de chocolate y topping de lluvia de colores"
-              />
-              <View
-                style={{
-                  width: '90%',
-                  borderBottomColor: 'gray',
-                  borderBottomWidth: 1,
-                  marginVertical: '3%',
-                  marginHorizontal: '5%',
-                }}
-              />
+              {this.props.order.map((Item, index) => {
+                return (
+                  <Layout>
+                    <OrderDetail
+                      item={getDonut(Item.cover, Item.topping)}
+                      item_name={`${Item.type} x ${Item.quantity}`}
+                      description={`Rellena con ${Item.filling}, Cubierta de ${Item.cover} y Topping de ${Item.topping} `}
+                      key={index}
+                    />
+                    <View
+                      style={{
+                        width: '100%',
+                        borderBottomColor: 'gray',
+                        borderBottomWidth: 0.5,
+                        marginVertical: '5%',
+                      }}
+                    />
+                  </Layout>
+                );
+              })}
+
               <View
                 style={{
                   justifyContent: 'flex-end',
