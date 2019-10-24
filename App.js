@@ -16,11 +16,15 @@ import SplashScreen from './src/screens/containers/Splash';
 import HomeScreen from './src/screens/containers/Home';
 import OrderScreen from './src/screens/containers/Order';
 import CustomDonut from './src/screens/containers/CustomDonut';
+import ShoppingCart from './src/screens/containers/Shopping_Cart';
 //
 import Loading from './src/screens/containers/Splash';
 import firebase from 'react-native-firebase';
 
 const AppNavigator = createStackNavigator({
+  ShoppingCart: {
+    screen: ShoppingCart,
+  },
   Home: {
     screen: HomeScreen,
   },
@@ -34,7 +38,6 @@ const AppNavigator = createStackNavigator({
   Welcome: {
     screen: WelcomeScreen,
   },
-
   Login: {
     screen: LoginScreen,
   },

@@ -40,6 +40,7 @@ class Order extends Component {
     this.DeleteDonut = this.DeleteDonut.bind(this);
     this.DeleteOrder = this.DeleteOrder.bind(this);
     this.MakeAnOrder = this.MakeAnOrder.bind(this);
+    this.gotoShoppingCart = this.gotoShoppingCart.bind(this);
   }
   static navigationOptions = {
     header: null,
@@ -76,6 +77,13 @@ class Order extends Component {
     Dimensions.removeEventListener('change');
     BackHandler.removeEventListener('hardwareBackPress');
   }
+  gotoShoppingCart() {
+    this.props.dispatch({
+      type: 'SET_ORDER',
+      payload: {orderArray: this.state.order},
+    });
+    this.props.navigation.navigate('ShoppingCart');
+  }
   DonutIncrement(id) {
     const idDonut = id;
     let orderArray = this.state.order;
@@ -87,8 +95,6 @@ class Order extends Component {
       type: 'SET_ORDER',
       payload: {orderArray: orderArray},
     });
-    console.log('OrderProp', this.props.order);
-    console.log('OrderState', this.props.order);
   }
   DonutDecrement(id) {
     const idDonut = id;
@@ -233,7 +239,9 @@ class Order extends Component {
             <Button
               title="Continuar"
               button_style="primary"
-              onPress={() => {}}
+              onPress={() => {
+                this.gotoShoppingCart();
+              }}
             />
             <Button
               title="Cancelar Pedido"
