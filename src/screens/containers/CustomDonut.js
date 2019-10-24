@@ -199,69 +199,111 @@ class CustomDonut extends Component {
                 />
               )}
             </View>
-            <View style={styles.products_container}>
-              {customizeStep == 1
-                ? Rellenos.map((Relleno, index) => {
-                    return (
-                      <Product_Box
-                        onPress={() =>
-                          this.onSelectedItem(Relleno.name, 'filling')
-                        }
-                        item={Relleno.component}
-                        item_name={Relleno.name}
-                        key={index}
-                      />
-                    );
-                  })
-                : customizeStep == 2
-                ? Cubiertas.map((Cubierta, index) => {
-                    return (
-                      <Product_Box
-                        onPress={() =>
-                          this.onSelectedItem(Cubierta.name, 'cover')
-                        }
-                        item={Cubierta.component}
-                        item_name={Cubierta.name}
-                        key={index}
-                      />
-                    );
-                  })
-                : customizeStep == 3
-                ? Toppings.map((Topping, index) => {
-                    return (
-                      <Product_Box
-                        onPress={() =>
-                          this.onSelectedItem(Topping.name, 'topping')
-                        }
-                        item={Topping.component}
-                        item_name={Topping.name}
-                        key={index}
-                      />
-                    );
-                  })
-                : customizeStep == 4 && (
-                    <View
-                      style={{
-                        position: 'relative',
-                        width: '90%',
-                        marginTop: '10%',
-                      }}>
-                      <Button
-                        title="Finalizar"
-                        button_style="primary"
-                        onPress={() => {
-                          this.FinishCustomization('Dona');
-                        }}
-                      />
-                      <Button
-                        title="Cancelar"
-                        button_style="simple"
-                        onPress={() => {
-                          this.CancelCustomization();
-                        }}
-                      />
-                    </View>
-                  )}
+            <View>
+              {customizeStep == 1 ? (
+                <View>
+                  <View style={styles.title_container_add_more}>
+                    <Text
+                      style={[
+                        styles.title_add_more,
+                        {fontSize: this.state.title_add_more_fontsize},
+                      ]}>
+                      Elige un relleno
+                    </Text>
+                  </View>
+                  <View style={styles.products_container}>
+                    {Rellenos.map((Relleno, index) => {
+                      return (
+                        <Product_Box
+                          onPress={() =>
+                            this.onSelectedItem(Relleno.name, 'filling')
+                          }
+                          item={Relleno.component}
+                          item_name={Relleno.name}
+                          key={index}
+                        />
+                      );
+                    })}
+                  </View>
+                </View>
+              ) : customizeStep == 2 ? (
+                <View>
+                  <View style={styles.title_container_add_more}>
+                    <Text
+                      style={[
+                        styles.title_add_more,
+                        {fontSize: this.state.title_add_more_fontsize},
+                      ]}>
+                      Elige una cubierta
+                    </Text>
+                  </View>
+                  <View style={styles.products_container}>
+                    {Cubiertas.map((Cubierta, index) => {
+                      return (
+                        <Product_Box
+                          onPress={() =>
+                            this.onSelectedItem(Cubierta.name, 'cover')
+                          }
+                          item={Cubierta.component}
+                          item_name={Cubierta.name}
+                          key={index}
+                        />
+                      );
+                    })}
+                  </View>
+                </View>
+              ) : customizeStep == 3 ? (
+                <View>
+                  <View style={styles.title_container_add_more}>
+                    <Text
+                      style={[
+                        styles.title_add_more,
+                        {fontSize: this.state.title_add_more_fontsize},
+                      ]}>
+                      Elige un Topping
+                    </Text>
+                  </View>
+                  <View style={styles.products_container}>
+                    {Toppings.map((Topping, index) => {
+                      return (
+                        <Product_Box
+                          onPress={() =>
+                            this.onSelectedItem(Topping.name, 'topping')
+                          }
+                          item={Topping.component}
+                          item_name={Topping.name}
+                          key={index}
+                        />
+                      );
+                    })}
+                  </View>
+                </View>
+              ) : (
+                customizeStep == 4 && (
+                  <View
+                    style={{
+                      position: 'relative',
+                      width: '90%',
+                      marginTop: '2%',
+                      marginHorizontal: '5%',
+                    }}>
+                    <Button
+                      title="Finalizar"
+                      button_style="primary"
+                      onPress={() => {
+                        this.FinishCustomization('Dona');
+                      }}
+                    />
+                    <Button
+                      title="Cancelar"
+                      button_style="simple"
+                      onPress={() => {
+                        this.CancelCustomization();
+                      }}
+                    />
+                  </View>
+                )
+              )}
             </View>
           </View>
           <View
@@ -282,6 +324,13 @@ class CustomDonut extends Component {
   }
 }
 const styles = StyleSheet.create({
+  title_add_more: {
+    fontFamily: 'Rockwell',
+  },
+  title_container_add_more: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   area_container: {
     flex: 1,
     backgroundColor: '#ECEDF2',
