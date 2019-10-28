@@ -46,7 +46,6 @@ export default First_part_of_register = props => (
             />
           </View>
         </View>
-
         <TextInput
           title="Correo Electrónico"
           onChangeText={text => props.Global_OnChange(text, 'email')}

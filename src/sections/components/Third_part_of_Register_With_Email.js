@@ -25,7 +25,7 @@ export default Third_part_of_register = props => (
 
           <View style={props.styles.box}>
             <Button
-              onPress={() => {}}
+              onPress={() => props.phoneNumberSendCode()}
               title={`Enviar Codigo`}
               button_style="simple"
               extra_style={props.styles.button_verification_code}

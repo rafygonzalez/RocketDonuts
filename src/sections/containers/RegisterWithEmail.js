@@ -1,9 +1,12 @@
 import React from 'react';
-import {StyleSheet, Dimensions, View} from 'react-native';
+import {StyleSheet, Dimensions, View, Alert} from 'react-native';
 import First_part_of_register from '../components/First_part_of_Register_With_Email';
 import Second_part_of_register from '../components/Second_part_of_Register_With_Email';
 import Third_part_of_register from '../components/Third_part_of_Register_With_Email';
 import Register_finished from '../components/Register_Finished';
+import validator from 'validator';
+import firebase from 'react-native-firebase';
+import API from '../../firebase/api';
 var {width} = Dimensions.get('window');
 var box_count = 2.2;
 var box_width = width / box_count;
@@ -27,12 +30,16 @@ class RegisterWithEmail extends React.Component {
       userid: '',
       step: 1,
       steps: 3,
+      confirmResult: null,
     };
     this.Global_OnChange = this.Global_OnChange.bind(this);
     this.pickerOnChangeValue = this.pickerOnChangeValue.bind(this);
     this.NextStep = this.NextStep.bind(this);
     this.PreviousStep = this.PreviousStep.bind(this);
     this.setBirthDate = this.setBirthDate.bind(this);
+
+    this.phoneNumberValidate = this.phoneNumberValidate.bind(this);
+    this.phoneNumberSendCode = this.phoneNumberSendCode.bind(this);
   }
   static navigationOptions = {
     header: null,
@@ -47,10 +54,114 @@ class RegisterWithEmail extends React.Component {
     this.setState({[name]: value});
   }
   NextStep() {
-    this.setState({step: this.state.step + 1});
+    const {
+      name,
+      lastname,
+      email,
+      password,
+      repassword,
+      birthDate,
+      phoneNumber,
+      country,
+      state,
+      city,
+    } = this.state;
+    switch (this.state.step) {
+      case 1:
+        if (validator.isEmpty(name) && validator.isEmpty(lastname)) {
+          Alert.alert(
+            `Campos Vacios`,
+            `Debes llenar el formulario para poder continuar`,
+            [{text: 'OK', onPress: () => {}}],
+            {cancelable: false},
+          );
+        } else if (!validator.isEmail(email)) {
+          Alert.alert(
+            `Correo Electrónico`,
+            `Debes ingresar un correo electrónico valido, por ejemplo: example@gmail.com`,
+            [{text: 'OK', onPress: () => {}}],
+            {cancelable: false},
+          );
+        } else if (!password == repassword || password.length < 6) {
+          Alert.alert(
+            `Las contraseñas no coinciden`,
+            `Deben coincidir y tener al menos 6 dígitos`,
+            [{text: 'OK', onPress: () => {}}],
+            {cancelable: false},
+          );
+        } else {
+          this.setState({step: this.state.step + 1});
+        }
+        break;
+      case 2:
+        if (validator.isEmpty(birthDate)) {
+          Alert.alert(
+            `Fecha de nacimiento`,
+            `Selecciona tu fecha de nacimiento correctamente`,
+            [{text: 'OK', onPress: () => {}}],
+            {cancelable: false},
+          );
+        } else {
+          this.setState({step: this.state.step + 1});
+        }
+        break;
+      case 3:
+        if (validator.isEmpty(phoneNumber)) {
+          Alert.alert(
+            `Número de teléfono`,
+            `Ingresa tu número de teléfono de esta forma, el repartidor podrá comunicarse contigo`,
+            [{text: 'OK', onPress: () => {}}],
+            {cancelable: false},
+          );
+        } else if (
+          !validator.isNumeric(phoneNumber) ||
+          phoneNumber.length < 10
+        ) {
+          Alert.alert(
+            `Número de teléfono`,
+            `Solo se puede ingresar un numero telefónico correcto`,
+            [{text: 'OK', onPress: () => {}}],
+            {cancelable: false},
+          );
+        } else {
+          API.createUser(
+            email,
+            password,
+            name,
+            lastname,
+            birthDate,
+            country,
+            state,
+            city,
+            phoneNumber,
+          );
+          //this.phoneNumberValidate();
+        }
+        break;
+    }
   }
   PreviousStep() {
     this.setState({step: this.state.step - 1});
+  }
+  phoneNumberSendCode() {
+    firebase
+      .auth()
+      .signInWithPhoneNumber(this.state.phoneNumber)
+      .then(confirmResult => {
+        this.setState({confirmResult});
+        console.log('Code Sended');
+      })
+      .catch(error => console.log(error.message));
+  }
+  phoneNumberValidate() {
+    this.state.confirmResult
+      .confirm(this.state.verificationCode)
+      .then(user => {
+        this.setState({message: 'Code Confirmed!'});
+      })
+      .catch(error => {
+        console.log('Error');
+      });
   }
   render() {
     const {
@@ -107,6 +218,7 @@ class RegisterWithEmail extends React.Component {
             NextStep={this.NextStep}
             step={step}
             steps={steps}
+            phoneNumberSendCode={this.phoneNumberSendCode}
           />
         ) : (
           step == 4 && <Register_finished styles={styles} />

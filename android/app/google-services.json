@@ -8,12 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1073288557699:android:594781c7415627f684d7b6",
+        "mobilesdk_app_id": "1:1073288557699:android:a2887fa12c6302d984d7b6",
         "android_client_info": {
           "package_name": "com.rocketdonuts.rocketdonuts"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1073288557699-4ogvdilf3slhhm7o4f15ltiugcis3k05.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rocketdonuts.rocketdonuts",
+            "certificate_hash": "2356589836f096b932cd93d424ecdef6c46ad986"
+          }
+        },
         {
           "client_id": "1073288557699-ursk91gbv0lkgjbfa4p81b1ag4d5edj7.apps.googleusercontent.com",
           "client_type": 3

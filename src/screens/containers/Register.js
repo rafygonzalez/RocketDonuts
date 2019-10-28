@@ -19,10 +19,9 @@ class Register extends React.Component {
           <Logo width={244} height={84} />
           <AstronautaConfundido width={156} height={115} />
           <Text style={styles.description}>
-            No se preocupe, no compartimos su información de contacto. Al tocar
-            Continuar con Facebook, Continuar con Google o registrarse con el
-            correo electrónico, acepta los términos de uso y la Política de
-            privacidad
+            No se preocupe, no compartimos su información al tocar Continuar con
+            Facebook, Continuar con Google o registrarse con el correo
+            electrónico.
           </Text>
           <CustomButton
             title="Continuar con Facebook"
