@@ -76,7 +76,7 @@ class Api {
                   iOS: {
                     bundleId: undefined,
                   },
-                  url: 'rocketdonuts/email-verification',
+                  url: 'https://rocketdonut.page.link/email-verification',
                 })
                 .then(() => {
                   console.log('Email Verification Sent!');

@@ -36,6 +36,7 @@ const AppNavigator = createStackNavigator({
   },
   RegisterWithEmail: {
     screen: RegisterWithEmail,
+    path: 'email-verification',
   },
   Home: {
     screen: HomeScreen,
@@ -73,7 +74,7 @@ export default class App extends React.Component {
     return (
       <Provider store={store}>
         <PersistGate loading={<Loading />} persistor={persistor}>
-          <AppContainer />
+          <AppContainer uriPrefix={'rocketdonuts://'} />
         </PersistGate>
       </Provider>
     );
