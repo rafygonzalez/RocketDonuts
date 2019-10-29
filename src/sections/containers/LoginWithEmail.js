@@ -29,6 +29,7 @@ class LoginWithEmail extends React.Component {
     this.phoneNumberSendCode = this.phoneNumberSendCode.bind(this);
     this.Login = this.Login.bind(this);
     this.currentUser = this.currentUser.bind(this);
+    this.GoTo = this.GoTo.bind(this);
   }
   static navigationOptions = {
     header: null,
@@ -63,26 +64,26 @@ class LoginWithEmail extends React.Component {
   }
   Login() {
     const db = firestore();
+    const {GoTo} = this;
     this.phoneNumberValidate()
       .then(user => {
         this.currentUser().then(user => {
-          console.log(user.uid);
           var docRef = db.collection('Users').doc(user.uid);
           docRef
             .get()
             .then(function(doc) {
               if (doc.data() === undefined) {
+                auth().signOut();
+                console.log('Mandarlo a registrar');
                 // Mandar a registrarlo, por que no lo esta...
               } else {
                 // Redirigir
-                //  this.props.navigation.navigate('Home');
+                GoTo('Home');
               }
             })
             .catch(error => {
               console.log(error);
             });
-
-          auth().signOut();
         });
       })
       .catch(error => {
@@ -93,6 +94,9 @@ class LoginWithEmail extends React.Component {
           {cancelable: false},
         );
       });
+  }
+  GoTo(to) {
+    this.props.navigation.navigate(to);
   }
   async phoneNumberValidate() {
     await this.state.confirmResult.confirm(`${this.state.verificationCode}`);
