@@ -150,7 +150,6 @@ class RegisterWithEmail extends React.Component {
                 [{text: 'OK', onPress: () => {}}],
                 {cancelable: false},
               );
-              return false;
             });
         }
         break;
@@ -181,14 +180,13 @@ class RegisterWithEmail extends React.Component {
         );
       });
   }
+  async phoneNumberValidate() {
+    await this.state.confirmResult.confirm(`${this.state.verificationCode}`);
+  }
   GoToHome() {
     this.props.navigation.navigate('Home');
   }
-  async phoneNumberValidate() {
-    console.log(this.state.verificationCode);
-    console.log('confirmResult', this.state.confirmResult);
-    await this.state.confirmResult.confirm(`${this.state.verificationCode}`);
-  }
+
   render() {
     const {
       name,

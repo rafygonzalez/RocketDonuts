@@ -22,7 +22,7 @@ class CustomButton extends React.Component {
     var buttonw_calc = (76.81 * width) / 100;
     this.setState({
       button_width: buttonw_calc,
-      button_height: (14 * buttonw_calc) / 100,
+      button_height: (16 * buttonw_calc) / 100,
       fontSize: (5 * width) / 100,
     });
   };

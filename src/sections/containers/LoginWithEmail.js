@@ -1,18 +1,34 @@
 import React from 'react';
-import {SafeAreaView, View, Text, ScrollView, StyleSheet} from 'react-native';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  Dimensions,
+  Alert,
+} from 'react-native';
 import HeaderBanner from '../components/Header_Banner';
 import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
 import TextInput from '../../ui/components/TextInput';
 import Button from '../../ui/components/button';
+import {auth, firestore} from 'react-native-firebase';
+var {width} = Dimensions.get('window');
+var box_count = 2.2;
+var box_width = width / box_count;
 class LoginWithEmail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
+      phoneNumber: '',
+      verificationCode: '',
     };
 
     this.Global_OnChange = this.Global_OnChange.bind(this);
+    this.phoneNumberValidate = this.phoneNumberValidate.bind(this);
+    this.phoneNumberSendCode = this.phoneNumberSendCode.bind(this);
+    this.Login = this.Login.bind(this);
+    this.currentUser = this.currentUser.bind(this);
   }
   static navigationOptions = {
     header: null,
@@ -21,8 +37,67 @@ class LoginWithEmail extends React.Component {
   Global_OnChange(value, name) {
     this.setState({[name]: value});
   }
+  phoneNumberSendCode() {
+    auth()
+      .signInWithPhoneNumber(this.state.phoneNumber)
+      .then(confirmResult => {
+        this.setState({confirmResult});
+        Alert.alert(
+          `Código de Verificación`,
+          `Hemos enviado un código de verificación a tu número telefónico`,
+          [{text: 'OK', onPress: () => {}}],
+          {cancelable: false},
+        );
+      })
+      .catch(error => {
+        Alert.alert(
+          `Código de Verificación`,
+          `Tenemos un error, ${error}.`,
+          [{text: 'OK', onPress: () => {}}],
+          {cancelable: false},
+        );
+      });
+  }
+  async currentUser() {
+    return await auth().currentUser;
+  }
+  Login() {
+    const db = firestore();
+    this.phoneNumberValidate()
+      .then(user => {
+        this.currentUser().then(user => {
+          console.log(user.uid);
+          var docRef = db.collection('Users').doc(user.uid);
+          docRef
+            .get()
+            .then(function(doc) {
+              if (doc.data() === undefined) {
+                // Mandar a registrarlo, por que no lo esta...
+              } else {
+                // Redirigir
+                //  this.props.navigation.navigate('Home');
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            });
+
+          auth().signOut();
+        });
+      })
+      .catch(error => {
+        Alert.alert(
+          `Código de Verificación`,
+          `Tenemos un error, ${error}`,
+          [{text: 'OK', onPress: () => {}}],
+          {cancelable: false},
+        );
+      });
+  }
+  async phoneNumberValidate() {
+    await this.state.confirmResult.confirm(`${this.state.verificationCode}`);
+  }
   render() {
-    const {email, password} = this.state;
     return (
       <SafeAreaView style={styles.area_container}>
         <HeaderBanner back_button={false} />
@@ -33,23 +108,35 @@ class LoginWithEmail extends React.Component {
               <Estrellas width={386} height={528} />
             </View>
 
+            <View style={styles.box_container}>
+              <View style={styles.box}>
+                <TextInput
+                  title="Número Telefónico"
+                  onChangeText={text =>
+                    this.Global_OnChange(text, 'phoneNumber')
+                  }
+                  value={this.state.phoneNumber}
+                />
+              </View>
+
+              <View style={styles.box}>
+                <Button
+                  onPress={() => this.phoneNumberSendCode()}
+                  title={`Enviar Codigo`}
+                  button_style="simple"
+                  extra_style={styles.button_verification_code}
+                />
+              </View>
+            </View>
             <TextInput
-              title="Correo Electrónico"
-              onChangeText={text => this.Global_OnChange(text, 'email')}
-              value={email}
-              autoCompleteType="email"
-              autoFocus={true}
-            />
-            <TextInput
-              title="Contraseña"
-              onChangeText={text => this.Global_OnChange(text, 'password')}
-              value={password}
-              autoCompleteType="password"
-              secureTextEntry={true}
-              autoFocus={true}
+              title="Ingresa el código de verificación de 6 digitos"
+              onChangeText={text =>
+                this.Global_OnChange(text, 'verificationCode')
+              }
+              value={this.state.verificationCode}
             />
             <Button
-              onPress={() => this.props.navigation.navigate('Home')}
+              onPress={() => this.Login()}
               title={`Entrar`}
               button_style="primary"
               extra_style={styles.Button_SignIn}
@@ -66,6 +153,21 @@ class LoginWithEmail extends React.Component {
   }
 }
 const styles = StyleSheet.create({
+  button_verification_code: {
+    marginTop: 32,
+  },
+  button_container: {
+    paddingHorizontal: 8,
+  },
+  box_container: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  box: {
+    width: box_width,
+    marginRight: 8,
+  },
   Button_SignIn: {
     marginVertical: 32,
   },
