@@ -2,57 +2,51 @@ import React from 'react';
 import {SafeAreaView, View, Text, ScrollView} from 'react-native';
 import HeaderBanner from './Header_Banner';
 import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
-import DatePicker from '../../ui/components/datePicker';
-import Picker from '../../ui/components/picker';
+import TextInput from '../../ui/components/TextInput';
 import Button from '../../ui/components/button';
-const Second_part_of_register = props => {
-  return (
-    <SafeAreaView style={props.styles.area_container}>
-      <HeaderBanner onPress={props.HeaderBanner_OnBack} back_button={true} />
-      <ScrollView style={props.styles.info_container}>
-        <View style={{marginHorizontal: 16}}>
-          <Text style={props.styles.description}>Información Personal</Text>
-          <View style={{position: 'absolute'}}>
-            <Estrellas width={'100%'} height={'100%'} />
-          </View>
-          <DatePicker
-            value={props.birthDate}
-            setBirthDate={props.setBirthDate}
-          />
-          <Picker
-            title={'País'}
-            selectedValue={props.country}
-            onValueChange={(itemValue, itemIndex) =>
-              props.pickerOnChangeValue(itemValue, 'country')
-            }
-            Picker_Items={[{label: 'Venezuela', value: 'Venezuela'}]}
-          />
-          <Picker
-            title={'Estado'}
-            selectedValue={props.state}
-            onValueChange={(itemValue, itemIndex) =>
-              props.pickerOnChangeValue(itemValue, 'state')
-            }
-            Picker_Items={[{label: 'Anzoátegui', value: 'Anzoategui'}]}
-          />
-          <Picker
-            title={'Ciudad'}
-            selectedValue={props.city}
-            onValueChange={(itemValue, itemIndex) =>
-              props.pickerOnChangeValue(itemValue, 'state')
-            }
-            Picker_Items={[{label: 'Lechería', value: 'Lecheria'}]}
-          />
-          <Button
-            onPress={() => props.NextStep()}
-            title={`Siguiente (${props.step}/${props.steps})`}
-            button_style="primary"
-            extra_style={props.styles.Button_NextStep}
-          />
+export default Second_part_of_register = props => (
+  <SafeAreaView style={props.styles.area_container}>
+    <HeaderBanner onPress={props.HeaderBanner_OnBack} back_button={true} />
+    <ScrollView style={props.styles.info_container}>
+      <View style={{flex: 1, marginHorizontal: 16}}>
+        <Text style={props.styles.description}>
+          Verificación de Número telefónico
+        </Text>
+        <View style={{position: 'absolute'}}>
+          <Estrellas width={386} height={528} />
         </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
 
-export default Second_part_of_register;
+        <View style={props.styles.box_container}>
+          <View style={props.styles.box}>
+            <TextInput
+              title="Número Telefónico"
+              onChangeText={text => props.Global_OnChange(text, 'phoneNumber')}
+              value={props.phoneNumber}
+            />
+          </View>
+
+          <View style={props.styles.box}>
+            <Button
+              onPress={() => props.phoneNumberSendCode()}
+              title={`Enviar Codigo`}
+              button_style="simple"
+              extra_style={props.styles.button_verification_code}
+            />
+          </View>
+        </View>
+        <TextInput
+          title="Ingresa el código de verificación de 6 digitos"
+          onChangeText={text => props.Global_OnChange(text, 'verificationCode')}
+          value={props.verificationCode}
+        />
+
+        <Button
+          onPress={() => props.NextStep()}
+          title={`Verificar`}
+          button_style="primary"
+          extra_style={props.styles.Button_NextStep}
+        />
+      </View>
+    </ScrollView>
+  </SafeAreaView>
+);

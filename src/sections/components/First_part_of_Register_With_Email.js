@@ -10,6 +10,8 @@ import PhotoCamera from '../../../assets/svg/photo-camera.svg';
 import TextInput from '../../ui/components/TextInput';
 import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
 import Button from '../../ui/components/button';
+import DatePicker from '../../ui/components/datePicker';
+import Picker from '../../ui/components/picker';
 export default First_part_of_register = props => (
   <SafeAreaView style={props.styles.area_container}>
     <ScrollView style={props.styles.info_container}>
@@ -27,44 +29,43 @@ export default First_part_of_register = props => (
         <View style={{position: 'absolute'}}>
           <Estrellas width={386} height={528} />
         </View>
-        <View style={props.styles.box_container}>
-          <View style={props.styles.box}>
-            <TextInput
-              title="Nombre"
-              onChangeText={text => props.Global_OnChange(text, 'name')}
-              value={props.name}
-              autoCompleteType="username"
-            />
-          </View>
+        <TextInput
+          title="Nombre"
+          onChangeText={text => props.Global_OnChange(text, 'name')}
+          value={props.name}
+          autoCompleteType="username"
+        />
 
-          <View style={props.styles.box}>
-            <TextInput
-              title="Apellido"
-              onChangeText={text => props.Global_OnChange(text, 'lastname')}
-              value={props.lastname}
-              autoCompleteType="username"
-            />
-          </View>
-        </View>
         <TextInput
-          title="Correo Electrónico"
-          onChangeText={text => props.Global_OnChange(text, 'email')}
-          value={props.email}
-          autoCompleteType="email"
+          title="Apellido"
+          onChangeText={text => props.Global_OnChange(text, 'lastname')}
+          value={props.lastname}
+          autoCompleteType="username"
         />
-        <TextInput
-          title="Contraseña"
-          onChangeText={text => props.Global_OnChange(text, 'password')}
-          value={props.password}
-          autoCompleteType="password"
-          secureTextEntry={true}
+        <DatePicker value={props.birthDate} setBirthDate={props.setBirthDate} />
+        <Picker
+          title={'País'}
+          selectedValue={props.country}
+          onValueChange={(itemValue, itemIndex) =>
+            props.pickerOnChangeValue(itemValue, 'country')
+          }
+          Picker_Items={[{label: 'Venezuela', value: 'Venezuela'}]}
         />
-        <TextInput
-          title="Repite la Contraseña"
-          onChangeText={text => props.Global_OnChange(text, 'repassword')}
-          value={props.repassword}
-          autoCompleteType="password"
-          secureTextEntry={true}
+        <Picker
+          title={'Estado'}
+          selectedValue={props.state}
+          onValueChange={(itemValue, itemIndex) =>
+            props.pickerOnChangeValue(itemValue, 'state')
+          }
+          Picker_Items={[{label: 'Anzoátegui', value: 'Anzoategui'}]}
+        />
+        <Picker
+          title={'Ciudad'}
+          selectedValue={props.city}
+          onValueChange={(itemValue, itemIndex) =>
+            props.pickerOnChangeValue(itemValue, 'state')
+          }
+          Picker_Items={[{label: 'Lechería', value: 'Lecheria'}]}
         />
         <Button
           onPress={() => props.NextStep()}

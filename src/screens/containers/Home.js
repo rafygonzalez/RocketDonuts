@@ -11,37 +11,11 @@ import {
 import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
 import HeaderBanner from '../../sections/components/Header_Banner';
 import {Product_Box} from '../components/Product_Box';
-import Item_Box from '../components/Item_Box';
-import Button from '../../ui/components/button';
-// Products
-import {Dona, Rosquilla, DonaSola} from '../components/Products';
-// Filling
-import {
-  RChocolate,
-  RArequipe,
-  RChocolateB,
-  RCPastelera,
-} from '../components/Donuts_Filling';
-// Covers
-import {
-  CChocolate,
-  CArequipe,
-  CChocolateB,
-  CGlaseado,
-} from '../components/Donuts_Covers';
-// Topings
-import {
-  TChocolate,
-  TChRosadas,
-  TCoco,
-  TColores,
-  TMani,
-} from '../components/Donuts_Toppings';
-
-import {getDonut} from '../components/Donuts_List';
-
+import Dona from '../../../assets/svg/Dona.svg';
+import Rosquilla from '../../../assets/svg/Rosquilla.svg';
 //Redux
 import {connect} from 'react-redux';
+import firebase from 'react-native-firebase';
 
 class Home extends Component {
   constructor(props) {
@@ -69,6 +43,7 @@ class Home extends Component {
     });
   };
   componentDidMount() {
+    firebase.auth().signOut();
     this.getOrientation();
     Dimensions.addEventListener('change', () => {
       this.getOrientation();

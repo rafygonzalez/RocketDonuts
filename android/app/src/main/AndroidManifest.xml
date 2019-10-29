@@ -36,7 +36,7 @@
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
-        <data android:host="https://rocketdonut.page.link/email-verification" android:scheme="https" />
+        <data android:host="rocketdonut.page.link" android:scheme="https" />
        </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />

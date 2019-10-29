@@ -24,12 +24,6 @@ class Register extends React.Component {
             electrónico.
           </Text>
           <CustomButton
-            title="Continuar con Facebook"
-            button_style="facebook"
-            left_icon={<FacebookLogo width={12} height={22} />}
-            extra_style={styles.buttons}
-          />
-          <CustomButton
             title="Continuar con Google"
             button_style="google"
             left_icon={<GoogleLogo width={32} height={32} />}
@@ -37,7 +31,7 @@ class Register extends React.Component {
           />
 
           <CustomButton
-            title="Regístrate con tu Correo"
+            title="Regístrate con tu Celular"
             button_style="simple"
             onPress={() => this.props.navigation.navigate('RegisterWithEmail')}
             extra_style={styles.buttons}

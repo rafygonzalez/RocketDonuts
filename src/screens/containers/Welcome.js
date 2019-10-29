@@ -4,14 +4,21 @@ import {View, Text, StyleSheet} from 'react-native';
 import Estrellas from '../../../assets/svg/Estrellas.svg';
 import Logo from '../../../assets/svg/LogoH.svg';
 import CustomButton from '../../ui/components/button';
-class Home extends React.Component {
+import firebase from 'react-native-firebase';
+class Welcome extends React.Component {
   constructor(props) {
     super(props);
   }
   static navigationOptions = {
     header: null,
   };
+  componentDidMount() {
+    const currentUser = () => firebase.auth().currentUser;
 
+    if (currentUser()) {
+      this.props.navigation.navigate('Home');
+    }
+  }
   render() {
     return (
       <View style={styles.background}>
@@ -71,4 +78,4 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
 });
-export default Home;
+export default Welcome;
