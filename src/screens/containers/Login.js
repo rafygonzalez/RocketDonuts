@@ -7,6 +7,7 @@ import AstronautaConfundido from '../../../assets/svg/AstronautaConfundido.svg';
 import CustomButton from '../../ui/components/button';
 import FacebookLogo from '../../../assets/svg/facebook-logo.svg';
 import GoogleLogo from '../../../assets/svg/google-logo.svg';
+import API from '../../firebase/api';
 class Login extends React.Component {
   static navigationOptions = {
     header: null,
@@ -25,6 +26,7 @@ class Login extends React.Component {
           <CustomButton
             title="Inicia sesión con Google"
             button_style="google"
+            onPress={() => API.authWithGoogle()}
             left_icon={<GoogleLogo width={32} height={32} />}
             extra_style={styles.buttons}
           />

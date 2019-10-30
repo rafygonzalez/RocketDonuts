@@ -74,7 +74,26 @@ class LoginWithEmail extends React.Component {
             .then(function(doc) {
               if (doc.data() === undefined) {
                 auth().signOut();
-                console.log('Mandarlo a registrar');
+                Alert.alert(
+                  `¡Ups!`,
+                  `Tu cuenta no existe, ¿deseas registrarte?`,
+                  [
+                    {
+                      text: 'NO',
+                      onPress: () => {
+                        GoTo('Welcome');
+                      },
+                    },
+                    {
+                      text: 'SI',
+                      onPress: () => {
+                        GoTo('RegisterWithEmail');
+                      },
+                    },
+                  ],
+                  {cancelable: false},
+                );
+
                 // Mandar a registrarlo, por que no lo esta...
               } else {
                 // Redirigir

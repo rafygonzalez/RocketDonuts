@@ -1,5 +1,5 @@
 import firebase from 'react-native-firebase';
-
+import {GoogleSignin} from '@react-native-community/google-signin';
 export const signOut = () => firebase.auth().signOut();
 
 export const currentUser = () => firebase.auth().currentUser;
@@ -11,18 +11,6 @@ class Api {
       else props.auth_state(false);
     });
   }
-
-  errorHandler(error_code) {
-    switch (error_code) {
-      case 'auth/wrong-password':
-        return 'Contraseña invalida, intentelo de nuevo.';
-      case 'auth/wrong-password':
-        return 'Contraseña invalida, intentelo de nuevo.';
-      default:
-        return 'Ha ocurrido un error';
-    }
-  }
-
   async createUser(
     name,
     lastname,
@@ -54,58 +42,30 @@ class Api {
         });
     }
   }
-
-  async LoginWithEmailAndPassword(email, password) {
-    let success = null;
-    let errorCode;
-    let errorMessage;
-    await firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        // Ingresamos los datos al Firebase Auth
-        const user = currentUser();
-        if (user.emailVerified) {
-          console.log('Has iniciado correctamente');
-          success = true;
-        } else {
-          console.log('Necesitas verificar primero tu correo electronico');
-          signOut();
-          success = false;
-        }
-      })
-      .catch(error => {
-        // Capturamos errores
-        errorCode = error.code;
-        errorMessage = error.message;
-      });
-    return [success, errorCode, errorMessage];
-  }
-
-  async authWithFacebook() {
-    const provider = new firebase.auth.FacebookAuthProvider();
-    firebase
-      .auth()
-      .signInWithPopup(provider)
-      .then(result => {
-        console.log(result);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
-
   async authWithGoogle() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    firebase
-      .auth()
-      .signInWithPopup(provider)
-      .then(result => {
-        console.log(result);
-      })
-      .catch(error => {
-        console.log(error);
+    try {
+      await GoogleSignin.configure({
+        scopes: [
+          'https://www.googleapis.com/auth/user.phonenumbers.read',
+          'https://www.googleapis.com/auth/user.birthday.read',
+        ],
+        webClientId:
+          '1073288557699-ursk91gbv0lkgjbfa4p81b1ag4d5edj7.apps.googleusercontent.com', // required
       });
+      const data = await GoogleSignin.signIn();
+      const credential = firebase.auth.GoogleAuthProvider.credential(
+        data.idToken,
+        data.accessToken,
+      );
+      const firebaseUserCredential = await firebase
+        .auth()
+        .signInWithCredential(credential);
+      GoogleSignin.getCurrentUser().then(result => {
+        console.log(result);
+      });
+    } catch (e) {
+      console.error(e);
+    }
   }
 }
 export default new Api();

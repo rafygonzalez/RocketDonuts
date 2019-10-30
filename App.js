@@ -36,7 +36,6 @@ const AppNavigator = createStackNavigator({
   },
   RegisterWithEmail: {
     screen: RegisterWithEmail,
-    path: 'email-verification',
   },
   Home: {
     screen: HomeScreen,
