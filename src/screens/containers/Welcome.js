@@ -35,14 +35,14 @@ class Welcome extends React.Component {
             title="Registrarse"
             button_style="primary"
             onPress={() => {
-              this.props.navigation.navigate('Register');
+              this.props.navigation.navigate('RegisterWithPhone');
             }}
             extra_style={styles.buttons}
           />
           <CustomButton
             title="Iniciar Sesión"
             onPress={() => {
-              this.props.navigation.navigate('Login');
+              this.props.navigation.navigate('LoginWithPhone');
             }}
             simple
             extra_style={styles.buttons}

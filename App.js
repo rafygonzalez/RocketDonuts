@@ -9,9 +9,9 @@ import {createStackNavigator} from 'react-navigation-stack';
 import WelcomeScreen from './src/screens/containers/Welcome';
 import LoginScreen from './src/screens/containers/Login';
 
-import LoginWithEmail from './src/sections/containers/LoginWithEmail';
+import LoginWithPhone from './src/sections/containers/LoginWithPhone';
 import RegisterScreen from './src/screens/containers/Register';
-import RegisterWithEmail from './src/sections/containers/RegisterWithEmail';
+import RegisterWithPhone from './src/sections/containers/RegisterWithPhone';
 import SplashScreen from './src/screens/containers/Splash';
 import HomeScreen from './src/screens/containers/Home';
 import OrderScreen from './src/screens/containers/Order';
@@ -28,14 +28,14 @@ const AppNavigator = createStackNavigator({
   Login: {
     screen: LoginScreen,
   },
-  LoginWithEmail: {
-    screen: LoginWithEmail,
+  LoginWithPhone: {
+    screen: LoginWithPhone,
   },
   Register: {
     screen: RegisterScreen,
   },
-  RegisterWithEmail: {
-    screen: RegisterWithEmail,
+  RegisterWithPhone: {
+    screen: RegisterWithPhone,
   },
   Home: {
     screen: HomeScreen,

@@ -41,6 +41,7 @@ class Order extends Component {
     this.DeleteOrder = this.DeleteOrder.bind(this);
     this.MakeAnOrder = this.MakeAnOrder.bind(this);
     this.gotoShoppingCart = this.gotoShoppingCart.bind(this);
+    this.backHandler = null;
   }
   static navigationOptions = {
     header: null,
@@ -67,7 +68,7 @@ class Order extends Component {
     Dimensions.addEventListener('change', () => {
       this.getOrientation();
     });
-    BackHandler.addEventListener('hardwareBackPress', () => {
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
       this.props.navigation.navigate('Home');
       return true;
     });
@@ -75,7 +76,7 @@ class Order extends Component {
 
   componentWillUnmount() {
     Dimensions.removeEventListener('change');
-    BackHandler.removeEventListener('hardwareBackPress');
+    this.backHandler.remove();
   }
   gotoShoppingCart() {
     this.props.dispatch({

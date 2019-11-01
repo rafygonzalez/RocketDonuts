@@ -16,7 +16,7 @@ import {auth, firestore} from 'react-native-firebase';
 var {width} = Dimensions.get('window');
 var box_count = 2.2;
 var box_width = width / box_count;
-class LoginWithEmail extends React.Component {
+class LoginWithPhone extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,6 +30,7 @@ class LoginWithEmail extends React.Component {
     this.Login = this.Login.bind(this);
     this.currentUser = this.currentUser.bind(this);
     this.GoTo = this.GoTo.bind(this);
+    this.backHandler = null;
   }
   static navigationOptions = {
     header: null,
@@ -65,54 +66,53 @@ class LoginWithEmail extends React.Component {
   Login() {
     const db = firestore();
     const {GoTo} = this;
-    this.phoneNumberValidate()
-      .then(user => {
-        this.currentUser().then(user => {
-          var docRef = db.collection('Users').doc(user.uid);
-          docRef
-            .get()
-            .then(function(doc) {
-              if (doc.data() === undefined) {
-                auth().signOut();
-                Alert.alert(
-                  `¡Ups!`,
-                  `Tu cuenta no existe, ¿deseas registrarte?`,
-                  [
-                    {
-                      text: 'NO',
-                      onPress: () => {
-                        GoTo('Welcome');
-                      },
-                    },
-                    {
-                      text: 'SI',
-                      onPress: () => {
-                        GoTo('RegisterWithEmail');
-                      },
-                    },
-                  ],
-                  {cancelable: false},
-                );
-
-                // Mandar a registrarlo, por que no lo esta...
-              } else {
-                // Redirigir
-                GoTo('Home');
-              }
-            })
-            .catch(error => {
-              console.log(error);
-            });
+    if (
+      !this.state.verificationCode.length == 0 ||
+      this.state.phoneNumber.length == 0
+    ) {
+      this.phoneNumberValidate()
+        .then(user => {
+          this.currentUser().then(user => {
+            var docRef = db.collection('Users').doc(user.uid);
+            docRef
+              .get()
+              .then(function(doc) {
+                if (doc.exists) {
+                  GoTo('Home');
+                } else {
+                  GoTo('RegisterWithPhone');
+                }
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          });
+        })
+        .catch(error => {
+          if (error.code == 'auth/invalid-verification-code') {
+            Alert.alert(
+              `Código de Verificación`,
+              `El código es invalido, asegúrese de usar el código de verificación proporcionado, vuelva a enviar el código de verificación`,
+              [{text: 'OK', onPress: () => {}}],
+              {cancelable: false},
+            );
+          } else {
+            Alert.alert(
+              `Código de Verificación`,
+              `Tenemos un error, vuelva a intentarlo`,
+              [{text: 'OK', onPress: () => {}}],
+              {cancelable: false},
+            );
+          }
         });
-      })
-      .catch(error => {
-        Alert.alert(
-          `Código de Verificación`,
-          `Tenemos un error, ${error}`,
-          [{text: 'OK', onPress: () => {}}],
-          {cancelable: false},
-        );
-      });
+    } else {
+      Alert.alert(
+        `Código de Verificación`,
+        `Ingresa el código de verificación, si no te ha llegado un mensaje, vuelve a intentarlo.`,
+        [{text: 'OK', onPress: () => {}}],
+        {cancelable: false},
+      );
+    }
   }
   GoTo(to) {
     this.props.navigation.navigate(to);
@@ -164,11 +164,6 @@ class LoginWithEmail extends React.Component {
               button_style="primary"
               extra_style={styles.Button_SignIn}
             />
-            <Button
-              onPress={() => {}}
-              title={`Olvidé mi contraseña`}
-              button_style="simple"
-            />
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -209,4 +204,4 @@ const styles = StyleSheet.create({
     backgroundColor: '#ECEDF2',
   },
 });
-export default LoginWithEmail;
+export default LoginWithPhone;

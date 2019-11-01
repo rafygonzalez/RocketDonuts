@@ -11,7 +11,7 @@ var box_count = 2.2;
 var box_width = width / box_count;
 //ToastAndroid.show("Success", ToastAndroid.SHORT)
 
-class RegisterWithEmail extends React.Component {
+class RegisterWithPhone extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -321,4 +321,4 @@ const styles = StyleSheet.create({
     backgroundColor: '#ECEDF2',
   },
 });
-export default RegisterWithEmail;
+export default RegisterWithPhone;

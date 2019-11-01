@@ -7,6 +7,8 @@ import {
   Dimensions,
   Text,
   TouchableOpacity,
+  BackHandler,
+  Alert,
 } from 'react-native';
 import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
 import HeaderBanner from '../../sections/components/Header_Banner';
@@ -29,6 +31,7 @@ class Home extends Component {
       selectedProduct: '',
     };
     this.onSelectedProduct = this.onSelectedProduct.bind(this);
+    this.backHandler = null;
   }
   static navigationOptions = {
     header: null,
@@ -43,15 +46,32 @@ class Home extends Component {
     });
   };
   componentDidMount() {
-    firebase.auth().signOut();
     this.getOrientation();
     Dimensions.addEventListener('change', () => {
       this.getOrientation();
+    });
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      Alert.alert(
+        `¿Deseas Cerrar Sesión?`,
+        `Si aceptas, cerraras sesión y tendrás que iniciar nuevamente.`,
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              firebase.auth().signOut();
+              this.props.navigation.navigate('Welcome');
+            },
+          },
+        ],
+        {cancelable: false},
+      );
+      return true;
     });
   }
 
   componentWillUnmount() {
     Dimensions.removeEventListener('change');
+    this.backHandler.remove();
   }
   onSelectedProduct(name) {
     if (name === 'Donut') {
