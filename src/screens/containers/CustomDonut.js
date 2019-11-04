@@ -56,6 +56,7 @@ class CustomDonut extends Component {
       fillingDonut: '',
       coverDonut: '',
       toppingDonut: '',
+      title_add_more_fontsize: 0,
     };
     this.onSelectedProduct = this.onSelectedProduct.bind(this);
     this.onSelectedItem = this.onSelectedItem.bind(this);
@@ -74,6 +75,7 @@ class CustomDonut extends Component {
       screen_height: height,
       header_width: width,
       header_heigth: (39.61 * width) / 100,
+      title_add_more_fontsize: (6 * width) / 100,
     });
   };
   componentDidMount() {
@@ -333,6 +335,7 @@ class CustomDonut extends Component {
 }
 const styles = StyleSheet.create({
   title_add_more: {
+    color: '#FF9800',
     fontFamily: 'Rockwell',
   },
   title_container_add_more: {
