@@ -31,7 +31,7 @@ class Order extends Component {
       header_heigth: 0,
       screen_width: 0,
       screen_height: 0,
-      order: this.props.order,
+      order: this.props.Order.order,
       title_add_more_fontsize: 0,
     };
     this.HeaderBanner_OnBack = this.HeaderBanner_OnBack.bind(this);
@@ -56,13 +56,6 @@ class Order extends Component {
       header_heigth: (39.61 * width) / 100,
       title_add_more_fontsize: (4.83 * width) / 100,
     });
-    /* if (this.refs.rootView) {
-      if (Dimensions.get('window').width < Dimensions.get('window').height) {
-        this.setState({orientation: 'portrait'});
-      } else {
-        this.setState({orientation: 'landscape'});
-      }
-    }*/
   };
   componentDidMount() {
     this.getOrientation();
@@ -300,6 +293,6 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = reducers => {
-  return reducers.order, reducers.globalReducer;
+  return {Order: reducers.order, Global: reducers.globalReducer};
 };
 export default connect(mapStateToProps)(Order);

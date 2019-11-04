@@ -14,6 +14,7 @@ class CustomButton extends React.Component {
       button_width: 0,
       button_height: 0,
       fontSize: 0,
+      button_height_small: 0,
     };
   }
 
@@ -23,6 +24,7 @@ class CustomButton extends React.Component {
     this.setState({
       button_width: buttonw_calc,
       button_height: (16 * buttonw_calc) / 100,
+      button_height_small: (12 * buttonw_calc) / 100,
       fontSize: (5 * width) / 100,
     });
   };
@@ -52,8 +54,14 @@ class CustomButton extends React.Component {
             : styles.button_simple,
           props.extra_style,
           {
-            maxHeight: this.state.button_height,
-            minHeight: this.state.button_height,
+            maxHeight:
+              this.props.size == 'small'
+                ? this.state.button_height_small
+                : this.state.button_height,
+            minHeight:
+              this.props.size == 'small'
+                ? this.state.button_height_small
+                : this.state.button_height,
           },
         ]}
         onPress={props.onPress}

@@ -183,6 +183,6 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = reducers => {
-  return reducers.order, reducers.globalReducer;
+  return reducers.globalReducer;
 };
 export default connect(mapStateToProps)(withNavigationFocus(Home));
