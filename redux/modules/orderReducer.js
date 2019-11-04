@@ -1,6 +1,6 @@
 export const CUSTOM_DONUT = 'CUSTOM_DONUT';
 export const SET_ORDER = 'SET_ORDER';
-export const NAVIGATION = 'NAVIGATION';
+
 const initialState = {
   order: [],
   CustomDonut: '',
@@ -30,9 +30,6 @@ export default (state = initialState, action) => {
         ...state,
         order: action.payload.orderArray,
       };
-    }
-    case 'NAVIGATION': {
-      return {...state, ...action.payload};
     }
     default:
       return state;

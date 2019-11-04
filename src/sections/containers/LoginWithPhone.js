@@ -13,6 +13,8 @@ import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
 import TextInput from '../../ui/components/TextInput';
 import Button from '../../ui/components/button';
 import {auth, firestore} from 'react-native-firebase';
+
+import {connect} from 'react-redux';
 var {width} = Dimensions.get('window');
 var box_count = 2.2;
 var box_width = width / box_count;
@@ -20,8 +22,8 @@ class LoginWithPhone extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      phoneNumber: '',
-      verificationCode: '',
+      phoneNumber: '+584141936170',
+      verificationCode: '123456',
     };
 
     this.Global_OnChange = this.Global_OnChange.bind(this);
@@ -31,6 +33,7 @@ class LoginWithPhone extends React.Component {
     this.currentUser = this.currentUser.bind(this);
     this.GoTo = this.GoTo.bind(this);
     this.backHandler = null;
+    this.getUserData = this.getUserData.bind(this);
   }
   static navigationOptions = {
     header: null,
@@ -63,29 +66,30 @@ class LoginWithPhone extends React.Component {
   async currentUser() {
     return await auth().currentUser;
   }
+  componentDidMount() {}
+  async getUserData(uid) {
+    const querySnapshot = await firestore()
+      .collection('Users')
+      .doc(`${uid}`)
+      .get();
+    return querySnapshot.exists;
+  }
   Login() {
-    const db = firestore();
-    const {GoTo} = this;
     if (
       !this.state.verificationCode.length == 0 ||
       this.state.phoneNumber.length == 0
     ) {
       this.phoneNumberValidate()
-        .then(user => {
+        .then(() => {
           this.currentUser().then(user => {
-            var docRef = db.collection('Users').doc(user.uid);
-            docRef
-              .get()
-              .then(function(doc) {
-                if (doc.exists) {
-                  GoTo('Home');
-                } else {
-                  GoTo('RegisterWithPhone');
-                }
-              })
-              .catch(error => {
-                console.log(error);
-              });
+            this.getUserData(user.uid).then(exists => {
+              if (exists) {
+                this.GoTo('Home');
+              } else {
+                this.GoTo('RegisterWithPhone');
+                auth().signOut();
+              }
+            });
           });
         })
         .catch(error => {
@@ -115,6 +119,11 @@ class LoginWithPhone extends React.Component {
     }
   }
   GoTo(to) {
+    console.log(to);
+    this.props.dispatch({
+      type: 'CURRENT_SCREEN',
+      payload: to,
+    });
     this.props.navigation.navigate(to);
   }
   async phoneNumberValidate() {
@@ -204,4 +213,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ECEDF2',
   },
 });
-export default LoginWithPhone;
+const mapStateToProps = reducers => {
+  return reducers.globalReducer;
+};
+export default connect(mapStateToProps)(LoginWithPhone);

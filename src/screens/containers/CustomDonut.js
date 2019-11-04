@@ -62,6 +62,7 @@ class CustomDonut extends Component {
     this.HeaderBanner_OnBack = this.HeaderBanner_OnBack.bind(this);
     this.FinishCustomization = this.FinishCustomization.bind(this);
     this.CancelCustomization = this.CancelCustomization.bind(this);
+    this.GoTo = this.GoTo.bind(this);
   }
   static navigationOptions = {
     header: null,
@@ -92,7 +93,7 @@ class CustomDonut extends Component {
     });
   }
   HeaderBanner_OnBack() {
-    this.props.navigation.navigate('Home');
+    this.GoTo('Home');
   }
   onSelectedItem(name, type) {
     this.setState({customizeStep: this.state.customizeStep + 1});
@@ -133,7 +134,7 @@ class CustomDonut extends Component {
       coverDonut: '',
       toppingDonut: '',
     });
-    this.props.navigation.navigate('Order');
+    this.GoTo('Order');
   }
   CancelCustomization() {
     this.setState({
@@ -143,6 +144,13 @@ class CustomDonut extends Component {
       coverDonut: '',
       toppingDonut: '',
     });
+  }
+  GoTo(to) {
+    this.props.dispatch({
+      type: 'CURRENT_SCREEN',
+      payload: to,
+    });
+    this.props.navigation.navigate(to);
   }
   render() {
     const Rellenos = [RChocolate, RChocolateB, RArequipe, RCPastelera];
@@ -363,6 +371,6 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = reducers => {
-  return reducers.order;
+  return reducers.order, reducers.globalReducer;
 };
 export default connect(mapStateToProps)(CustomDonut);

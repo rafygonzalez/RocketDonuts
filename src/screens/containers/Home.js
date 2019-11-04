@@ -18,7 +18,7 @@ import Rosquilla from '../../../assets/svg/Rosquilla.svg';
 //Redux
 import {connect} from 'react-redux';
 import firebase from 'react-native-firebase';
-
+import {withNavigationFocus} from 'react-navigation';
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -31,7 +31,8 @@ class Home extends Component {
       selectedProduct: '',
     };
     this.onSelectedProduct = this.onSelectedProduct.bind(this);
-    this.backHandler = null;
+    this._pasEditUnmountFunction = this._pasEditUnmountFunction.bind(this);
+    this.GoTo = this.GoTo.bind(this);
   }
   static navigationOptions = {
     header: null,
@@ -45,40 +46,61 @@ class Home extends Component {
       header_heigth: (39.61 * width) / 100,
     });
   };
-  componentDidMount() {
-    this.getOrientation();
-    Dimensions.addEventListener('change', () => {
-      this.getOrientation();
-    });
-    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+  _pasEditUnmountFunction() {
+    if (this.props.currentScreen == 'Home') {
       Alert.alert(
-        `¿Deseas Cerrar Sesión?`,
-        `Si aceptas, cerraras sesión y tendrás que iniciar nuevamente.`,
+        `¿Deseas cerrar sesión?`,
+        ` `,
         [
           {
-            text: 'OK',
+            text: 'No',
+            onPress: () => {},
+            style: 'cancel',
+          },
+          {
+            text: 'Si',
             onPress: () => {
               firebase.auth().signOut();
-              this.props.navigation.navigate('Welcome');
+              this.GoTo('Welcome');
             },
           },
         ],
         {cancelable: false},
       );
       return true;
-    });
+    } else {
+      return false;
+    }
   }
-
+  componentDidMount() {
+    this.getOrientation();
+    Dimensions.addEventListener('change', () => {
+      this.getOrientation();
+    });
+    BackHandler.addEventListener(
+      'hardwareBackPress',
+      this._pasEditUnmountFunction,
+    );
+  }
   componentWillUnmount() {
     Dimensions.removeEventListener('change');
-    this.backHandler.remove();
+    BackHandler.removeEventListener(
+      'hardwareBackPress',
+      this._pasEditUnmountFunction,
+    );
   }
   onSelectedProduct(name) {
     if (name === 'Donut') {
-      this.props.navigation.navigate('CustomDonut');
+      this.GoTo('CustomDonut');
     }
   }
-
+  GoTo(to) {
+    this.props.dispatch({
+      type: 'CURRENT_SCREEN',
+      payload: to,
+    });
+    this.props.navigation.navigate(to);
+  }
   render() {
     const {screen_height, screen_width, header_heigth} = this.state;
 
@@ -161,6 +183,6 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = reducers => {
-  return reducers.order;
+  return reducers.order, reducers.globalReducer;
 };
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps)(withNavigationFocus(Home));

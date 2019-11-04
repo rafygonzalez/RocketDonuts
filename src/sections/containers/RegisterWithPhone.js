@@ -6,6 +6,7 @@ import Register_finished from '../components/Register_Finished';
 import validator from 'validator';
 import firebase from 'react-native-firebase';
 import API from '../../firebase/api';
+import {connect} from 'react-redux';
 var {width} = Dimensions.get('window');
 var box_count = 2.2;
 var box_width = width / box_count;
@@ -40,11 +41,19 @@ class RegisterWithPhone extends React.Component {
     this.phoneNumberValidate = this.phoneNumberValidate.bind(this);
     this.phoneNumberSendCode = this.phoneNumberSendCode.bind(this);
 
-    this.GoToHome = this.GoToHome.bind(this);
+    this.GoTo = this.GoTo.bind(this);
   }
   static navigationOptions = {
     header: null,
   };
+
+  GoTo(to) {
+    this.props.dispatch({
+      type: 'CURRENT_SCREEN',
+      payload: to,
+    });
+    this.props.navigation.navigate(to);
+  }
   setBirthDate(date) {
     this.setState({birthDate: date});
   }
@@ -183,9 +192,6 @@ class RegisterWithPhone extends React.Component {
   async phoneNumberValidate() {
     await this.state.confirmResult.confirm(`${this.state.verificationCode}`);
   }
-  GoToHome() {
-    this.props.navigation.navigate('Home');
-  }
 
   render() {
     const {
@@ -232,7 +238,7 @@ class RegisterWithPhone extends React.Component {
           />
         ) : (
           step == 3 && (
-            <Register_finished GoToHome={this.GoToHome} styles={styles} />
+            <Register_finished GoToHome={this.GoTo} styles={styles} />
           )
         )}
       </View>
@@ -321,4 +327,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ECEDF2',
   },
 });
-export default RegisterWithPhone;
+const mapStateToProps = reducers => {
+  return reducers.globalReducer;
+};
+export default connect(mapStateToProps)(RegisterWithPhone);

@@ -5,9 +5,12 @@ import Estrellas from '../../../assets/svg/Estrellas.svg';
 import Logo from '../../../assets/svg/LogoH.svg';
 import CustomButton from '../../ui/components/button';
 import firebase from 'react-native-firebase';
+import {connect} from 'react-redux';
 class Welcome extends React.Component {
   constructor(props) {
     super(props);
+
+    this.GoTo = this.GoTo.bind(this);
   }
   static navigationOptions = {
     header: null,
@@ -16,8 +19,15 @@ class Welcome extends React.Component {
     const currentUser = () => firebase.auth().currentUser;
 
     if (currentUser()) {
-      this.props.navigation.navigate('Home');
+      this.GoTo('Home');
     }
+  }
+  GoTo(to) {
+    this.props.dispatch({
+      type: 'CURRENT_SCREEN',
+      payload: to,
+    });
+    this.props.navigation.navigate(to);
   }
   render() {
     return (
@@ -35,14 +45,14 @@ class Welcome extends React.Component {
             title="Registrarse"
             button_style="primary"
             onPress={() => {
-              this.props.navigation.navigate('RegisterWithPhone');
+              this.GoTo('RegisterWithPhone');
             }}
             extra_style={styles.buttons}
           />
           <CustomButton
             title="Iniciar Sesión"
             onPress={() => {
-              this.props.navigation.navigate('LoginWithPhone');
+              this.GoTo('LoginWithPhone');
             }}
             simple
             extra_style={styles.buttons}
@@ -78,4 +88,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
 });
-export default Welcome;
+const mapStateToProps = reducers => {
+  return reducers.globalReducer;
+};
+export default connect(mapStateToProps)(Welcome);

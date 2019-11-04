@@ -42,6 +42,7 @@ class Order extends Component {
     this.MakeAnOrder = this.MakeAnOrder.bind(this);
     this.gotoShoppingCart = this.gotoShoppingCart.bind(this);
     this.backHandler = null;
+    this.GoTo = this.GoTo.bind(this);
   }
   static navigationOptions = {
     header: null,
@@ -69,7 +70,7 @@ class Order extends Component {
       this.getOrientation();
     });
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-      this.props.navigation.navigate('Home');
+      this.GoTo('Home');
       return true;
     });
   }
@@ -83,7 +84,7 @@ class Order extends Component {
       type: 'SET_ORDER',
       payload: {orderArray: this.state.order},
     });
-    this.props.navigation.navigate('ShoppingCart');
+    this.GoTo('ShoppingCart');
   }
   DonutIncrement(id) {
     const idDonut = id;
@@ -137,7 +138,7 @@ class Order extends Component {
       payload: {orderArray: orderArray},
     });
     if (orderArray.length === 0) {
-      this.props.navigation.navigate('Home');
+      this.GoTo('Home');
     }
   }
   DeleteOrder() {
@@ -158,7 +159,7 @@ class Order extends Component {
               type: 'SET_ORDER',
               payload: {orderArray: []},
             });
-            this.props.navigation.navigate('Home');
+            this.GoTo('Home');
           },
         },
       ],
@@ -167,6 +168,13 @@ class Order extends Component {
   }
   MakeAnOrder() {}
   HeaderBanner_OnBack() {}
+  GoTo(to) {
+    this.props.dispatch({
+      type: 'CURRENT_SCREEN',
+      payload: to,
+    });
+    this.props.navigation.navigate(to);
+  }
   render() {
     const {screen_height, screen_width, header_heigth} = this.state;
     return (
@@ -214,7 +222,7 @@ class Order extends Component {
             }}>
             <Item_Box_Small
               onPress={() => {
-                this.props.navigation.navigate('CustomDonut');
+                this.GoTo('CustomDonut');
               }}
               item={Dona}
               item_name={'Añadir Dona'}
@@ -292,6 +300,6 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = reducers => {
-  return reducers.order;
+  return reducers.order, reducers.globalReducer;
 };
 export default connect(mapStateToProps)(Order);

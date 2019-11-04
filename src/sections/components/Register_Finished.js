@@ -18,7 +18,7 @@ const RegisterFinished = props => {
           <Button
             title="Continuar"
             button_style="primary"
-            onPress={() => props.GoToHome()}
+            onPress={() => props.GoTo('Home')}
             extra_style={{marginTop: 32}}
           />
         </View>
