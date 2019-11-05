@@ -178,7 +178,9 @@ class Order extends Component {
     const {screen_height, screen_width, header_heigth} = this.state;
     return (
       <SafeAreaView style={styles.area_container}>
-        <ScrollView contentContainerStyle={{flexGrow: 1}}>
+        <ScrollView
+          persistentScrollbar={true}
+          contentContainerStyle={{flexGrow: 1}}>
           <HeaderBanner withOrder onPress={this.HeaderBanner_OnBack} />
           <View style={[styles.stars_container, {top: header_heigth}]}>
             <Estrellas
@@ -227,7 +229,9 @@ class Order extends Component {
               item_name={'Añadir Dona'}
             />
             <Item_Box_Small
-              onPress={() => {}}
+              onPress={() => {
+                this.GoTo('CustomBagel');
+              }}
               item={Rosquilla}
               item_name={'Añadir Rosquilla'}
             />

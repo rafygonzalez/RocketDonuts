@@ -56,14 +56,13 @@ class Item_Box_Order extends Component {
             title="+"
             button_style="positive"
             size="small"
-            extra_style={{maxWidth: '1%'}}
+            extra_style={{marginHorizontal: '5%'}}
             onPress={() => this.props.DonutIncrement(this.props.id)}
           />
           <Button
             title="-"
             button_style="negative"
             size="small"
-            extra_style={{maxWidth: '1%'}}
             onPress={() => this.props.DonutDecrement(this.props.id)}
           />
         </View>

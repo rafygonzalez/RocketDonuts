@@ -14,14 +14,8 @@ import {Product_Box} from '../components/Product_Box';
 import Item_Box from '../components/Item_Box';
 import Button from '../../ui/components/button';
 // Products
-import {DonaSola} from '../components/Products';
-// Filling
-import {
-  RChocolate,
-  RArequipe,
-  RChocolateB,
-  RCPastelera,
-} from '../components/Donuts_Filling';
+import {RosquillaSola} from '../components/Products';
+
 // Covers
 import {
   CChocolate,
@@ -41,7 +35,7 @@ import {
 //Redux
 import {connect} from 'react-redux';
 
-class CustomDonut extends Component {
+class CustomBagel extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -100,9 +94,6 @@ class CustomDonut extends Component {
   onSelectedItem(name, type) {
     this.setState({customizeStep: this.state.customizeStep + 1});
     switch (type) {
-      case 'filling':
-        this.setState({fillingDonut: name});
-        break;
       case 'cover':
         this.setState({coverDonut: name});
         break;
@@ -156,7 +147,6 @@ class CustomDonut extends Component {
     this.props.navigation.navigate(to);
   }
   render() {
-    const Rellenos = [RChocolate, RChocolateB, RArequipe, RCPastelera];
     const Cubiertas = [CChocolate, CChocolateB, CArequipe, CGlaseado];
     const Toppings = [TChocolate, TChRosadas, TCoco, TColores, TMani];
     const {
@@ -169,7 +159,6 @@ class CustomDonut extends Component {
       header_heigth,
     } = this.state;
 
-    const fillOfDonut = ({name}) => name == fillingDonut;
     const coverOfDonut = ({name}) => name == coverDonut;
     const toppingOfDonut = ({name}) => name == toppingDonut;
 
@@ -192,20 +181,14 @@ class CustomDonut extends Component {
           </View>
           <View>
             <View style={styles.item_box_container}>
-              <Item_Box item={DonaSola} item_name={'Dona'} />
+              <Item_Box item={RosquillaSola} item_name={'Rosquilla'} />
               {customizeStep >= 2 && (
-                <Item_Box
-                  item={Rellenos.filter(fillOfDonut)[0].component}
-                  item_name={Rellenos.filter(fillOfDonut)[0].name}
-                />
-              )}
-              {customizeStep >= 3 && (
                 <Item_Box
                   item={Cubiertas.filter(coverOfDonut)[0].component}
                   item_name={Cubiertas.filter(coverOfDonut)[0].name}
                 />
               )}
-              {customizeStep >= 4 && (
+              {customizeStep >= 3 && (
                 <Item_Box
                   item={Toppings.filter(toppingOfDonut)[0].component}
                   item_name={Toppings.filter(toppingOfDonut)[0].name}
@@ -214,32 +197,6 @@ class CustomDonut extends Component {
             </View>
             <View>
               {customizeStep == 1 ? (
-                <View>
-                  <View style={styles.title_container_add_more}>
-                    <Text
-                      style={[
-                        styles.title_add_more,
-                        {fontSize: this.state.title_add_more_fontsize},
-                      ]}>
-                      Elige un relleno
-                    </Text>
-                  </View>
-                  <View style={styles.products_container}>
-                    {Rellenos.map((Relleno, index) => {
-                      return (
-                        <Product_Box
-                          onPress={() =>
-                            this.onSelectedItem(Relleno.name, 'filling')
-                          }
-                          item={Relleno.component}
-                          item_name={Relleno.name}
-                          key={index}
-                        />
-                      );
-                    })}
-                  </View>
-                </View>
-              ) : customizeStep == 2 ? (
                 <View>
                   <View style={styles.title_container_add_more}>
                     <Text
@@ -265,7 +222,7 @@ class CustomDonut extends Component {
                     })}
                   </View>
                 </View>
-              ) : customizeStep == 3 ? (
+              ) : customizeStep == 2 ? (
                 <View>
                   <View style={styles.title_container_add_more}>
                     <Text
@@ -292,7 +249,7 @@ class CustomDonut extends Component {
                   </View>
                 </View>
               ) : (
-                customizeStep == 4 && (
+                customizeStep == 3 && (
                   <View
                     style={{
                       position: 'relative',
@@ -304,7 +261,7 @@ class CustomDonut extends Component {
                       title="Finalizar"
                       button_style="primary"
                       onPress={() => {
-                        this.FinishCustomization('Dona');
+                        this.FinishCustomization('Rosquilla');
                       }}
                     />
                     <Button
@@ -379,4 +336,4 @@ const styles = StyleSheet.create({
 const mapStateToProps = reducers => {
   return reducers.globalReducer;
 };
-export default connect(mapStateToProps)(CustomDonut);
+export default connect(mapStateToProps)(CustomBagel);
