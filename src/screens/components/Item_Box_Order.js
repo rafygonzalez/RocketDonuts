@@ -50,19 +50,23 @@ class Item_Box_Order extends Component {
             {props.item_name}
           </Text>
         </View>
-        <Button
-          title="+"
-          button_style="positive"
-          extra_style={{marginHorizontal: '2%'}}
-          size="small"
-          onPress={() => this.props.DonutIncrement(this.props.id)}
-        />
-        <Button
-          title="-"
-          button_style="negative"
-          size="small"
-          onPress={() => this.props.DonutDecrement(this.props.id)}
-        />
+        <View
+          style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
+          <Button
+            title="+"
+            button_style="positive"
+            size="small"
+            extra_style={{maxWidth: '1%'}}
+            onPress={() => this.props.DonutIncrement(this.props.id)}
+          />
+          <Button
+            title="-"
+            button_style="negative"
+            size="small"
+            extra_style={{maxWidth: '1%'}}
+            onPress={() => this.props.DonutDecrement(this.props.id)}
+          />
+        </View>
       </View>
     );
   }
@@ -78,7 +82,7 @@ const styles = StyleSheet.create({
   svgContainer: {justifyContent: 'center', alignItems: 'center'},
   textContainer: {
     justifyContent: 'center',
-    marginHorizontal: '10%',
+    marginHorizontal: '5%',
   },
   text: {fontFamily: 'Rockwell', color: 'white', fontSize: 30},
 });

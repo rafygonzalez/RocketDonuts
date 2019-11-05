@@ -113,11 +113,12 @@ class CustomDonut extends Component {
         console.error('Error customizing donut');
     }
   }
-  FinishCustomization(type) {
+  async FinishCustomization(type) {
     let id = Math.random()
       .toString(36)
       .substring(7);
-    this.props.dispatch({
+
+    await this.props.dispatch({
       type: 'CUSTOM_DONUT',
       payload: {
         type: type,

@@ -92,6 +92,8 @@ class Home extends Component {
   onSelectedProduct(name) {
     if (name === 'Donut') {
       this.GoTo('CustomDonut');
+    } else if (name === 'Bagel') {
+      this.GoTo('CustomBagel');
     }
   }
   GoTo(to) {
@@ -126,7 +128,11 @@ class Home extends Component {
               item={Dona}
               item_name={'Donas'}
             />
-            <Product_Box item={Rosquilla} item_name={'Rosquilla'} />
+            <Product_Box
+              onPress={() => this.onSelectedProduct('Bagel')}
+              item={Rosquilla}
+              item_name={'Rosquilla'}
+            />
             <Product_Box
               imageBackground
               imgSrc={require('../../../assets/img/Donut.jpg')}

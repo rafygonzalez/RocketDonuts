@@ -57,6 +57,12 @@ class Order extends Component {
       title_add_more_fontsize: (4.83 * width) / 100,
     });
   };
+  componentDidUpdate(prevProps) {
+    if (prevProps.Order.order !== this.state.order) {
+      this.setState({order: prevProps.Order.order});
+    }
+  }
+
   componentDidMount() {
     this.getOrientation();
     Dimensions.addEventListener('change', () => {
@@ -185,7 +191,7 @@ class Order extends Component {
             {this.state.order.map((Donut, index) => {
               return (
                 <Item_Box_Order
-                  item={getDonut(Donut.cover, Donut.topping)}
+                  item={getDonut(Donut.cover, Donut.topping, Donut.type)}
                   item_name={`${Donut.type} x ${Donut.quantity}`}
                   key={index}
                   id={Donut.id}
