@@ -41,7 +41,11 @@ class OrderDetail extends React.Component {
     const Item = props.item;
     const {item_width, item_heigth} = this.state;
     return (
-      <View style={{paddingVertical: 16, paddingHorizontal: 32}}>
+      <View
+        style={{
+          paddingVertical: 16,
+          paddingHorizontal: 32,
+        }}>
         <View style={styles.container}>
           <View style={styles.svgContainer}>
             <Item width={item_width} height={item_heigth} />

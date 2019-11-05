@@ -68,15 +68,10 @@ class Order extends Component {
     Dimensions.addEventListener('change', () => {
       this.getOrientation();
     });
-    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-      this.GoTo('Home');
-      return true;
-    });
   }
 
   componentWillUnmount() {
     Dimensions.removeEventListener('change');
-    this.backHandler.remove();
   }
   gotoShoppingCart() {
     this.props.dispatch({

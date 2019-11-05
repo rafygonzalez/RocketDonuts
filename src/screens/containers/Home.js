@@ -47,6 +47,7 @@ class Home extends Component {
     });
   };
   _pasEditUnmountFunction() {
+    console.log('Executed');
     if (this.props.currentScreen == 'Home') {
       Alert.alert(
         `¿Deseas cerrar sesión?`,
@@ -68,11 +69,21 @@ class Home extends Component {
         {cancelable: false},
       );
       return true;
+    } else if (this.props.currentScreen == 'ShoppingCart') {
+      console.log('Go to order from Home');
+      this.GoTo('Order');
+      return true;
+    } else if (this.props.currentScreen == 'Order') {
+      console.log('Go to Home from Home');
+      this.GoTo('Home');
+      return true;
     } else {
+      console.log(this.props.currentScreen);
       return false;
     }
   }
   componentDidMount() {
+    console.log('Mounted');
     this.getOrientation();
     Dimensions.addEventListener('change', () => {
       this.getOrientation();
@@ -83,11 +94,8 @@ class Home extends Component {
     );
   }
   componentWillUnmount() {
+    console.log('Unmounted Home');
     Dimensions.removeEventListener('change');
-    BackHandler.removeEventListener(
-      'hardwareBackPress',
-      this._pasEditUnmountFunction,
-    );
   }
   onSelectedProduct(name) {
     if (name === 'Donut') {

@@ -37,6 +37,7 @@ class ShoppingCart extends Component {
     };
     this.HeaderBanner_OnBack = this.HeaderBanner_OnBack.bind(this);
     this.DeleteOrder = this.DeleteOrder.bind(this);
+    this.getDonutDescription = this.getDonutDescription.bind(this);
   }
   static navigationOptions = {
     header: null,
@@ -63,19 +64,40 @@ class ShoppingCart extends Component {
     Dimensions.addEventListener('change', () => {
       this.getOrientation();
     });
-    BackHandler.addEventListener('hardwareBackPress', () => {
-      this.props.navigation.navigate('Order');
-      return true;
-    });
   }
 
   componentWillUnmount() {
     Dimensions.removeEventListener('change');
-    BackHandler.removeEventListener('hardwareBackPress');
   }
 
   DeleteOrder() {}
   HeaderBanner_OnBack() {}
+
+  getDonutDescription(type, topping, cover, filling) {
+    if (type == 'Dona') {
+      if (topping.length > 1) {
+        return `Rellena con ${filling}, Cubierta de ${cover} y Topping de ${topping}`;
+      } else {
+        return `Rellena con ${filling} y Cubierta de ${cover}`;
+      }
+    } else if (type == 'Rosquilla') {
+      if (topping.length > 1) {
+        return `Cubierta de ${cover} y Topping de ${topping}`;
+      } else {
+        return `Cubierta de ${cover}`;
+      }
+    }
+  }
+  /*
+      Item.type == 'Dona' && Item.topping.length > 1 ? 
+                          `Rellena con ${Item.filling}, Cubierta de ${Item.cover} y Topping de ${Item.topping}`
+                          : 
+                          Item.type == 'Rosquilla' && Item.topping.length > 1  ? 
+                          `Cubierta de ${Item.cover} y Topping de ${Item.topping}`
+                          : 
+                          `Cubierta de ${Item.cover}`
+                          
+                          */
   render() {
     const {screen_height, screen_width, header_heigth} = this.state;
     return (
@@ -100,16 +122,22 @@ class ShoppingCart extends Component {
                 return (
                   <Layout>
                     <OrderDetail
-                      item={getDonut(Item.cover, Item.topping)}
+                      item={getDonut(Item.cover, Item.topping, Item.type)}
                       item_name={`${Item.type} x ${Item.quantity}`}
-                      description={`Rellena con ${Item.filling}, Cubierta de ${Item.cover} y Topping de ${Item.topping} `}
+                      description={this.getDonutDescription(
+                        Item.type,
+                        Item.topping,
+                        Item.cover,
+                        Item.filling,
+                      )}
                       key={index}
                     />
                     <View
+                      opacity={0.5}
                       style={{
                         width: '100%',
                         borderBottomColor: 'gray',
-                        borderBottomWidth: 0.5,
+                        borderBottomWidth: 1,
                         marginVertical: '5%',
                       }}
                     />

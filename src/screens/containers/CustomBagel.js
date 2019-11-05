@@ -7,6 +7,7 @@ import {
   Dimensions,
   Text,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
 import HeaderBanner from '../../sections/components/Header_Banner';
@@ -95,6 +96,9 @@ class CustomBagel extends Component {
     this.setState({customizeStep: this.state.customizeStep + 1});
     switch (type) {
       case 'cover':
+        if (name == 'Glaseado') {
+          this.setState({customizeStep: 3});
+        }
         this.setState({coverDonut: name});
         break;
       case 'topping':
@@ -188,7 +192,7 @@ class CustomBagel extends Component {
                   item_name={Cubiertas.filter(coverOfDonut)[0].name}
                 />
               )}
-              {customizeStep >= 3 && (
+              {customizeStep >= 3 && coverDonut !== 'Glaseado' && (
                 <Item_Box
                   item={Toppings.filter(toppingOfDonut)[0].component}
                   item_name={Toppings.filter(toppingOfDonut)[0].name}
@@ -222,7 +226,7 @@ class CustomBagel extends Component {
                     })}
                   </View>
                 </View>
-              ) : customizeStep == 2 ? (
+              ) : customizeStep == 2 && coverDonut !== 'Glaseado' ? (
                 <View>
                   <View style={styles.title_container_add_more}>
                     <Text

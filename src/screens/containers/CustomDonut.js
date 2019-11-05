@@ -7,6 +7,7 @@ import {
   Dimensions,
   Text,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
 import HeaderBanner from '../../sections/components/Header_Banner';
@@ -104,6 +105,9 @@ class CustomDonut extends Component {
         this.setState({fillingDonut: name});
         break;
       case 'cover':
+        if (name == 'Glaseado') {
+          this.setState({customizeStep: 4});
+        }
         this.setState({coverDonut: name});
         break;
       case 'topping':
@@ -117,7 +121,6 @@ class CustomDonut extends Component {
     let id = Math.random()
       .toString(36)
       .substring(7);
-
     await this.props.dispatch({
       type: 'CUSTOM_DONUT',
       payload: {
@@ -205,7 +208,7 @@ class CustomDonut extends Component {
                   item_name={Cubiertas.filter(coverOfDonut)[0].name}
                 />
               )}
-              {customizeStep >= 4 && (
+              {customizeStep >= 4 && coverDonut !== 'Glaseado' && (
                 <Item_Box
                   item={Toppings.filter(toppingOfDonut)[0].component}
                   item_name={Toppings.filter(toppingOfDonut)[0].name}
@@ -265,7 +268,7 @@ class CustomDonut extends Component {
                     })}
                   </View>
                 </View>
-              ) : customizeStep == 3 ? (
+              ) : customizeStep == 3 && coverDonut !== 'Glaseado' ? (
                 <View>
                   <View style={styles.title_container_add_more}>
                     <Text
