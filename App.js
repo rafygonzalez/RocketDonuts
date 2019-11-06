@@ -1,10 +1,19 @@
 import React from 'react';
-import {StyleSheet, SafeAreaView} from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  SafeAreaView,
+  TouchableOpacity,
+  View,
+  Text,
+} from 'react-native';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {store, persistor} from './redux/store';
-import {createAppContainer} from 'react-navigation';
+import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
+import {createDrawerNavigator, DrawerItems} from 'react-navigation-drawer';
+
 //Screns
 import WelcomeScreen from './src/screens/containers/Welcome';
 import LoginScreen from './src/screens/containers/Login';
@@ -12,7 +21,7 @@ import LoginScreen from './src/screens/containers/Login';
 import LoginWithPhone from './src/sections/containers/LoginWithPhone';
 import RegisterScreen from './src/screens/containers/Register';
 import RegisterWithPhone from './src/sections/containers/RegisterWithPhone';
-import SplashScreen from './src/screens/containers/Splash';
+
 import HomeScreen from './src/screens/containers/Home';
 import OrderScreen from './src/screens/containers/Order';
 import CustomDonut from './src/screens/containers/CustomDonut';
@@ -21,8 +30,64 @@ import ShoppingCart from './src/screens/containers/Shopping_Cart';
 //
 import Loading from './src/screens/containers/Splash';
 import firebase from 'react-native-firebase';
+const signOut = async () => {
+  return await firebase.auth().signOut();
+};
 
-const AppNavigator = createStackNavigator({
+const DrawerWithLogoutButton = props => (
+  <ScrollView
+    contentContainerStyle={{
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+    }}>
+    <SafeAreaView forceInset={{top: 'always', horizontal: 'never'}}>
+      <DrawerItems {...props} />
+    </SafeAreaView>
+    <TouchableOpacity>
+      <View style={stylesButton.item}>
+        <View style={stylesButton.iconContainer}></View>
+        <Text style={stylesButton.label}>Cerrar Sesión</Text>
+      </View>
+    </TouchableOpacity>
+  </ScrollView>
+);
+
+const stylesButton = StyleSheet.create({
+  item: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  label: {
+    margin: 16,
+    fontWeight: 'bold',
+    color: 'rgba(0, 0, 0, .87)',
+  },
+  iconContainer: {
+    marginHorizontal: 16,
+    width: 24,
+    alignItems: 'center',
+  },
+  icon: {
+    width: 24,
+    height: 24,
+  },
+});
+
+const MainDrawer = createDrawerNavigator(
+  {
+    Inicio: {
+      screen: HomeScreen,
+    },
+    'Mi Pedido': {
+      screen: OrderScreen,
+    },
+  },
+  {
+    contentComponent: DrawerWithLogoutButton,
+  },
+);
+const AuthStack = createStackNavigator({
   Welcome: {
     screen: WelcomeScreen,
   },
@@ -38,27 +103,31 @@ const AppNavigator = createStackNavigator({
   RegisterWithPhone: {
     screen: RegisterWithPhone,
   },
-  Home: {
-    screen: HomeScreen,
+});
+const NavigationApp = createStackNavigator(
+  {
+    App: MainDrawer,
+    CustomDonut: {
+      screen: CustomDonut,
+    },
+    CustomBagel: {
+      screen: CustomBagel,
+    },
+    ShoppingCart: ShoppingCart,
   },
-  CustomDonut: {
-    screen: CustomDonut,
+  {
+    headerMode: 'none',
   },
-  CustomBagel: {
-    screen: CustomBagel,
+);
+const AppSwitch = createSwitchNavigator({
+  Auth: {
+    screen: AuthStack,
   },
-  Order: {
-    screen: OrderScreen,
-  },
-  ShoppingCart: {
-    screen: ShoppingCart,
-  },
-  Splash: {
-    screen: SplashScreen,
+  App: {
+    screen: NavigationApp,
   },
 });
-
-const AppContainer = createAppContainer(AppNavigator);
+const AppContainer = createAppContainer(AppSwitch);
 
 export default class App extends React.Component {
   constructor() {
@@ -77,7 +146,7 @@ export default class App extends React.Component {
     return (
       <Provider store={store}>
         <PersistGate loading={<Loading />} persistor={persistor}>
-          <AppContainer uriPrefix={'rocketdonuts://'} />
+          <AppContainer />
         </PersistGate>
       </Provider>
     );

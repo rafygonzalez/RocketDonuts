@@ -19,7 +19,7 @@ class Welcome extends React.Component {
     const currentUser = () => firebase.auth().currentUser;
 
     if (currentUser()) {
-      this.GoTo('Home');
+      this.GoTo('Inicio');
     }
   }
   GoTo(to) {

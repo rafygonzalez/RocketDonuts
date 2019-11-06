@@ -132,7 +132,7 @@ class Order extends Component {
       payload: {orderArray: orderArray},
     });
     if (orderArray.length === 0) {
-      this.GoTo('Home');
+      this.GoTo('Inicio');
     }
   }
   DeleteOrder() {
@@ -153,7 +153,7 @@ class Order extends Component {
               type: 'SET_ORDER',
               payload: {orderArray: []},
             });
-            this.GoTo('Home');
+            this.GoTo('Inicio');
           },
         },
       ],

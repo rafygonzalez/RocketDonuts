@@ -84,7 +84,7 @@ class LoginWithPhone extends React.Component {
           this.currentUser().then(user => {
             this.getUserData(user.uid).then(exists => {
               if (exists) {
-                this.GoTo('Home');
+                this.GoTo('Inicio');
               } else {
                 this.GoTo('RegisterWithPhone');
                 auth().signOut();

@@ -31,7 +31,6 @@ class Home extends Component {
       selectedProduct: '',
     };
     this.onSelectedProduct = this.onSelectedProduct.bind(this);
-    this._pasEditUnmountFunction = this._pasEditUnmountFunction.bind(this);
     this.GoTo = this.GoTo.bind(this);
   }
   static navigationOptions = {
@@ -46,52 +45,12 @@ class Home extends Component {
       header_heigth: (39.61 * width) / 100,
     });
   };
-  _pasEditUnmountFunction() {
-    console.log('Executed');
-    if (this.props.currentScreen == 'Home') {
-      Alert.alert(
-        `¿Deseas cerrar sesión?`,
-        ` `,
-        [
-          {
-            text: 'No',
-            onPress: () => {},
-            style: 'cancel',
-          },
-          {
-            text: 'Si',
-            onPress: () => {
-              firebase.auth().signOut();
-              this.GoTo('Welcome');
-            },
-          },
-        ],
-        {cancelable: false},
-      );
-      return true;
-    } else if (this.props.currentScreen == 'ShoppingCart') {
-      console.log('Go to order from Home');
-      this.GoTo('Order');
-      return true;
-    } else if (this.props.currentScreen == 'Order') {
-      console.log('Go to Home from Home');
-      this.GoTo('Home');
-      return true;
-    } else {
-      console.log(this.props.currentScreen);
-      return false;
-    }
-  }
+
   componentDidMount() {
-    console.log('Mounted');
     this.getOrientation();
     Dimensions.addEventListener('change', () => {
       this.getOrientation();
     });
-    BackHandler.addEventListener(
-      'hardwareBackPress',
-      this._pasEditUnmountFunction,
-    );
   }
   componentWillUnmount() {
     console.log('Unmounted Home');
@@ -143,6 +102,7 @@ class Home extends Component {
             />
             <Product_Box
               imageBackground
+              onPress={() => this.props.navigation.openDrawer()}
               imgSrc={require('../../../assets/img/Donut.jpg')}
               item_name={'Promo Espacial'}
             />

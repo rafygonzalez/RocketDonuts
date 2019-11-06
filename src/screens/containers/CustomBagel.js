@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
   Alert,
+  BackHandler,
 } from 'react-native';
 import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
 import HeaderBanner from '../../sections/components/Header_Banner';
@@ -90,7 +91,7 @@ class CustomBagel extends Component {
     });
   }
   HeaderBanner_OnBack() {
-    this.GoTo('Home');
+    this.GoTo('Inicio');
   }
   onSelectedItem(name, type) {
     this.setState({customizeStep: this.state.customizeStep + 1});
@@ -132,7 +133,7 @@ class CustomBagel extends Component {
       coverDonut: '',
       toppingDonut: '',
     });
-    this.GoTo('Order');
+    this.GoTo('Mi Pedido');
   }
   CancelCustomization() {
     this.setState({
