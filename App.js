@@ -30,28 +30,33 @@ import ShoppingCart from './src/screens/containers/Shopping_Cart';
 //
 import Loading from './src/screens/containers/Splash';
 import firebase from 'react-native-firebase';
-const signOut = async () => {
-  return await firebase.auth().signOut();
+
+import HomeIcon from './assets/svg/Home.svg';
+const signOut = () => {
+  firebase.auth().signOut();
 };
 
-const DrawerWithLogoutButton = props => (
-  <ScrollView
-    contentContainerStyle={{
-      flex: 1,
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-    }}>
-    <SafeAreaView forceInset={{top: 'always', horizontal: 'never'}}>
-      <DrawerItems {...props} />
-    </SafeAreaView>
-    <TouchableOpacity>
-      <View style={stylesButton.item}>
-        <View style={stylesButton.iconContainer}></View>
-        <Text style={stylesButton.label}>Cerrar Sesión</Text>
-      </View>
-    </TouchableOpacity>
-  </ScrollView>
-);
+const DrawerWithLogoutButton = props => {
+  console.log(props);
+  return (
+    <ScrollView
+      contentContainerStyle={{
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+      }}>
+      <SafeAreaView forceInset={{top: 'always', horizontal: 'never'}}>
+        <DrawerItems {...props} />
+      </SafeAreaView>
+      <TouchableOpacity onPress={() => signOut()}>
+        <View style={stylesButton.item}>
+          <View style={stylesButton.iconContainer}></View>
+          <Text style={stylesButton.label}>Cerrar Sesión</Text>
+        </View>
+      </TouchableOpacity>
+    </ScrollView>
+  );
+};
 
 const stylesButton = StyleSheet.create({
   item: {
@@ -78,6 +83,9 @@ const MainDrawer = createDrawerNavigator(
   {
     Inicio: {
       screen: HomeScreen,
+      navigationOptions: {
+        drawerIcon: () => <HomeIcon width={32} height={32} />,
+      },
     },
     'Mi Pedido': {
       screen: OrderScreen,
