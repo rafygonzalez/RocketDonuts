@@ -53,7 +53,6 @@ class Home extends Component {
     });
   }
   componentWillUnmount() {
-    console.log('Unmounted Home');
     Dimensions.removeEventListener('change');
   }
   onSelectedProduct(name) {
@@ -79,6 +78,7 @@ class Home extends Component {
           <HeaderBanner
             withTitle
             onPress={this.HeaderBanner_OnBack}
+            onPressMenu={() => this.props.navigation.toggleDrawer()}
             back_button={false}
           />
           <View style={[styles.stars_container, {top: header_heigth}]}>
@@ -102,7 +102,7 @@ class Home extends Component {
             />
             <Product_Box
               imageBackground
-              onPress={() => this.props.navigation.openDrawer()}
+              onPress={() => {}}
               imgSrc={require('../../../assets/img/Donut.jpg')}
               item_name={'Promo Espacial'}
             />

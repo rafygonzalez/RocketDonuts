@@ -60,9 +60,7 @@ class Api {
       const firebaseUserCredential = await firebase
         .auth()
         .signInWithCredential(credential);
-      GoogleSignin.getCurrentUser().then(result => {
-        console.log(result);
-      });
+      GoogleSignin.getCurrentUser().then(result => {});
     } catch (e) {
       console.error(e);
     }

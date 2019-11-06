@@ -176,7 +176,11 @@ class Order extends Component {
         <ScrollView
           persistentScrollbar={true}
           contentContainerStyle={{flexGrow: 1}}>
-          <HeaderBanner withOrder onPress={this.HeaderBanner_OnBack} />
+          <HeaderBanner
+            withOrder
+            onPress={this.HeaderBanner_OnBack}
+            onPressMenu={() => this.props.navigation.toggleDrawer()}
+          />
           <View style={[styles.stars_container, {top: header_heigth}]}>
             <Estrellas
               width={screen_width}
@@ -199,16 +203,26 @@ class Order extends Component {
             })}
           </View>
 
-          <Divider />
+          {this.state.order.length > 0 && <Divider />}
 
           <View style={styles.title_container_add_more}>
-            <Text
-              style={[
-                styles.title_add_more,
-                {fontSize: this.state.title_add_more_fontsize},
-              ]}>
-              ¿Deseas algo mas?
-            </Text>
+            {this.state.order.length > 0 ? (
+              <Text
+                style={[
+                  styles.title_add_more,
+                  {fontSize: this.state.title_add_more_fontsize},
+                ]}>
+                ¿Deseas algo mas?
+              </Text>
+            ) : (
+              <Text
+                style={[
+                  styles.title_add_more,
+                  {fontSize: this.state.title_add_more_fontsize},
+                ]}>
+                No has hecho tu pedido, ¿Deseas algo?
+              </Text>
+            )}
           </View>
           <View
             style={{
@@ -232,35 +246,36 @@ class Order extends Component {
             />
           </View>
 
-          <Divider />
-
-          <View
-            style={{
-              flex: 2,
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-              marginVertical: 16,
-              marginHorizontal: '9%',
-              width: '82%',
-            }}>
-            <Button
-              title="Continuar"
-              button_style="primary"
-              onPress={() => {
-                this.gotoShoppingCart();
-              }}
-            />
-            <Button
-              title="Cancelar Pedido"
-              button_style="simple"
-              onPress={() => {
-                this.DeleteOrder();
-              }}
-            />
-            <TouchableOpacity style={{marginTop: '5%'}}>
-              <Text>Términos y condiciones | Ayuda</Text>
-            </TouchableOpacity>
-          </View>
+          {this.state.order.length > 0 && <Divider />}
+          {this.state.order.length > 0 && (
+            <View
+              style={{
+                flex: 2,
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+                marginVertical: 16,
+                marginHorizontal: '9%',
+                width: '82%',
+              }}>
+              <Button
+                title="Continuar"
+                button_style="primary"
+                onPress={() => {
+                  this.gotoShoppingCart();
+                }}
+              />
+              <Button
+                title="Cancelar Pedido"
+                button_style="simple"
+                onPress={() => {
+                  this.DeleteOrder();
+                }}
+              />
+              <TouchableOpacity style={{marginTop: '5%'}}>
+                <Text>Términos y condiciones | Ayuda</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </ScrollView>
       </SafeAreaView>
     );
@@ -269,6 +284,7 @@ class Order extends Component {
 const styles = StyleSheet.create({
   title_add_more: {
     fontFamily: 'Rockwell',
+    textAlign: 'center',
   },
   title_container_add_more: {
     justifyContent: 'center',

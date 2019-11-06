@@ -32,12 +32,13 @@ import Loading from './src/screens/containers/Splash';
 import firebase from 'react-native-firebase';
 
 import HomeIcon from './assets/svg/Home.svg';
+import OrderIcon from './assets/svg/Order.svg';
+import SignOutIcon from './assets/svg/sign-out-option.svg';
 const signOut = () => {
   firebase.auth().signOut();
 };
 
 const DrawerWithLogoutButton = props => {
-  console.log(props);
   return (
     <ScrollView
       contentContainerStyle={{
@@ -50,7 +51,9 @@ const DrawerWithLogoutButton = props => {
       </SafeAreaView>
       <TouchableOpacity onPress={() => signOut()}>
         <View style={stylesButton.item}>
-          <View style={stylesButton.iconContainer}></View>
+          <View style={stylesButton.iconContainer}>
+            <SignOutIcon width={24} height={24} />
+          </View>
           <Text style={stylesButton.label}>Cerrar Sesión</Text>
         </View>
       </TouchableOpacity>
@@ -84,11 +87,14 @@ const MainDrawer = createDrawerNavigator(
     Inicio: {
       screen: HomeScreen,
       navigationOptions: {
-        drawerIcon: () => <HomeIcon width={32} height={32} />,
+        drawerIcon: () => <HomeIcon width={24} height={24} />,
       },
     },
     'Mi Pedido': {
       screen: OrderScreen,
+      navigationOptions: {
+        drawerIcon: () => <OrderIcon width={24} height={24} />,
+      },
     },
   },
   {

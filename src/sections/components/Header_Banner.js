@@ -7,6 +7,7 @@ import {
   Text,
 } from 'react-native';
 import BackArrowSvg from '../../../assets/svg/BackArrow.svg';
+import MenuIcon from '../../../assets/svg/MenuIcon.svg';
 import HeaderBannerSvg from '../../../assets/svg/Header_Banner.svg';
 import HeaderBannerWithTitle from '../../../assets/svg/Header_Banner_With_Title.svg';
 import HeaderBannerWithTitleOrder from '../../../assets/svg/Header_Banner_With_Title_Order.svg';
@@ -64,9 +65,13 @@ class HeaderBanner extends React.Component {
           />
         )}
 
-        {props.back_button && (
+        {props.back_button ? (
           <TouchableOpacity style={styles.Touchable} onPress={props.onPress}>
             <BackArrowSvg width={24} height={24} />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.Menu} onPress={props.onPressMenu}>
+            <MenuIcon color={'#fff'} width={24} height={24} />
           </TouchableOpacity>
         )}
       </View>
@@ -75,6 +80,13 @@ class HeaderBanner extends React.Component {
 }
 const styles = StyleSheet.create({
   Touchable: {
+    flex: 1,
+    flexDirection: 'row',
+    position: 'absolute',
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+  },
+  Menu: {
     flex: 1,
     flexDirection: 'row',
     position: 'absolute',

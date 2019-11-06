@@ -119,7 +119,6 @@ class LoginWithPhone extends React.Component {
     }
   }
   GoTo(to) {
-    console.log(to);
     this.props.dispatch({
       type: 'CURRENT_SCREEN',
       payload: to,

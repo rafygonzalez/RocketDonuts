@@ -71,7 +71,9 @@ class ShoppingCart extends Component {
   }
 
   DeleteOrder() {}
-  HeaderBanner_OnBack() {}
+  HeaderBanner_OnBack() {
+    this.props.navigation.goBack();
+  }
 
   getDonutDescription(type, topping, cover, filling) {
     if (type == 'Dona') {
@@ -103,7 +105,11 @@ class ShoppingCart extends Component {
     return (
       <SafeAreaView style={styles.area_container}>
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
-          <HeaderBanner withOrder onPress={this.HeaderBanner_OnBack} />
+          <HeaderBanner
+            withOrder
+            onPress={this.HeaderBanner_OnBack}
+            back_button
+          />
           <View style={[styles.stars_container, {top: header_heigth}]}>
             <Estrellas
               width={screen_width}
