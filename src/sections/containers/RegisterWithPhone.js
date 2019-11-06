@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Dimensions, View, Alert} from 'react-native';
-import First_part_of_register from '../components/First_part_of_Register_With_Email';
-import Second_part_of_register from '../components/Second_part_of_Register_With_Email';
+import Register_With_Email from '../components/Register_With_Email';
+import Verify_Phone_Number from '../components/Verify_Phone_Number';
 import Register_finished from '../components/Register_Finished';
 import validator from 'validator';
 import firebase from 'react-native-firebase';
@@ -67,6 +67,7 @@ class RegisterWithPhone extends React.Component {
     const {
       name,
       lastname,
+      email,
       verificationCode,
       birthDate,
       phoneNumber,
@@ -87,6 +88,13 @@ class RegisterWithPhone extends React.Component {
           Alert.alert(
             `Fecha de nacimiento`,
             `Selecciona tu fecha de nacimiento correctamente`,
+            [{text: 'OK', onPress: () => {}}],
+            {cancelable: false},
+          );
+        } else if (!validator.isEmail(email)) {
+          Alert.alert(
+            `Correo invalido`,
+            `Debe ingresar un correo valido, ej: example@gmail.com`,
             [{text: 'OK', onPress: () => {}}],
             {cancelable: false},
           );
@@ -197,6 +205,7 @@ class RegisterWithPhone extends React.Component {
     const {
       name,
       lastname,
+      email,
       birthDate,
       country,
       state,
@@ -209,10 +218,11 @@ class RegisterWithPhone extends React.Component {
     return (
       <View style={{flex: 1, backgroundColor: '#ECEDF2'}}>
         {step == 1 ? (
-          <First_part_of_register
+          <Register_With_Email
             Global_OnChange={this.Global_OnChange}
             name={name}
             lastname={lastname}
+            email={email}
             birthDate={birthDate}
             country={country}
             state={state}
@@ -225,7 +235,7 @@ class RegisterWithPhone extends React.Component {
             steps={steps}
           />
         ) : step == 2 ? (
-          <Second_part_of_register
+          <Verify_Phone_Number
             HeaderBanner_OnBack={() => this.PreviousStep()}
             Global_OnChange={this.Global_OnChange}
             styles={styles}

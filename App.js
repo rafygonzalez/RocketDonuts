@@ -34,6 +34,7 @@ import firebase from 'react-native-firebase';
 import HomeIcon from './assets/svg/Home.svg';
 import OrderIcon from './assets/svg/Order.svg';
 import SignOutIcon from './assets/svg/sign-out-option.svg';
+import HeaderBanner from './src/sections/components/Header_Banner';
 const signOut = () => {
   firebase.auth().signOut();
 };
@@ -47,6 +48,7 @@ const DrawerWithLogoutButton = props => {
         justifyContent: 'space-between',
       }}>
       <SafeAreaView forceInset={{top: 'always', horizontal: 'never'}}>
+        <HeaderBanner menu back_button={false} />
         <DrawerItems {...props} />
       </SafeAreaView>
       <TouchableOpacity onPress={() => signOut()}>

@@ -45,6 +45,7 @@ class CustomTextInput extends Component {
 }
 
 const styles = StyleSheet.create({
+  container: {},
   title: {
     fontFamily: 'Poppins-Regular',
     color: '#76799E',

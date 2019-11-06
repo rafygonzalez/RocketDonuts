@@ -51,6 +51,11 @@ class Home extends Component {
     Dimensions.addEventListener('change', () => {
       this.getOrientation();
     });
+    firebase.auth().onAuthStateChanged(user => {
+      if (!user) {
+        this.GoTo('Welcome');
+      }
+    });
   }
   componentWillUnmount() {
     Dimensions.removeEventListener('change');
@@ -80,6 +85,7 @@ class Home extends Component {
             onPress={this.HeaderBanner_OnBack}
             onPressMenu={() => this.props.navigation.toggleDrawer()}
             back_button={false}
+            menu_button
           />
           <View style={[styles.stars_container, {top: header_heigth}]}>
             <Estrellas

@@ -180,6 +180,7 @@ class Order extends Component {
             withOrder
             onPress={this.HeaderBanner_OnBack}
             onPressMenu={() => this.props.navigation.toggleDrawer()}
+            menu_button
           />
           <View style={[styles.stars_container, {top: header_heigth}]}>
             <Estrellas
