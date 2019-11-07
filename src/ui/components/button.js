@@ -13,6 +13,7 @@ class CustomButton extends React.Component {
     this.state = {
       button_width: 0,
       buttonSmall_width: 0,
+      buttonMedium_width: 0,
       button_height: 0,
       fontSize: 0,
       button_height_small: 0,
@@ -23,9 +24,11 @@ class CustomButton extends React.Component {
     var {width} = Dimensions.get('window');
     var buttonw_calc = (76.81 * width) / 100;
     var buttonwSmall_calc = (9.73 * width) / 100;
+    var buttonwMedium_calc = (18 * width) / 100;
     this.setState({
       button_width: buttonw_calc,
       buttonSmall_width: buttonwSmall_calc,
+      buttonMedium_width: buttonwMedium_calc,
       button_height: (16 * buttonw_calc) / 100,
       button_height_small: (12 * buttonw_calc) / 100,
       fontSize: (5 * width) / 100,
@@ -58,18 +61,23 @@ class CustomButton extends React.Component {
           props.extra_style,
           {
             maxHeight:
-              this.props.size == 'small'
+              this.props.size == 'small' || this.props.size == 'medium'
                 ? this.state.button_height_small
                 : this.state.button_height,
             minHeight:
-              this.props.size == 'small'
+              this.props.size == 'small' || this.props.size == 'medium'
                 ? this.state.button_height_small
                 : this.state.button_height,
           },
-          this.props.size == 'small' && {
-            maxWidth: this.state.buttonSmall_width,
-            minWidth: this.state.buttonSmall_width,
-          },
+          this.props.size == 'small'
+            ? {
+                maxWidth: this.state.buttonSmall_width,
+                minWidth: this.state.buttonSmall_width,
+              }
+            : this.props.size == 'medium' && {
+                maxWidth: this.state.buttonMedium_width,
+                minWidth: this.state.buttonMedium_width,
+              },
         ]}
         onPress={props.onPress}
         underlayColor="#fff">

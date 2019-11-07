@@ -27,6 +27,8 @@ import OrderScreen from './src/screens/containers/Order';
 import CustomDonut from './src/screens/containers/CustomDonut';
 import CustomBagel from './src/screens/containers/CustomBagel';
 import ShoppingCart from './src/screens/containers/Shopping_Cart';
+
+import ProfileScreen from './src/screens/containers/Profile';
 //
 import Loading from './src/screens/containers/Splash';
 import firebase from 'react-native-firebase';
@@ -97,6 +99,9 @@ const MainDrawer = createDrawerNavigator(
       navigationOptions: {
         drawerIcon: () => <OrderIcon width={24} height={24} />,
       },
+    },
+    'Mi Perfil': {
+      screen: ProfileScreen,
     },
   },
   {
