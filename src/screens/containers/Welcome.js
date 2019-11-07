@@ -6,10 +6,13 @@ import Logo from '../../../assets/svg/LogoH.svg';
 import CustomButton from '../../ui/components/button';
 import firebase from 'react-native-firebase';
 import {connect} from 'react-redux';
+import Loading from './Splash';
 class Welcome extends React.Component {
   constructor(props) {
     super(props);
-
+    this.state = {
+      loading: true,
+    };
     this.GoTo = this.GoTo.bind(this);
   }
   static navigationOptions = {
@@ -17,9 +20,28 @@ class Welcome extends React.Component {
   };
   componentDidMount() {
     const currentUser = () => firebase.auth().currentUser;
-
-    if (currentUser()) {
-      this.GoTo('Inicio');
+    const userData = currentUser();
+    if (userData) {
+      firebase
+        .firestore()
+        .collection('Users')
+        .doc(`${userData.uid}`)
+        .get()
+        .then(result => {
+          if (result.exists) {
+            this.props.dispatch({
+              type: 'CURRENT_USER',
+              payload: {userData: result.data()},
+            });
+            this.GoTo('Inicio');
+          }
+          this.setState({loading: false});
+        })
+        .catch(err => {
+          this.setState({loading: false});
+        });
+    }else{
+      this.setState({loading: false});
     }
   }
   GoTo(to) {
@@ -30,36 +52,40 @@ class Welcome extends React.Component {
     this.props.navigation.navigate(to);
   }
   render() {
-    return (
-      <View style={styles.background}>
-        <Estrellas width={386} height={528} />
-        <View style={styles.container}>
-          <Logo width={244} height={84} />
-          <Text style={styles.description}>
-            Los pedidos solo están disponibles de Miércoles a Sábado, hasta las
-            11:00 a.m. Puedes elegir tu hora de entrega desde 1:00 p.m. a 5:00
-            p.m.
-          </Text>
+    if (this.state.loading) {
+      return <Loading />;
+    } else {
+      return (
+        <View style={styles.background}>
+          <Estrellas width={386} height={528} />
+          <View style={styles.container}>
+            <Logo width={244} height={84} />
+            <Text style={styles.description}>
+              Los pedidos solo están disponibles de Miércoles a Sábado, hasta
+              las 11:00 a.m. Puedes elegir tu hora de entrega desde 1:00 p.m. a
+              5:00 p.m.
+            </Text>
 
-          <CustomButton
-            title="Registrarse"
-            button_style="primary"
-            onPress={() => {
-              this.GoTo('RegisterWithPhone');
-            }}
-            extra_style={styles.buttons}
-          />
-          <CustomButton
-            title="Iniciar Sesión"
-            onPress={() => {
-              this.GoTo('LoginWithPhone');
-            }}
-            simple
-            extra_style={styles.buttons}
-          />
+            <CustomButton
+              title="Registrarse"
+              button_style="primary"
+              onPress={() => {
+                this.GoTo('RegisterWithPhone');
+              }}
+              extra_style={styles.buttons}
+            />
+            <CustomButton
+              title="Iniciar Sesión"
+              onPress={() => {
+                this.GoTo('LoginWithPhone');
+              }}
+              simple
+              extra_style={styles.buttons}
+            />
+          </View>
         </View>
-      </View>
-    );
+      );
+    }
   }
 }
 const styles = StyleSheet.create({
@@ -89,6 +115,6 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = reducers => {
-  return reducers.globalReducer;
+  return {User: reducers.signReducer, Global: reducers.globalReducer};
 };
 export default connect(mapStateToProps)(Welcome);

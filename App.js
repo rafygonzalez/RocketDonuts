@@ -37,6 +37,7 @@ import HomeIcon from './assets/svg/Home.svg';
 import OrderIcon from './assets/svg/Order.svg';
 import SignOutIcon from './assets/svg/sign-out-option.svg';
 import HeaderBanner from './src/sections/components/Header_Banner';
+
 const signOut = () => {
   firebase.auth().signOut();
 };
@@ -155,13 +156,7 @@ export default class App extends React.Component {
     super();
     this.state = {};
   }
-
-  async componentDidMount() {
-    // TODO: You: Do firebase things
-    // const { user } = await firebase.auth().signInAnonymously();
-    // console.warn('User -> ', user.toJSON());
-    // await firebase.analytics().logEvent('foo', { bar: '123'});
-  }
+  componentDidMount() {}
 
   render() {
     return (

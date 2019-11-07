@@ -16,6 +16,7 @@
   "dependencies": {
     "@react-native-community/async-storage": "^1.6.2",
     "@react-native-community/google-signin": "^3.0.3",
+    "@react-native-mapbox-gl/maps": "^7.0.8",
     "jetifier": "^1.6.4",
     "react": "16.8.6",
     "react-native": "0.60.5",

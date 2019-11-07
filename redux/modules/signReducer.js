@@ -3,7 +3,7 @@ export const INCREMENT = 'counter/INCREMENT';
 export const DECREMENT_REQUESTED = 'counter/DECREMENT_REQUESTED';
 export const DECREMENT = 'counter/DECREMENT';
 
-export const SET_USER_DATA = 'signUpWithEmail/SET_USER_DATA';
+export const SET_USER_DATA = 'CURRENT_USER';
 
 const initialState = {
   count: 0,
