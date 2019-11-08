@@ -82,9 +82,7 @@ class LoginWithPhone extends React.Component {
       this.phoneNumberValidate()
         .then(() => {
           this.currentUser().then(user => {
-            console.log(user);
             this.getUserData(user.uid).then(exists => {
-              console.log(exists);
               if (exists) {
                 this.GoTo('Inicio');
               } else {

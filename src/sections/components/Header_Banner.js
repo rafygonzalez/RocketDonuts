@@ -66,10 +66,10 @@ class HeaderBanner extends React.Component {
           />
         ) : props.menu ? (
           <HeaderBannerSvg
-            width={this.state.header_width_small}
-            height={this.state.header_heigth_small}
+            width={290}
+            height={125}
             preserveAspectRatio="xMidYMid meet"
-            viewBox={'0 0 414 180'}
+            viewBox={'10 0 414 180'}
           />
         ) : (
           <HeaderBannerSvg

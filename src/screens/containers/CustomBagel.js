@@ -169,9 +169,7 @@ class CustomBagel extends Component {
 
     return (
       <SafeAreaView style={styles.area_container}>
-        <ScrollView
-          persistentScrollbar={true}
-          contentContainerStyle={{flexGrow: 1}}>
+        <View style={{flex: 1, flexGrow: 1}}>
           <HeaderBanner
             withTitle
             onPress={this.HeaderBanner_OnBack}
@@ -184,7 +182,7 @@ class CustomBagel extends Component {
               preserveAspectRatio="xMidYMid meet"
             />
           </View>
-          <View>
+          <ScrollView ref="scrollView">
             <View style={styles.item_box_container}>
               <Item_Box item={RosquillaSola} item_name={'Rosquilla'} />
               {customizeStep >= 2 && (
@@ -200,7 +198,7 @@ class CustomBagel extends Component {
                 />
               )}
             </View>
-            <View>
+            <View style={{flex: 1}}>
               {customizeStep == 1 ? (
                 <View>
                   <View style={styles.title_container_add_more}>
@@ -257,10 +255,10 @@ class CustomBagel extends Component {
                 customizeStep == 3 && (
                   <View
                     style={{
-                      position: 'relative',
-                      width: '90%',
+                      width: '85%',
                       marginTop: '2%',
-                      marginHorizontal: '5%',
+                      alignItems: 'center',
+                      marginLeft: '7.5%',
                     }}>
                     <Button
                       title="Finalizar"
@@ -280,20 +278,8 @@ class CustomBagel extends Component {
                 )
               )}
             </View>
-          </View>
-          <View
-            style={{
-              flex: 1,
-              position: 'relative',
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-              marginVertical: 8,
-            }}>
-            <TouchableOpacity>
-              <Text>Términos y condiciones | Ayuda</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
+          </ScrollView>
+        </View>
       </SafeAreaView>
     );
   }

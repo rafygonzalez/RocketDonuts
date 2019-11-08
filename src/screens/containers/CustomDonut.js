@@ -100,6 +100,7 @@ class CustomDonut extends Component {
     this.GoTo('Inicio');
   }
   onSelectedItem(name, type) {
+    this.refs.scrollView.scrollTo({x: 0, y: 0, animated: true});
     this.setState({customizeStep: this.state.customizeStep + 1});
     switch (type) {
       case 'filling':
@@ -179,9 +180,7 @@ class CustomDonut extends Component {
 
     return (
       <SafeAreaView style={styles.area_container}>
-        <ScrollView
-          persistentScrollbar={true}
-          contentContainerStyle={{flexGrow: 1}}>
+        <View style={{flex: 1, flexGrow: 1}}>
           <HeaderBanner
             withTitle
             onPress={this.HeaderBanner_OnBack}
@@ -194,7 +193,7 @@ class CustomDonut extends Component {
               preserveAspectRatio="xMidYMid meet"
             />
           </View>
-          <View>
+          <ScrollView ref="scrollView">
             <View style={styles.item_box_container}>
               <Item_Box item={DonaSola} item_name={'Dona'} />
               {customizeStep >= 2 && (
@@ -216,7 +215,8 @@ class CustomDonut extends Component {
                 />
               )}
             </View>
-            <View>
+
+            <View style={{flex: 1}}>
               {customizeStep == 1 ? (
                 <View>
                   <View style={styles.title_container_add_more}>
@@ -228,6 +228,7 @@ class CustomDonut extends Component {
                       Elige un relleno
                     </Text>
                   </View>
+
                   <View style={styles.products_container}>
                     {Rellenos.map((Relleno, index) => {
                       return (
@@ -299,10 +300,10 @@ class CustomDonut extends Component {
                 customizeStep == 4 && (
                   <View
                     style={{
-                      position: 'relative',
-                      width: '90%',
+                      width: '85%',
                       marginTop: '2%',
-                      marginHorizontal: '5%',
+                      alignItems: 'center',
+                      marginLeft: '7.5%',
                     }}>
                     <Button
                       title="Finalizar"
@@ -322,20 +323,8 @@ class CustomDonut extends Component {
                 )
               )}
             </View>
-          </View>
-          <View
-            style={{
-              flex: 1,
-              position: 'relative',
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-              marginVertical: 8,
-            }}>
-            <TouchableOpacity>
-              <Text>Términos y condiciones | Ayuda</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
+          </ScrollView>
+        </View>
       </SafeAreaView>
     );
   }
@@ -361,9 +350,10 @@ const styles = StyleSheet.create({
     alignContent: 'stretch',
   },
   products_container: {
+    flex: 1,
     flexWrap: 'wrap',
     flexDirection: 'row',
-    marginVertical: 8,
+    marginBottom: '10%',
     marginHorizontal: 8,
     justifyContent: 'center',
     alignItems: 'center',
@@ -371,8 +361,6 @@ const styles = StyleSheet.create({
   },
   background: {
     backgroundColor: '#313045',
-
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },

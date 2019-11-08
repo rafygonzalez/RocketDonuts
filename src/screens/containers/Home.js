@@ -68,10 +68,6 @@ class Home extends Component {
     }
   }
   GoTo(to) {
-    this.props.dispatch({
-      type: 'CURRENT_SCREEN',
-      payload: to,
-    });
     this.props.navigation.navigate(to);
   }
   render() {
@@ -109,7 +105,7 @@ class Home extends Component {
             <Product_Box
               imageBackground
               onPress={() => {}}
-              imgSrc={require('../../../assets/img/Donut.jpg')}
+              imgSrc={require('../../../assets/img/Promo-Espacial.png')}
               item_name={'Promo Espacial'}
             />
           </View>

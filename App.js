@@ -37,7 +37,7 @@ import HomeIcon from './assets/svg/Home.svg';
 import OrderIcon from './assets/svg/Order.svg';
 import SignOutIcon from './assets/svg/sign-out-option.svg';
 import HeaderBanner from './src/sections/components/Header_Banner';
-
+import AccountCircle from './assets/svg/account_circle.svg';
 const signOut = () => {
   firebase.auth().signOut();
 };
@@ -103,6 +103,9 @@ const MainDrawer = createDrawerNavigator(
     },
     'Mi Perfil': {
       screen: ProfileScreen,
+      navigationOptions: {
+        drawerIcon: () => <AccountCircle width={24} height={24} />,
+      },
     },
   },
   {

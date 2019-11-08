@@ -28,27 +28,20 @@ class Welcome extends React.Component {
         .doc(`${userData.uid}`)
         .get()
         .then(result => {
+          this.setState({loading: false});
           if (result.exists) {
-            this.props.dispatch({
-              type: 'CURRENT_USER',
-              payload: {userData: result.data()},
-            });
             this.GoTo('Inicio');
           }
-          this.setState({loading: false});
         })
         .catch(err => {
           this.setState({loading: false});
         });
-    }else{
+    } else {
       this.setState({loading: false});
     }
   }
+  componentWillUnmount() {}
   GoTo(to) {
-    this.props.dispatch({
-      type: 'CURRENT_SCREEN',
-      payload: to,
-    });
     this.props.navigation.navigate(to);
   }
   render() {
