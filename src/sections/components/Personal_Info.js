@@ -32,33 +32,38 @@ import HeaderBanner from './Header_Banner';
         />
 
         />*/
-export default Register_With_Email = props => (
+export default PersonalInfo = props => (
   <SafeAreaView style={props.styles.area_container}>
     <ScrollView style={props.styles.info_container} persistentScrollbar={true}>
-      <HeaderBanner onPress={props.HeaderBanner_OnBack} />
+      <HeaderBanner onPress={props.HeaderBanner_OnBack} back_button={true}/>
       <View style={{marginHorizontal: 16}}>
         <Text style={props.styles.description}>Información Personal</Text>
         <View style={{position: 'absolute'}}>
           <Estrellas width={386} height={528} />
         </View>
-  
-        <TextInput
-          title="Correo Electrónico"
-          onChangeText={text => props.Global_OnChange(text, 'email')}
-          value={props.email}
-        />
-        <TextInput
-          title="Contraseña"
-          onChangeText={text => props.Global_OnChange(text, 'password')}
-          value={props.pass}
-          secureTextEntry
-        />
-        <TextInput
-          title="Repite tu contraseña"
-          onChangeText={text => props.Global_OnChange(text, 'repassword')}
-          value={props.repass}
-          secureTextEntry
-        />
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <View style={{width: '48%'}}>
+            <TextInput
+              title="Nombre"
+              onChangeText={text => props.Global_OnChange(text, 'name')}
+              value={props.name}
+              autoCompleteType="username"
+            />
+          </View>
+          <View style={{width: '48%'}}>
+            <TextInput
+              title="Apellido"
+              onChangeText={text => props.Global_OnChange(text, 'lastname')}
+              value={props.lastname}
+              autoCompleteType="username"
+            />
+          </View>
+        </View>
+        <DatePicker value={props.birthDate} setBirthDate={props.setBirthDate} />
         <Button
           onPress={() => props.NextStep()}
           title={`Siguiente (${props.step}/${props.steps})`}

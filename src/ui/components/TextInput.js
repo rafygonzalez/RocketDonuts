@@ -33,7 +33,7 @@ class CustomTextInput extends Component {
           {props.title}
         </Text>
         <TextInput
-          style={styles.textInput_simple}
+          style={[styles.textInput_simple,{fontSize: title_font_size}]}
           onChangeText={props.onChangeText}
           value={props.value}
           autoCompleteType={props.autoCompleteType}

@@ -1,12 +1,14 @@
 import React from 'react';
 import {StyleSheet, Dimensions, View, Alert} from 'react-native';
 import Register_With_Email from '../components/Register_With_Email';
+import PersonalInfo from '../components/Personal_Info';
 import Verify_Phone_Number from '../components/Verify_Phone_Number';
 import Register_finished from '../components/Register_Finished';
 import validator from 'validator';
 import firebase from 'react-native-firebase';
 import API from '../../firebase/api';
 import {connect} from 'react-redux';
+
 var {width} = Dimensions.get('window');
 var box_count = 2.2;
 var box_width = width / box_count;
@@ -16,21 +18,23 @@ class RegisterWithPhone extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      lastname: '',
-      email: '',
-      password: '',
-      repassword: '',
+      name: 'Rafael',
+      lastname: 'Gonzalez',
+      email: 'rafygonzalez089@gmail.com',
+      password: '123456',
+      repassword: '123456',
       birthDate: '',
       country: '',
       state: '',
       city: '',
-      phoneNumber: '',
-      verificationCode: '',
+      phoneNumber: '+584141936170',
+      verificationCode: '123456',
       userid: '',
       step: 1,
-      steps: 2,
+      steps: 3,
       confirmResult: null,
+      PhoneAuthVerificationId: '',
+      PhoneAuthVerificationCode: '',
     };
     this.Global_OnChange = this.Global_OnChange.bind(this);
     this.pickerOnChangeValue = this.pickerOnChangeValue.bind(this);
@@ -38,7 +42,6 @@ class RegisterWithPhone extends React.Component {
     this.PreviousStep = this.PreviousStep.bind(this);
     this.setBirthDate = this.setBirthDate.bind(this);
 
-    this.phoneNumberValidate = this.phoneNumberValidate.bind(this);
     this.phoneNumberSendCode = this.phoneNumberSendCode.bind(this);
 
     this.GoTo = this.GoTo.bind(this);
@@ -68,15 +71,44 @@ class RegisterWithPhone extends React.Component {
       name,
       lastname,
       email,
+      password,
+      repassword,
       verificationCode,
       birthDate,
       phoneNumber,
       country,
       state,
       city,
+      PhoneAuthProviderCredential,
     } = this.state;
     switch (this.state.step) {
       case 1:
+        if (!validator.isEmail(email)) {
+          Alert.alert(
+            `Correo invalido`,
+            `Debe ingresar un correo valido, ej: example@gmail.com`,
+            [{text: 'OK', onPress: () => {}}],
+            {cancelable: false},
+          );
+        } else if (validator.isEmpty(password) || password.length < 6) {
+          Alert.alert(
+            `Contraseña`,
+            `Ingrese una contraseña correcta, debe tener al menos 6 dígitos`,
+            [{text: 'OK', onPress: () => {}}],
+            {cancelable: false},
+          );
+        } else if (validator.isEmpty(repassword) || password !== repassword) {
+          Alert.alert(
+            `Repite tu contraseña`,
+            `Las contraseñas no coinciden.`,
+            [{text: 'OK', onPress: () => {}}],
+            {cancelable: false},
+          );
+        } else {
+          this.setState({step: this.state.step + 1});
+        }
+        break;
+      case 2:
         if (validator.isEmpty(name) || validator.isEmpty(lastname)) {
           Alert.alert(
             `Campos Vacios`,
@@ -91,18 +123,11 @@ class RegisterWithPhone extends React.Component {
             [{text: 'OK', onPress: () => {}}],
             {cancelable: false},
           );
-        } else if (!validator.isEmail(email)) {
-          Alert.alert(
-            `Correo invalido`,
-            `Debe ingresar un correo valido, ej: example@gmail.com`,
-            [{text: 'OK', onPress: () => {}}],
-            {cancelable: false},
-          );
         } else {
           this.setState({step: this.state.step + 1});
         }
         break;
-      case 2:
+      case 3:
         if (validator.isEmpty(phoneNumber)) {
           Alert.alert(
             `Número de teléfono`,
@@ -135,39 +160,20 @@ class RegisterWithPhone extends React.Component {
             {cancelable: false},
           );
         } else {
-          this.phoneNumberValidate()
-            .then(user => {
-              Alert.alert(
-                `¡Excelente!`,
-                `Hemos verificado tu número telefónico`,
-                [
-                  {
-                    text: 'OK',
-                    onPress: () => {
-                      API.createUser(
-                        name,
-                        lastname,
-                        birthDate,
-                        country,
-                        state,
-                        city,
-                        phoneNumber,
-                      );
-                      this.setState({step: this.state.step + 1});
-                    },
-                  },
-                ],
-                {cancelable: false},
-              );
-            })
-            .catch(error => {
-              Alert.alert(
-                `Código de Verificación`,
-                `Tenemos un error, ${error}`,
-                [{text: 'OK', onPress: () => {}}],
-                {cancelable: false},
-              );
-            });
+          const credential = firebase.auth.PhoneAuthProvider.credential(
+            this.state.PhoneAuthVerificationId,
+            this.state.verificationCode,
+          );
+          API.createUser(
+            name,
+            email,
+            password,
+            lastname,
+            birthDate,
+            phoneNumber,
+            credential,
+          );
+          this.setState({step: this.state.step + 1});
         }
         break;
     }
@@ -178,27 +184,16 @@ class RegisterWithPhone extends React.Component {
   phoneNumberSendCode() {
     firebase
       .auth()
-      .signInWithPhoneNumber(this.state.phoneNumber)
-      .then(confirmResult => {
-        this.setState({confirmResult});
+      .verifyPhoneNumber(this.state.phoneNumber)
+      .then(result => {
         Alert.alert(
           `Código de Verificación`,
           `Hemos enviado un código de verificación a tu número telefónico`,
           [{text: 'OK', onPress: () => {}}],
           {cancelable: false},
         );
-      })
-      .catch(error => {
-        Alert.alert(
-          `Código de Verificación`,
-          `Tenemos un error, ${error}.`,
-          [{text: 'OK', onPress: () => {}}],
-          {cancelable: false},
-        );
+        this.setState({PhoneAuthVerificationId: result.verificationId});
       });
-  }
-  async phoneNumberValidate() {
-    await this.state.confirmResult.confirm(`${this.state.verificationCode}`);
   }
 
   render() {
@@ -211,6 +206,8 @@ class RegisterWithPhone extends React.Component {
       state,
       city,
       phoneNumber,
+      password,
+      repassword,
       verificationCode,
       step,
       steps,
@@ -227,6 +224,8 @@ class RegisterWithPhone extends React.Component {
             country={country}
             state={state}
             city={city}
+            pass={password}
+            repass={repassword}
             pickerOnChangeValue={this.pickerOnChangeValue}
             setBirthDate={this.setBirthDate}
             styles={styles}
@@ -235,6 +234,19 @@ class RegisterWithPhone extends React.Component {
             steps={steps}
           />
         ) : step == 2 ? (
+          <PersonalInfo
+            HeaderBanner_OnBack={() => this.PreviousStep()}
+            Global_OnChange={this.Global_OnChange}
+            name={name}
+            lastname={lastname}
+            birthDate={birthDate}
+            setBirthDate={this.setBirthDate}
+            styles={styles}
+            NextStep={this.NextStep}
+            step={step}
+            steps={steps}
+          />
+        ) : step == 3 ? (
           <Verify_Phone_Number
             HeaderBanner_OnBack={() => this.PreviousStep()}
             Global_OnChange={this.Global_OnChange}
@@ -247,9 +259,7 @@ class RegisterWithPhone extends React.Component {
             phoneNumberSendCode={this.phoneNumberSendCode}
           />
         ) : (
-          step == 3 && (
-            <Register_finished GoToHome={this.GoTo} styles={styles} />
-          )
+          step == 4 && <Register_finished GoTo={this.GoTo} styles={styles} />
         )}
       </View>
     );

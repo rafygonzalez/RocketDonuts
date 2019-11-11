@@ -13,34 +13,33 @@ class Api {
   }
   async createUser(
     name,
+    email,
+    password,
     lastname,
     birthDate,
-    country,
-    state,
-    city,
     phoneNumber,
+    credential
   ) {
     const db = firebase.firestore();
-    let uid;
-    const user = currentUser();
+    try{
+      const user_account = await firebase.auth().createUserWithEmailAndPassword(email, password)
+      const usercred = await firebase.auth().currentUser.linkWithCredential(credential)
+      //firebase.auth().currentUser.sendEmailVerification()
 
-    if (user != null) {
-      photoUrl = user.photoURL;
-      emailVerified = user.emailVerified;
-      uid = user.uid;
-      db.collection('Users')
-        .doc(uid)
-        .set({
-          name,
-          lastname,
-          birthDate,
-          country,
-          state,
-          city,
-          phoneNumber,
-          uid,
-        });
+      const email_uid = user_account.user.uid
+      db.collection('Users').doc(`${email_uid}`).set({
+        name,
+        email,
+        lastname,
+        birthDate,
+        phoneNumber,
+        uid: email_uid
+      });
+    }catch(error){
+      console.warn("Error", error.message);
+      console.warn("Error", error.code);
     }
+    
   }
   async authWithGoogle() {
     try {
