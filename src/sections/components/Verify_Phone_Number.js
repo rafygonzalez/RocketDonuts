@@ -1,5 +1,11 @@
 import React from 'react';
-import {SafeAreaView, View, Text, ScrollView} from 'react-native';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
 import HeaderBanner from './Header_Banner';
 import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
 import TextInput from '../../ui/components/TextInput';
@@ -28,9 +34,14 @@ export default Verify_Phone_Number = props => (
           <View style={props.styles.box}>
             <Button
               onPress={() => props.phoneNumberSendCode()}
-              title={`Enviar Codigo`}
+              title={props.sendingCode ? 'Enviando...' : 'Enviar Código'}
               button_style="simple"
               extra_style={props.styles.button_verification_code}
+              left_icon={
+                props.sendingCode && (
+                  <ActivityIndicator size="small" color="#000" />
+                )
+              }
             />
           </View>
         </View>
@@ -42,9 +53,14 @@ export default Verify_Phone_Number = props => (
 
         <Button
           onPress={() => props.NextStep()}
-          title={`Verificar`}
+          title={props.verifyingCode ? 'Verificando...' : 'Verificar'}
           button_style="primary"
           extra_style={props.styles.Button_NextStep}
+          left_icon={
+            props.verifyingCode && (
+              <ActivityIndicator size="small" color="#000" />
+            )
+          }
         />
       </View>
     </ScrollView>

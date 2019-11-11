@@ -35,6 +35,8 @@ class RegisterWithPhone extends React.Component {
       confirmResult: null,
       PhoneAuthVerificationId: '',
       PhoneAuthVerificationCode: '',
+      sendingCode: false,
+      verifyingCode: false,
     };
     this.Global_OnChange = this.Global_OnChange.bind(this);
     this.pickerOnChangeValue = this.pickerOnChangeValue.bind(this);
@@ -49,7 +51,16 @@ class RegisterWithPhone extends React.Component {
   static navigationOptions = {
     header: null,
   };
+  componentDidMount() {
+    const currentUser = () => firebase.auth().currentUser;
+    const userData = currentUser();
 
+    if (userData) {
+      if (userData.phoneNumber == null) {
+        this.setState({step: 3});
+      }
+    }
+  }
   GoTo(to) {
     this.props.dispatch({
       type: 'CURRENT_SCREEN',
@@ -164,6 +175,7 @@ class RegisterWithPhone extends React.Component {
             this.state.PhoneAuthVerificationId,
             this.state.verificationCode,
           );
+          this.setState({verifyingCode: true});
           API.createUser(
             name,
             email,
@@ -172,8 +184,49 @@ class RegisterWithPhone extends React.Component {
             birthDate,
             phoneNumber,
             credential,
-          );
-          this.setState({step: this.state.step + 1});
+          ).then(result => {
+            if (!result.success) {
+              this.setState({verifyingCode: false});
+              switch (result.error) {
+                case 'auth/email-already-in-use':
+                  Alert.alert(
+                    `Correo Electrónico`,
+                    `El correo que ha ingresado ya esta en uso.`,
+                    [{text: 'OK', onPress: () => {}}],
+                    {cancelable: false},
+                  );
+                  break;
+                case 'auth/invalid-verification-code':
+                  Alert.alert(
+                    `Código de Verificación`,
+                    `El código que ingreso es inválido, envia otro código e intentalo nuevamente.`,
+                    [{text: 'OK', onPress: () => {}}],
+                    {cancelable: false},
+                  );
+                  break;
+                case 'auth/credential-already-in-use':
+                  Alert.alert(
+                    `Número Teléfonico`,
+                    `El número ingresado, esta en uso.`,
+                    [{text: 'OK', onPress: () => {}}],
+                    {cancelable: false},
+                  );
+                  break;
+                default:
+                  Alert.alert(
+                    `Ha ocurrido un error`,
+                    `Vuelva a intentar más tarde.`,
+                    [{text: 'OK', onPress: () => {}}],
+                    {cancelable: false},
+                  );
+                  break;
+              }
+            } else {
+              this.setState({step: this.state.step + 1, verifyingCode: false});
+            }
+          });
+
+          //    this.setState({step: this.state.step + 1});
         }
         break;
     }
@@ -182,17 +235,15 @@ class RegisterWithPhone extends React.Component {
     this.setState({step: this.state.step - 1});
   }
   phoneNumberSendCode() {
+    this.setState({sendingCode: true});
     firebase
       .auth()
       .verifyPhoneNumber(this.state.phoneNumber)
       .then(result => {
-        Alert.alert(
-          `Código de Verificación`,
-          `Hemos enviado un código de verificación a tu número telefónico`,
-          [{text: 'OK', onPress: () => {}}],
-          {cancelable: false},
-        );
-        this.setState({PhoneAuthVerificationId: result.verificationId});
+        this.setState({
+          PhoneAuthVerificationId: result.verificationId,
+          sendingCode: false,
+        });
       });
   }
 
@@ -257,6 +308,8 @@ class RegisterWithPhone extends React.Component {
             step={step}
             steps={steps}
             phoneNumberSendCode={this.phoneNumberSendCode}
+            sendingCode={this.state.sendingCode}
+            verifyingCode={this.state.verifyingCode}
           />
         ) : (
           step == 4 && <Register_finished GoTo={this.GoTo} styles={styles} />

@@ -18,28 +18,63 @@ class Api {
     lastname,
     birthDate,
     phoneNumber,
-    credential
+    credential,
   ) {
     const db = firebase.firestore();
-    try{
-      const user_account = await firebase.auth().createUserWithEmailAndPassword(email, password)
-      const usercred = await firebase.auth().currentUser.linkWithCredential(credential)
-      //firebase.auth().currentUser.sendEmailVerification()
-
-      const email_uid = user_account.user.uid
-      db.collection('Users').doc(`${email_uid}`).set({
-        name,
-        email,
-        lastname,
-        birthDate,
-        phoneNumber,
-        uid: email_uid
-      });
-    }catch(error){
-      console.warn("Error", error.message);
-      console.warn("Error", error.code);
+    var success = false;
+    var ErrorMessage = null;
+    try {
+      const user = await firebase.auth().currentUser;
+      let user_account;
+      let usercred;
+      if (user == null) {
+        //firebase.auth().currentUser.sendEmailVerification()
+        user_account = await firebase
+          .auth()
+          .createUserWithEmailAndPassword(email, password);
+        /* Aqui hay un bug, si a una persona, casualmente se
+           le reinicia el celular, y cierre sesión, perdera el 
+           correo, por que cuando llegue aca, soltara un error,
+            'email-already-in-use'*/
+        usercred = await firebase
+          .auth()
+          .currentUser.linkWithCredential(credential);
+        const email_uid = user_account.user.uid;
+        db.collection('Users')
+          .doc(`${email_uid}`)
+          .set({
+            name,
+            email,
+            lastname,
+            birthDate,
+            phoneNumber,
+            uid: email_uid,
+          });
+        success = true;
+      } else if (user.providerData.length == 1) {
+        usercred = await firebase
+          .auth()
+          .currentUser.linkWithCredential(credential);
+        const userUid = user.uid;
+        db.collection('Users')
+          .doc(`${userUid}`)
+          .set({
+            name,
+            email,
+            lastname,
+            birthDate,
+            phoneNumber,
+            uid: userUid,
+          });
+        success = true;
+      } else {
+        firebase.auth().signOut();
+        success = false;
+      }
+    } catch (error) {
+      ErrorMessage = error.code;
     }
-    
+    return {success: success, error: ErrorMessage};
   }
   async authWithGoogle() {
     try {

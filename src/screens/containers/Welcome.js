@@ -21,6 +21,7 @@ class Welcome extends React.Component {
   componentDidMount() {
     const currentUser = () => firebase.auth().currentUser;
     const userData = currentUser();
+
     if (userData) {
       firebase
         .firestore()
@@ -28,9 +29,12 @@ class Welcome extends React.Component {
         .doc(`${userData.uid}`)
         .get()
         .then(result => {
+          console.warn(userData);
           this.setState({loading: false});
           if (result.exists) {
             this.GoTo('Inicio');
+          } else if (userData.phoneNumber == null) {
+            this.GoTo('RegisterWithPhone');
           }
         })
         .catch(err => {
