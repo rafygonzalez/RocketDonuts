@@ -29,9 +29,8 @@ class Welcome extends React.Component {
         .doc(`${userData.uid}`)
         .get()
         .then(result => {
-          console.warn(userData);
           this.setState({loading: false});
-          if (result.exists) {
+          if (result.exists && userData.phoneNumber !== null) {
             this.GoTo('Inicio');
           } else if (userData.phoneNumber == null) {
             this.GoTo('RegisterWithPhone');

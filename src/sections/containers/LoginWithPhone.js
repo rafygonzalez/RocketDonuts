@@ -6,7 +6,8 @@ import {
   ScrollView,
   StyleSheet,
   Dimensions,
-  Alert,
+  TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import HeaderBanner from '../components/Header_Banner';
 import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
@@ -22,18 +23,13 @@ class LoginWithPhone extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      phoneNumber: '+584141936170',
-      verificationCode: '123456',
+      email: '',
+      password: '',
+      loading: false,
     };
-
-    this.Global_OnChange = this.Global_OnChange.bind(this);
-    this.phoneNumberValidate = this.phoneNumberValidate.bind(this);
-    this.phoneNumberSendCode = this.phoneNumberSendCode.bind(this);
-    this.Login = this.Login.bind(this);
-    this.currentUser = this.currentUser.bind(this);
+    this.login = this.login.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.GoTo = this.GoTo.bind(this);
-    this.backHandler = null;
-    this.getUserData = this.getUserData.bind(this);
   }
   static navigationOptions = {
     header: null,
@@ -42,136 +38,95 @@ class LoginWithPhone extends React.Component {
   Global_OnChange(value, name) {
     this.setState({[name]: value});
   }
-  phoneNumberSendCode() {
+
+  componentDidMount() {}
+  login() {
+    this.setState({loading: true});
     auth()
-      .signInWithPhoneNumber(this.state.phoneNumber)
-      .then(confirmResult => {
-        this.setState({confirmResult});
-        Alert.alert(
-          `Código de Verificación`,
-          `Hemos enviado un código de verificación a tu número telefónico`,
-          [{text: 'OK', onPress: () => {}}],
-          {cancelable: false},
-        );
+      .signInWithEmailAndPassword(this.state.email, this.state.password)
+      .then(() => {
+        const currentUser = () => auth().currentUser;
+        const userData = currentUser();
+        if (userData) {
+          firestore()
+            .collection('Users')
+            .doc(`${userData.uid}`)
+            .get()
+            .then(result => {
+              this.setState({loading: false});
+              if (result.exists) {
+                this.GoTo('Inicio');
+              } else if (userData.phoneNumber == null) {
+                this.GoTo('RegisterWithPhone');
+              }
+            })
+            .catch(err => {
+              this.setState({loading: false});
+            });
+        } else {
+          this.setState({loading: false});
+        }
       })
-      .catch(error => {
-        Alert.alert(
-          `Código de Verificación`,
-          `Tenemos un error, ${error}.`,
-          [{text: 'OK', onPress: () => {}}],
-          {cancelable: false},
-        );
+      .catch(function(error) {
+        // Handle Errors here.
+        console.warn(error.code);
+        this.setState({loading: false});
       });
   }
-  async currentUser() {
-    return await auth().currentUser;
-  }
-  componentDidMount() {}
-  async getUserData(uid) {
-    const querySnapshot = await firestore()
-      .collection('Users')
-      .doc(`${uid}`)
-      .get();
-    return querySnapshot.exists;
-  }
-  Login() {
-    if (
-      !this.state.verificationCode.length == 0 ||
-      this.state.phoneNumber.length == 0
-    ) {
-      this.phoneNumberValidate()
-        .then(() => {
-          this.currentUser().then(user => {
-            this.getUserData(user.uid).then(exists => {
-              if (exists) {
-                this.GoTo('Inicio');
-              } else {
-                this.GoTo('RegisterWithPhone');
-                auth().signOut();
-              }
-            });
-          });
-        })
-        .catch(error => {
-          if (error.code == 'auth/invalid-verification-code') {
-            Alert.alert(
-              `Código de Verificación`,
-              `El código es invalido, asegúrese de usar el código de verificación proporcionado, vuelva a enviar el código de verificación`,
-              [{text: 'OK', onPress: () => {}}],
-              {cancelable: false},
-            );
-          } else {
-            Alert.alert(
-              `Código de Verificación`,
-              `Tenemos un error, vuelva a intentarlo`,
-              [{text: 'OK', onPress: () => {}}],
-              {cancelable: false},
-            );
-          }
-        });
-    } else {
-      Alert.alert(
-        `Código de Verificación`,
-        `Ingresa el código de verificación, si no te ha llegado un mensaje, vuelve a intentarlo.`,
-        [{text: 'OK', onPress: () => {}}],
-        {cancelable: false},
-      );
-    }
+  handleSubmit() {
+    this.login();
   }
   GoTo(to) {
-    this.props.dispatch({
-      type: 'CURRENT_SCREEN',
-      payload: to,
-    });
     this.props.navigation.navigate(to);
-  }
-  async phoneNumberValidate() {
-    await this.state.confirmResult.confirm(`${this.state.verificationCode}`);
   }
   render() {
     return (
       <SafeAreaView style={styles.area_container}>
-        <HeaderBanner back_button={false} />
-        <ScrollView style={styles.info_container}>
+        <ScrollView
+          style={styles.info_container}
+          contentContainerStyle={{
+            flexGrow: 1,
+          }}>
+          <HeaderBanner back_button={false} />
           <View style={{marginHorizontal: 16}}>
             <Text style={styles.description}>Iniciar Sesión</Text>
             <View style={{position: 'absolute'}}>
               <Estrellas width={386} height={528} />
             </View>
-
-            <View style={styles.box_container}>
-              <View style={styles.box}>
-                <TextInput
-                  title="Número Telefónico"
-                  onChangeText={text =>
-                    this.Global_OnChange(text, 'phoneNumber')
-                  }
-                  value={this.state.phoneNumber}
-                />
-              </View>
-
-              <View style={styles.box}>
-                <Button
-                  onPress={() => this.phoneNumberSendCode()}
-                  title={`Enviar Codigo`}
-                  button_style="simple"
-                  extra_style={styles.button_verification_code}
-                />
-              </View>
-            </View>
             <TextInput
-              title="Ingresa el código de verificación de 6 digitos"
-              onChangeText={text =>
-                this.Global_OnChange(text, 'verificationCode')
-              }
-              value={this.state.verificationCode}
+              title="Correo Electrónico"
+              onChangeText={text => this.Global_OnChange(text, 'email')}
+              value={this.state.email}
+            />
+            <TextInput
+              title="Contraseña"
+              onChangeText={text => this.Global_OnChange(text, 'password')}
+              value={this.state.password}
+              secureTextEntry
             />
             <Button
-              onPress={() => this.Login()}
-              title={`Entrar`}
+              onPress={() => this.handleSubmit()}
+              title={this.state.loading ? `Entrando...` : `Entrar`}
               button_style="primary"
               extra_style={styles.Button_SignIn}
+              left_icon={
+                this.state.loading && (
+                  <ActivityIndicator size="small" color="#FFF" />
+                )
+              }
             />
+          </View>
+          <View
+            style={{
+              flex: 1,
+              position: 'relative',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              marginVertical: 8,
+            }}>
+            <TouchableOpacity>
+              <Text>Términos y condiciones | Ayuda</Text>
+            </TouchableOpacity>
           </View>
         </ScrollView>
       </SafeAreaView>

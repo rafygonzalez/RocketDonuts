@@ -28,17 +28,10 @@ class Api {
       let user_account;
       let usercred;
       if (user == null) {
-        firebase.auth().currentUser.sendEmailVerification();
         user_account = await firebase
           .auth()
           .createUserWithEmailAndPassword(email, password);
-        /* Aqui hay un bug, si a una persona, casualmente se
-           le reinicia el celular, y cierre sesión, perdera el 
-           correo, por que cuando llegue aca, soltara un error,
-            'email-already-in-use'*/
-        usercred = await firebase
-          .auth()
-          .currentUser.linkWithCredential(credential);
+        //firebase.auth().currentUser.sendEmailVerification();
         const email_uid = user_account.user.uid;
         db.collection('Users')
           .doc(`${email_uid}`)
@@ -47,9 +40,17 @@ class Api {
             email,
             lastname,
             birthDate,
-            phoneNumber,
             uid: email_uid,
           });
+        usercred = await firebase
+          .auth()
+          .currentUser.linkWithCredential(credential);
+        db.collection('Users')
+          .doc(`${email_uid}`)
+          .update({
+            phoneNumber,
+          });
+
         success = true;
       } else if (user.providerData.length == 1) {
         usercred = await firebase
@@ -58,13 +59,8 @@ class Api {
         const userUid = user.uid;
         db.collection('Users')
           .doc(`${userUid}`)
-          .set({
-            name,
-            email,
-            lastname,
-            birthDate,
+          .update({
             phoneNumber,
-            uid: userUid,
           });
         success = true;
       } else {

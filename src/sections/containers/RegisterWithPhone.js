@@ -63,10 +63,6 @@ class RegisterWithPhone extends React.Component {
     }
   }
   GoTo(to) {
-    this.props.dispatch({
-      type: 'CURRENT_SCREEN',
-      payload: to,
-    });
     this.props.navigation.navigate(to);
   }
   setBirthDate(date) {

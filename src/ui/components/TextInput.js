@@ -6,13 +6,16 @@ class CustomTextInput extends Component {
     super(props);
     this.state = {
       title_font_size: 0,
+      input_height: 0,
     };
   }
   getOrientation = () => {
     var {width} = Dimensions.get('window');
     var fontS = (4 * width) / 100;
+    var inputHeight = (10 * width) / 100;
     this.setState({
       title_font_size: fontS,
+      input_height: inputHeight,
     });
   };
   componentDidMount() {
@@ -33,7 +36,10 @@ class CustomTextInput extends Component {
           {props.title}
         </Text>
         <TextInput
-          style={[styles.textInput_simple,{fontSize: title_font_size}]}
+          style={[
+            styles.textInput_simple,
+            {fontSize: title_font_size, height: this.state.input_height},
+          ]}
           onChangeText={props.onChangeText}
           value={props.value}
           autoCompleteType={props.autoCompleteType}
@@ -56,7 +62,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: '#A2A8DF',
-    height: 40,
   },
 });
 
