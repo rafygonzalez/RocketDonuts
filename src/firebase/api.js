@@ -28,7 +28,7 @@ class Api {
       let user_account;
       let usercred;
       if (user == null) {
-        //firebase.auth().currentUser.sendEmailVerification()
+        firebase.auth().currentUser.sendEmailVerification();
         user_account = await firebase
           .auth()
           .createUserWithEmailAndPassword(email, password);

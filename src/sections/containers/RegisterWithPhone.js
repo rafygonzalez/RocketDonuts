@@ -37,6 +37,7 @@ class RegisterWithPhone extends React.Component {
       PhoneAuthVerificationCode: '',
       sendingCode: false,
       verifyingCode: false,
+      onlyVerifyPhone: false,
     };
     this.Global_OnChange = this.Global_OnChange.bind(this);
     this.pickerOnChangeValue = this.pickerOnChangeValue.bind(this);
@@ -57,7 +58,7 @@ class RegisterWithPhone extends React.Component {
 
     if (userData) {
       if (userData.phoneNumber == null) {
-        this.setState({step: 3});
+        this.setState({step: 3, onlyVerifyPhone: true});
       }
     }
   }
@@ -199,7 +200,7 @@ class RegisterWithPhone extends React.Component {
                 case 'auth/invalid-verification-code':
                   Alert.alert(
                     `Código de Verificación`,
-                    `El código que ingreso es inválido, envia otro código e intentalo nuevamente.`,
+                    `El código es invalido, asegúrese de usar el código de verificación proporcionado, vuelva a enviar el código de verificación`,
                     [{text: 'OK', onPress: () => {}}],
                     {cancelable: false},
                   );
@@ -300,6 +301,7 @@ class RegisterWithPhone extends React.Component {
         ) : step == 3 ? (
           <Verify_Phone_Number
             HeaderBanner_OnBack={() => this.PreviousStep()}
+            back_button={this.state.onlyVerifyPhone ? false : true}
             Global_OnChange={this.Global_OnChange}
             styles={styles}
             phoneNumber={phoneNumber}

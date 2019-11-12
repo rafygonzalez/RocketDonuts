@@ -12,7 +12,10 @@ import TextInput from '../../ui/components/TextInput';
 import Button from '../../ui/components/button';
 export default Verify_Phone_Number = props => (
   <SafeAreaView style={props.styles.area_container}>
-    <HeaderBanner onPress={props.HeaderBanner_OnBack} back_button={true} />
+    <HeaderBanner
+      onPress={props.HeaderBanner_OnBack}
+      back_button={props.back_button}
+    />
     <ScrollView style={props.styles.info_container}>
       <View style={{flex: 1, marginHorizontal: 16}}>
         <Text style={props.styles.description}>
