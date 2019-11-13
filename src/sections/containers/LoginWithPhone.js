@@ -73,10 +73,16 @@ class LoginWithPhone extends React.Component {
             .get()
             .then(result => {
               this.setState({loading: false});
-              if (result.exists && userData.phoneNumber !== null) {
+              if (
+                result.exists &&
+                userData.phoneNumber !== null &&
+                userData.emailVerified
+              ) {
                 this.GoTo('Inicio');
               } else if (userData.phoneNumber == null) {
                 this.GoTo('RegisterWithPhone');
+              } else if (!userData.emailVerified) {
+                this.GoTo('Register_EmailNotVerified');
               }
             });
         } else {

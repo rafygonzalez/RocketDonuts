@@ -21,6 +21,7 @@ import LoginScreen from './src/screens/containers/Login';
 import LoginWithPhone from './src/sections/containers/LoginWithPhone';
 import RegisterScreen from './src/screens/containers/Register';
 import RegisterWithPhone from './src/sections/containers/RegisterWithPhone';
+import Register_EmailNotVerified from './src/sections/components/Register_EmailNotVerified';
 
 import HomeScreen from './src/screens/containers/Home';
 import OrderScreen from './src/screens/containers/Order';
@@ -112,23 +113,31 @@ const MainDrawer = createDrawerNavigator(
     contentComponent: DrawerWithLogoutButton,
   },
 );
-const AuthStack = createStackNavigator({
-  Welcome: {
-    screen: WelcomeScreen,
+const AuthStack = createStackNavigator(
+  {
+    Welcome: {
+      screen: WelcomeScreen,
+    },
+    Login: {
+      screen: LoginScreen,
+    },
+    LoginWithPhone: {
+      screen: LoginWithPhone,
+    },
+    Register: {
+      screen: RegisterScreen,
+    },
+    RegisterWithPhone: {
+      screen: RegisterWithPhone,
+    },
+    Register_EmailNotVerified: {
+      screen: Register_EmailNotVerified,
+    },
   },
-  Login: {
-    screen: LoginScreen,
+  {
+    headerMode: 'none',
   },
-  LoginWithPhone: {
-    screen: LoginWithPhone,
-  },
-  Register: {
-    screen: RegisterScreen,
-  },
-  RegisterWithPhone: {
-    screen: RegisterWithPhone,
-  },
-});
+);
 const NavigationApp = createStackNavigator(
   {
     App: MainDrawer,

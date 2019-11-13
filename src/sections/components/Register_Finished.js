@@ -9,16 +9,16 @@ const RegisterFinished = props => {
       <View style={props.styles.background}>
         <View style={props.styles.container}>
           <Text style={props.styles.title_congratulations}>
-            ¡Felicitaciones! Ya puedes ordenar tu compra
+            ¡Felicitaciones! Has completado el proceso.
           </Text>
           <Text style={props.styles.description_congratulations}>
-            ¡Disfruta de nuestras deliciosas donas! Has tu pedido y recíbelo a
-            la hora que tu desees
+            Te hemos enviado un correo para verificar tu cuenta en Rocket
+            Donuts. ¡Te esperamos!
           </Text>
           <Button
             title="Continuar"
             button_style="primary"
-            onPress={() => props.GoTo('Inicio')}
+            onPress={() => props.GoTo('Welcome')}
             extra_style={{marginTop: 32}}
           />
         </View>

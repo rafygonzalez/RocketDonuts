@@ -31,7 +31,7 @@ class Api {
         user_account = await firebase
           .auth()
           .createUserWithEmailAndPassword(email, password);
-        //firebase.auth().currentUser.sendEmailVerification();
+        firebase.auth().currentUser.sendEmailVerification();
         const email_uid = user_account.user.uid;
         db.collection('Users')
           .doc(`${email_uid}`)
