@@ -271,6 +271,7 @@ class Order extends Component {
                 onPress={() => {
                   this.DeleteOrder();
                 }}
+                extra_style={{marginTop: '2%'}}
               />
               <TouchableOpacity style={{marginTop: '5%'}}>
                 <Text>Términos y condiciones | Ayuda</Text>
