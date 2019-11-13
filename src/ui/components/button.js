@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   },
   button_simple: {
     ...button_base,
-    backgroundColor: '#EDEEF4',
+    backgroundColor: '#B4B4B5',
   },
   button_positive: {
     ...button_base,
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   text_simple: {
     textAlign: 'center',
     fontFamily: 'Rockwell',
-    color: 'black',
+    color: 'white',
   },
   leftIcon: {
     position: 'absolute',

@@ -38,12 +38,12 @@ export default Verify_Phone_Number = props => (
           <View style={props.styles.box}>
             <Button
               onPress={() => props.phoneNumberSendCode()}
-              title={props.sendingCode ? 'Enviando...' : 'Enviar Código'}
+              title={props.sendingCode ? 'Enviando' : 'Enviar Código'}
               button_style="simple"
               extra_style={props.styles.button_verification_code}
               left_icon={
                 props.sendingCode && (
-                  <ActivityIndicator size="small" color="#000" />
+                  <ActivityIndicator size="small" color="#fff" />
                 )
               }
             />
@@ -62,7 +62,7 @@ export default Verify_Phone_Number = props => (
           extra_style={props.styles.Button_NextStep}
           left_icon={
             props.verifyingCode && (
-              <ActivityIndicator size="small" color="#000" />
+              <ActivityIndicator size="small" color="#fff" />
             )
           }
         />

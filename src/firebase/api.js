@@ -68,6 +68,7 @@ class Api {
         success = false;
       }
     } catch (error) {
+      console.warn(error);
       ErrorMessage = error.code;
     }
     return {success: success, error: ErrorMessage};

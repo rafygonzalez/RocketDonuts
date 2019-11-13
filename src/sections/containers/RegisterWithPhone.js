@@ -186,6 +186,7 @@ class RegisterWithPhone extends React.Component {
             ).then(result => {
               if (!result.success) {
                 this.setState({verifyingCode: false});
+                console.warn(result);
                 switch (result.error) {
                   case 'auth/email-already-in-use':
                     Alert.alert(
