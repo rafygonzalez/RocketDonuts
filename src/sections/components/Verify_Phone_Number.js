@@ -10,6 +10,7 @@ import HeaderBanner from './Header_Banner';
 import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
 import TextInput from '../../ui/components/TextInput';
 import Button from '../../ui/components/button';
+
 export default Verify_Phone_Number = props => (
   <SafeAreaView style={props.styles.area_container}>
     <HeaderBanner

@@ -38,6 +38,7 @@ class RegisterWithPhone extends React.Component {
       sendingCode: false,
       verifyingCode: false,
       onlyVerifyPhone: false,
+      sendedCode: false,
     };
     this.Global_OnChange = this.Global_OnChange.bind(this);
     this.pickerOnChangeValue = this.pickerOnChangeValue.bind(this);
@@ -168,60 +169,72 @@ class RegisterWithPhone extends React.Component {
             {cancelable: false},
           );
         } else {
-          const credential = firebase.auth.PhoneAuthProvider.credential(
-            this.state.PhoneAuthVerificationId,
-            this.state.verificationCode,
-          );
-          this.setState({verifyingCode: true});
-          API.createUser(
-            name,
-            email,
-            password,
-            lastname,
-            birthDate,
-            phoneNumber,
-            credential,
-          ).then(result => {
-            if (!result.success) {
-              this.setState({verifyingCode: false});
-              switch (result.error) {
-                case 'auth/email-already-in-use':
-                  Alert.alert(
-                    `Correo Electrónico`,
-                    `El correo que ha ingresado ya esta en uso.`,
-                    [{text: 'OK', onPress: () => {}}],
-                    {cancelable: false},
-                  );
-                  break;
-                case 'auth/invalid-verification-code':
-                  Alert.alert(
-                    `Código de Verificación`,
-                    `El código es invalido, asegúrese de usar el código de verificación proporcionado, vuelva a enviar el código de verificación`,
-                    [{text: 'OK', onPress: () => {}}],
-                    {cancelable: false},
-                  );
-                  break;
-                case 'auth/credential-already-in-use':
-                  Alert.alert(
-                    `Número Teléfonico`,
-                    `El número ingresado, esta en uso.`,
-                    [{text: 'OK', onPress: () => {}}],
-                    {cancelable: false},
-                  );
-                  break;
-                default:
-                  Alert.alert(
-                    `Ha ocurrido un error`,
-                    `Vuelva a intentar más tarde.`,
-                    [{text: 'OK', onPress: () => {}}],
-                    {cancelable: false},
-                  );
-                  break;
+          if (this.state.sendedCode) {
+            const credential = firebase.auth.PhoneAuthProvider.credential(
+              this.state.PhoneAuthVerificationId,
+              this.state.verificationCode,
+            );
+            this.setState({verifyingCode: true});
+            API.createUser(
+              name,
+              email,
+              password,
+              lastname,
+              birthDate,
+              phoneNumber,
+              credential,
+            ).then(result => {
+              if (!result.success) {
+                this.setState({verifyingCode: false});
+                switch (result.error) {
+                  case 'auth/email-already-in-use':
+                    Alert.alert(
+                      `Correo Electrónico`,
+                      `El correo que ha ingresado ya esta en uso.`,
+                      [{text: 'OK', onPress: () => {}}],
+                      {cancelable: false},
+                    );
+                    break;
+                  case 'auth/invalid-verification-code':
+                    Alert.alert(
+                      `Código de Verificación`,
+                      `El código es invalido, asegúrese de usar el código de verificación proporcionado, vuelva a enviar el código de verificación`,
+                      [{text: 'OK', onPress: () => {}}],
+                      {cancelable: false},
+                    );
+                    break;
+                  case 'auth/credential-already-in-use':
+                    Alert.alert(
+                      `Número Teléfonico`,
+                      `El número ingresado, esta en uso.`,
+                      [{text: 'OK', onPress: () => {}}],
+                      {cancelable: false},
+                    );
+                    break;
+                  default:
+                    Alert.alert(
+                      `Ha ocurrido un error`,
+                      `Vuelva a intentar más tarde.`,
+                      [{text: 'OK', onPress: () => {}}],
+                      {cancelable: false},
+                    );
+                    break;
+                }
+              } else {
+                this.setState({
+                  step: this.state.step + 1,
+                  verifyingCode: false,
+                });
               }
-            } else {
-              this.setState({step: this.state.step + 1, verifyingCode: false});
-            }
-          });
+            });
+          } else {
+            Alert.alert(
+              `Ha ocurrido un error`,
+              `No has enviado un codigo de verificación, por favor, envialo y vuelva a intentarlo.`,
+              [{text: 'OK', onPress: () => {}}],
+              {cancelable: false},
+            );
+          }
 
           //    this.setState({step: this.state.step + 1});
         }
@@ -240,6 +253,7 @@ class RegisterWithPhone extends React.Component {
         this.setState({
           PhoneAuthVerificationId: result.verificationId,
           sendingCode: false,
+          sendedCode: true,
         });
       });
   }

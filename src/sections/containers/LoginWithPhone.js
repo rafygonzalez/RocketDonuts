@@ -8,13 +8,14 @@ import {
   Dimensions,
   TouchableOpacity,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import HeaderBanner from '../components/Header_Banner';
 import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
 import TextInput from '../../ui/components/TextInput';
 import Button from '../../ui/components/button';
 import {auth, firestore} from 'react-native-firebase';
-
+import validator from 'validator';
 import {connect} from 'react-redux';
 var {width} = Dimensions.get('window');
 var box_count = 2.2;
@@ -40,11 +41,29 @@ class LoginWithPhone extends React.Component {
   }
 
   componentDidMount() {}
-  login() {
-    this.setState({loading: true});
-    auth()
-      .signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then(() => {
+
+  async login() {
+    if (!validator.isEmail(this.state.email)) {
+      Alert.alert(
+        `Correo Electrónico`,
+        `Debe colocar un correo electrónico valido. Ej: ejemplo@gmail.com`,
+        [{text: 'OK', onPress: () => {}}],
+        {cancelable: false},
+      );
+    } else if (validator.isEmpty(this.state.password)) {
+      Alert.alert(
+        `Contraseña`,
+        `Debe colocar su contraseña.`,
+        [{text: 'OK', onPress: () => {}}],
+        {cancelable: false},
+      );
+    } else {
+      this.setState({loading: true});
+      try {
+        await auth().signInWithEmailAndPassword(
+          this.state.email,
+          this.state.password,
+        );
         const currentUser = () => auth().currentUser;
         const userData = currentUser();
         if (userData) {
@@ -54,24 +73,46 @@ class LoginWithPhone extends React.Component {
             .get()
             .then(result => {
               this.setState({loading: false});
-              if (result.exists) {
+              if (result.exists && userData.phoneNumber !== null) {
                 this.GoTo('Inicio');
               } else if (userData.phoneNumber == null) {
                 this.GoTo('RegisterWithPhone');
               }
-            })
-            .catch(err => {
-              this.setState({loading: false});
             });
         } else {
           this.setState({loading: false});
         }
-      })
-      .catch(function(error) {
-        // Handle Errors here.
-        console.warn(error.code);
+      } catch (error) {
         this.setState({loading: false});
-      });
+        console.warn(error.code);
+        switch (error.code) {
+          case 'auth/user-not-found':
+            Alert.alert(
+              `¿Deseas registrarte?`,
+              `El correo electronico ingresado, no esta registrado.`,
+              [
+                {text: 'NO', onPress: () => {}},
+                {
+                  text: 'SI',
+                  onPress: () => {
+                    this.GoTo('RegisterWithPhone');
+                  },
+                },
+              ],
+              {cancelable: false},
+            );
+            break;
+          case 'auth/wrong-password':
+            Alert.alert(
+              `¡Ups! Ha ocurrido un error`,
+              `La contraseña o el correo electrónico es incorrecto.`,
+              [{text: 'OK', onPress: () => {}}],
+              {cancelable: false},
+            );
+            break;
+        }
+      }
+    }
   }
   handleSubmit() {
     this.login();
