@@ -111,7 +111,7 @@ const button_base = {
 const styles = StyleSheet.create({
   button: {
     ...button_base,
-    backgroundColor: '#24F4C4',
+    backgroundColor: '#FA8219',
   },
   button_facebook: {
     ...button_base,
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   },
   button_simple: {
     ...button_base,
-    backgroundColor: '#B4B4B5',
+    backgroundColor: '#64D1BD',
   },
   button_positive: {
     ...button_base,

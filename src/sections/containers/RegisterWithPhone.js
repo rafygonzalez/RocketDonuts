@@ -1,5 +1,6 @@
 import React from 'react';
-import {StyleSheet, Dimensions, View, Alert} from 'react-native';
+import {StyleSheet, Dimensions, View, Alert ,
+  ToastAndroid} from 'react-native';
 import Register_With_Email from '../components/Register_With_Email';
 import PersonalInfo from '../components/Personal_Info';
 import Verify_Phone_Number from '../components/Verify_Phone_Number';
@@ -23,11 +24,12 @@ class RegisterWithPhone extends React.Component {
       email: 'rafygonzalez089@gmail.com',
       password: '123456',
       repassword: '123456',
-      birthDate: '',
+      birthDate: '8/12/1997',
       country: '',
       state: '',
       city: '',
-      phoneNumber: '+584141936170',
+      areaCode:'414',
+      phoneNumber: '',
       verificationCode: '123456',
       userid: '',
       step: 1,
@@ -73,6 +75,8 @@ class RegisterWithPhone extends React.Component {
     this.setState({[name]: text});
   }
   pickerOnChangeValue(value, name) {
+    console.warn(name)
+    console.warn(value)
     this.setState({[name]: value});
   }
   NextStep() {
@@ -85,9 +89,6 @@ class RegisterWithPhone extends React.Component {
       verificationCode,
       birthDate,
       phoneNumber,
-      country,
-      state,
-      city,
       PhoneAuthProviderCredential,
     } = this.state;
     switch (this.state.step) {
@@ -146,7 +147,7 @@ class RegisterWithPhone extends React.Component {
           );
         } else if (
           !validator.isNumeric(phoneNumber) ||
-          phoneNumber.length < 10
+          phoneNumber.length < 6
         ) {
           Alert.alert(
             `Número de teléfono`,
@@ -213,12 +214,8 @@ class RegisterWithPhone extends React.Component {
                     );
                     break;
                   default:
-                    Alert.alert(
-                      `Ha ocurrido un error`,
-                      `Vuelva a intentar más tarde.`,
-                      [{text: 'OK', onPress: () => {}}],
-                      {cancelable: false},
-                    );
+                    ToastAndroid.show('¡Ups! has ocurrido un error, vuelva a intentar más tarde.', ToastAndroid.SHORT);
+      
                     break;
                 }
               } else {
@@ -229,12 +226,8 @@ class RegisterWithPhone extends React.Component {
               }
             });
           } else {
-            Alert.alert(
-              `Ha ocurrido un error`,
-              `No has enviado un codigo de verificación, por favor, envialo y vuelva a intentarlo.`,
-              [{text: 'OK', onPress: () => {}}],
-              {cancelable: false},
-            );
+            ToastAndroid.show('No has enviado un codigo de verificación, por favor, envialo y vuelva a intentarlo.', ToastAndroid.SHORT);
+        
           }
 
           //    this.setState({step: this.state.step + 1});
@@ -249,14 +242,32 @@ class RegisterWithPhone extends React.Component {
     this.setState({sendingCode: true});
     firebase
       .auth()
-      .verifyPhoneNumber(this.state.phoneNumber)
+      .verifyPhoneNumber(`+58${this.state.areaCode}${this.state.phoneNumber}`)
       .then(result => {
         this.setState({
           PhoneAuthVerificationId: result.verificationId,
           sendingCode: false,
           sendedCode: true,
         });
-      });
+        ToastAndroid.show('¡Código Enviado!', ToastAndroid.SHORT);
+      }).catch(error => {
+        this.setState({sendingCode: false});
+        switch(error.code){
+          case 'auth/invalid-phone-number':
+              Alert.alert(
+                `Ha ocurrido un error`,
+                `El formato del número de teléfono proporcionado es incorrecto. Ingrese el número de teléfono en el siguiente formato: [Código de area][Número de Teléfono]`,
+                [{text: 'OK', onPress: () => {}}],
+                {cancelable: false},
+              );
+          break;
+          default:
+              ToastAndroid.show('¡Ups! ha ocurrido un error, vuelva a intentarlo.', ToastAndroid.SHORT);
+            break;
+        }
+
+         console.warn(error)
+      })
   }
 
   render() {
@@ -323,6 +334,9 @@ class RegisterWithPhone extends React.Component {
             phoneNumberSendCode={this.phoneNumberSendCode}
             sendingCode={this.state.sendingCode}
             verifyingCode={this.state.verifyingCode}
+            pickerOnChangeValue={this.pickerOnChangeValue}
+            areaCode={this.state.areaCode}
+            sendedCode={this.state.sendedCode}
           />
         ) : (
           step == 4 && <Register_finished GoTo={this.GoTo} styles={styles} />
@@ -367,15 +381,7 @@ const styles = StyleSheet.create({
   button_container: {
     paddingHorizontal: 8,
   },
-  box_container: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  box: {
-    width: box_width,
-    marginRight: 8,
-  },
+
   photo_container: {
     width: '100%',
     height: 150,
