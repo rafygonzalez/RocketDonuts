@@ -3,47 +3,11 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
-  Dimensions,
+  TouchableOpacity
 } from 'react-native';
-
-class CustomButton extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      button_width: 0,
-      buttonSmall_width: 0,
-      buttonMedium_width: 0,
-      button_height: 0,
-      fontSize: 0,
-      button_height_small: 0,
-    };
-  }
-
-  getOrientation = () => {
-    var {width} = Dimensions.get('window');
-    var buttonw_calc = (76.81 * width) / 100;
-    var buttonwSmall_calc = (9.73 * width) / 100;
-    var buttonwMedium_calc = (18 * width) / 100;
-    this.setState({
-      button_width: buttonw_calc,
-      buttonSmall_width: buttonwSmall_calc,
-      buttonMedium_width: buttonwMedium_calc,
-      button_height: (16 * buttonw_calc) / 100,
-      button_height_small: (12 * buttonw_calc) / 100,
-      fontSize: (5 * width) / 100,
-    });
-  };
-
-  componentDidMount() {
-    this.getOrientation();
-    Dimensions.addEventListener('change', () => {
-      this.getOrientation();
-    });
-  }
-
-  render() {
-    const {props} = this;
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+ 
+const CustomButton = (props) => {
     return (
       <TouchableOpacity
         style={[
@@ -60,23 +24,21 @@ class CustomButton extends React.Component {
             : styles.button_simple,
           props.extra_style,
           {
-            maxHeight:
-              this.props.size == 'small' || this.props.size == 'medium'
-                ? this.state.button_height_small
-                : this.state.button_height,
-            minHeight:
-              this.props.size == 'small' || this.props.size == 'medium'
-                ? this.state.button_height_small
-                : this.state.button_height,
+           maxHeight:
+              props.size == 'small' || props.size == 'medium'
+                ? hp('4.5%')
+                : hp('7%'),
+                minHeight:
+                props.size == 'small' || props.size == 'medium'
+                  ? hp('4.5%')
+                  : hp('7%'),
           },
-          this.props.size == 'small'
+          props.size == 'small'
             ? {
-                maxWidth: this.state.buttonSmall_width,
-                minWidth: this.state.buttonSmall_width,
+                maxWidth: wp('10%'),
               }
-            : this.props.size == 'medium' && {
-                maxWidth: this.state.buttonMedium_width,
-                minWidth: this.state.buttonMedium_width,
+            : props.size == 'medium' && {
+                maxWidth: wp('20%'),
               },
         ]}
         onPress={props.onPress}
@@ -91,14 +53,14 @@ class CustomButton extends React.Component {
             props.button_style === 'negative'
               ? styles.text
               : styles.text_simple,
-            {fontSize: this.state.fontSize},
+            {fontSize: wp('5%')},
           ]}>
           {props.title}
         </Text>
       </TouchableOpacity>
     );
   }
-}
+
 const button_base = {
   borderRadius: 3,
   justifyContent: 'center',

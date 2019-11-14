@@ -1,99 +1,60 @@
 import React from 'react';
-import {
-  TouchableOpacity,
-  StyleSheet,
-  View,
-  Dimensions,
-  Text,
-} from 'react-native';
+import {TouchableOpacity, StyleSheet, View, Dimensions} from 'react-native';
 import BackArrowSvg from '../../../assets/svg/BackArrow.svg';
 import MenuIcon from '../../../assets/svg/MenuIcon.svg';
 import HeaderBannerSvg from '../../../assets/svg/Header_Banner.svg';
 import HeaderBannerWithTitle from '../../../assets/svg/Header_Banner_With_Title.svg';
 import HeaderBannerWithTitleOrder from '../../../assets/svg/Header_Banner_With_Title_Order.svg';
-class HeaderBanner extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      orientation: '',
-      header_width: 0,
-      header_width_small: 0,
-      header_heigth_small: 0,
-      header_heigth: 0,
-    };
-  }
-
-  getOrientation = () => {
-    var {width} = Dimensions.get('window');
-    var menu_width = (68.13 * width) / 100;
-    this.setState({
-      header_width: width,
-      header_width_small: menu_width,
-      header_heigth: (43.479 * width) / 100,
-      header_heigth_small: (43.479 * menu_width) / 100,
-    });
-    /* if (this.refs.rootView) {
-      if (Dimensions.get('window').width < Dimensions.get('window').height) {
-        this.setState({orientation: 'portrait'});
-      } else {
-        this.setState({orientation: 'landscape'});
-      }
-    }*/
-  };
-  componentDidMount() {
-    this.getOrientation();
-    Dimensions.addEventListener('change', () => {
-      this.getOrientation();
-    });
-  }
-  render() {
-    const {props} = this;
-    return (
-      <View>
-        {props.withTitle ? (
-          <HeaderBannerWithTitle
-            width={this.state.header_width}
-            height={this.state.header_heigth}
-            preserveAspectRatio="xMidYMid meet"
-            viewBox={'0 0 414 180'}
-          />
-        ) : props.withOrder ? (
-          <HeaderBannerWithTitleOrder
-            width={this.state.header_width}
-            height={this.state.header_heigth}
-            preserveAspectRatio="xMidYMid meet"
-            viewBox={'0 0 414 180'}
-          />
-        ) : props.menu ? (
-          <HeaderBannerSvg
-            width={290}
-            height={125}
-            preserveAspectRatio="xMidYMid meet"
-            viewBox={'10 0 414 180'}
-          />
-        ) : (
-          <HeaderBannerSvg
-            width={this.state.header_width}
-            height={this.state.header_heigth}
-            preserveAspectRatio="xMidYMid meet"
-            viewBox={'0 0 414 180'}
-          />
-        )}
-        {props.back_button ? (
-          <TouchableOpacity style={styles.Touchable} onPress={props.onPress}>
-            <BackArrowSvg width={24} height={24} />
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+const HeaderBanner = props => {
+  return (
+    <View>
+      {props.withTitle ? (
+        <HeaderBannerWithTitle
+          width={wp('101%')}
+          height={hp('23.07%')}
+          preserveAspectRatio="xMidYMid meet"
+          viewBox={`${wp('0.6%')} 0 414 180` }
+        />
+      ) : props.withOrder ? (
+        <HeaderBannerWithTitleOrder
+          width={wp('100%')}
+          height={hp('23.07%')}
+          preserveAspectRatio="xMidYMid meet"
+          viewBox={'0 0 414 180'}
+        />
+      ) : props.menu ? (
+        <HeaderBannerSvg
+          width={290}
+          height={125}
+          preserveAspectRatio="xMidYMid meet"
+          viewBox={'10 0 414 180'}
+        />
+      ) : (
+        <HeaderBannerSvg
+          width={wp('100%')}
+          height={hp('23.07%')}
+          preserveAspectRatio="xMidYMid meet"
+          viewBox={'0 0 414 180'}
+        />
+      )}
+      {props.back_button ? (
+        <TouchableOpacity style={styles.Touchable} onPress={props.onPress}>
+          <BackArrowSvg width={24} height={24} />
+        </TouchableOpacity>
+      ) : (
+        props.menu_button && (
+          <TouchableOpacity style={styles.Menu} onPress={props.onPressMenu}>
+            <MenuIcon color={'#fff'} width={24} height={24} />
           </TouchableOpacity>
-        ) : (
-          props.menu_button && (
-            <TouchableOpacity style={styles.Menu} onPress={props.onPressMenu}>
-              <MenuIcon color={'#fff'} width={24} height={24} />
-            </TouchableOpacity>
-          )
-        )}
-      </View>
-    );
-  }
-}
+        )
+      )}
+    </View>
+  );
+};
 const styles = StyleSheet.create({
   Touchable: {
     flex: 1,

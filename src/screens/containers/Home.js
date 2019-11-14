@@ -141,8 +141,6 @@ const styles = StyleSheet.create({
   products_container: {
     flexWrap: 'wrap',
     flexDirection: 'row',
-    marginVertical: 8,
-    marginHorizontal: 8,
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'stretch',

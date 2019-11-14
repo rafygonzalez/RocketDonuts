@@ -1,53 +1,17 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, TextInput, Dimensions} from 'react-native';
+import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
-class CustomTextInput extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      title_font_size: 0,
-      input_height: 0,
-      loading:true
-    };
-  }
-  getOrientation = () => {
-    var {width} = Dimensions.get('window');
-    var fontS = (4 * width) / 100;
-    var inputHeight = (10 * width) / 100;
-    this.setState({
-      title_font_size: fontS,
-      input_height: inputHeight,
-      loading:false
-    });
-  };
-  componentDidMount() {
-    console.warn('textinput mount')
-    this.getOrientation();
-    Dimensions.addEventListener('change', () => {
-      this.getOrientation();
-    });
-  }
-  componentWillUnmount() {
-    Dimensions.removeEventListener('change');
-  }
-  render() {
-  
-    const {title_font_size} = this.state;
-    const {props} = this;
-    if(this.state.loading){
-      console.warn("!render")
-      return null
-    }else{
-      console.warn("render")
+const CustomTextInput = (props) => {
       return (
         <View style={styles.container}>
-          <Text style={[styles.title, {fontSize: title_font_size}]}>
+          <Text style={[styles.title, {fontSize:wp('4%')}]}>
             {props.title}
           </Text>
           <TextInput
             style={[
               styles.textInput_simple,
-              {fontSize: title_font_size, height: this.state.input_height},
+              {fontSize: wp('4%'), height: wp('10%')},
             ]}
             onChangeText={props.onChangeText}
             value={props.value}
@@ -56,9 +20,6 @@ class CustomTextInput extends Component {
           />
         </View>
       );
-    }
-
-  }
 }
 
 const styles = StyleSheet.create({
