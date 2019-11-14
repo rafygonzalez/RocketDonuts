@@ -29,7 +29,6 @@ class ShoppingCart extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      order: this.props.order,
     };
     this.HeaderBanner_OnBack = this.HeaderBanner_OnBack.bind(this);
     this.DeleteOrder = this.DeleteOrder.bind(this);
@@ -71,29 +70,25 @@ class ShoppingCart extends Component {
   render() {
     return (
       <SafeAreaView style={styles.area_container}>
-        <ScrollView contentContainerStyle={{flexGrow: 1}}>
-          <HeaderBanner
-            withOrder
-            onPress={this.HeaderBanner_OnBack}
-            back_button
+        <HeaderBanner
+          withOrder
+          onPress={this.HeaderBanner_OnBack}
+          back_button
+        />
+        <View style={[styles.stars_container]}>
+          <Estrellas
+            width={wp('100%')}
+            height={hp('73.68%')}
+            preserveAspectRatio="xMidYMid meet"
           />
-          <View style={[styles.stars_container]}>
-            <Estrellas
-              width={wp('100%')}
-              height={hp('73.68%')}
-              preserveAspectRatio="xMidYMid meet"
-            />
-          </View>
-          <View
-            style={{
-              marginTop: '5%',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <View style={styles.order_container}>
+        </View>
+        <View style={{alignItems:'center', flexGrow: 1}}>
+          <View style={styles.order_container}>
+            <ScrollView
+              style={{maxHeight: hp('25%'), backgroundColor: '#EDEEF4'}}>
               {this.props.order.map((Item, index) => {
                 return (
-                  <Layout>
+                  <Layout key={index}>
                     <OrderDetail
                       item={getDonut(Item.cover, Item.topping, Item.type)}
                       item_name={`${Item.type} x ${Item.quantity}`}
@@ -105,56 +100,53 @@ class ShoppingCart extends Component {
                       )}
                       key={index}
                     />
-                    <View
-                      opacity={0.5}
-                      style={{
-                        width: '100%',
-                        borderBottomColor: 'gray',
-                        borderBottomWidth: 1,
-                        marginVertical: '5%',
-                      }}
-                    />
                   </Layout>
                 );
               })}
-
-              <View
-                style={{
-                  justifyContent: 'flex-end',
-                  alignItems: 'center',
-                  width: '85%',
-                }}>
-                <Button
-                  title="Pagar"
-                  button_style="primary"
-                  onPress={() => {}}
-                />
-                <Button
-                  title="Cancelar Pedido"
-                  button_style="simple"
-                  onPress={() => {}}
-                  extra_style={{marginTop: '2%'}}
-                />
-              </View>
+            </ScrollView>
+            <View
+              opacity={1}
+              style={{
+                width: '100%',
+                borderBottomColor: '#ECEDF2',
+                borderBottomWidth: 2,
+                marginVertical: '5%',
+              }}
+            />
+            <View
+              style={{
+                marginTop: '10%',
+                alignItems: 'center',
+                width: '85%',
+              }}>
+              <Button
+                title="Realizar Pedido"
+                button_style="primary"
+                onPress={() => {}}
+              />
+              <Button
+                title="Cancelar Pedido"
+                button_style="simple"
+                onPress={() => {}}
+                extra_style={{marginTop: '2%'}}
+              />
             </View>
           </View>
+        </View>
 
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-              marginVertical: 16,
-              marginHorizontal: '9%',
-              width: '82%',
-            }}>
-            <TouchableOpacity style={{marginTop: '5%'}}>
-              <Text style={{color: '#fff'}}>
-                Términos y condiciones | Ayuda
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            marginVertical: 16,
+            marginHorizontal: '9%',
+            width: '82%',
+          }}>
+          <TouchableOpacity style={{marginTop: '5%'}}>
+            <Text style={{color: '#fff'}}>Términos y condiciones | Ayuda</Text>
+          </TouchableOpacity>
+        </View>
       </SafeAreaView>
     );
   }
@@ -167,11 +159,8 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderColor: '#C7C8D6',
     width: '85%',
-    justifyContent: 'center',
     alignItems: 'center',
-
-    paddingHorizontal: '0.5%',
-    paddingVertical: 16,
+    flexGrow: 1,
   },
 
   title_container_add_more: {
