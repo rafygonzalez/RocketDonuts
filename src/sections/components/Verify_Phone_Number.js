@@ -38,11 +38,11 @@ export default Verify_Phone_Number = props => (
                 props.pickerOnChangeValue(itemValue, 'areaCode')
               }
               Picker_Items={[
-                {label: '0414', value: '414'},
-                {label: '0424', value: '424'},
-                {label: '0412', value: '412'},
-                {label: '0416', value: '416'},
-                {label: '0426', value: '426'},
+                {label: '0414 (Movistar)', value: '414'},
+                {label: '0424 (Movistar)', value: '424'},
+                {label: '0412 (Digitel)', value: '412'},
+                {label: '0416 (Movilnet)', value: '416'},
+                {label: '0426 (Movilnet)', value: '426'},
               ]}
             />
           </View>

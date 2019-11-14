@@ -75,8 +75,6 @@ class RegisterWithPhone extends React.Component {
     this.setState({[name]: text});
   }
   pickerOnChangeValue(value, name) {
-    console.warn(name)
-    console.warn(value)
     this.setState({[name]: value});
   }
   NextStep() {

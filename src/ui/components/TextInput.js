@@ -7,6 +7,7 @@ class CustomTextInput extends Component {
     this.state = {
       title_font_size: 0,
       input_height: 0,
+      loading:true
     };
   }
   getOrientation = () => {
@@ -16,9 +17,11 @@ class CustomTextInput extends Component {
     this.setState({
       title_font_size: fontS,
       input_height: inputHeight,
+      loading:false
     });
   };
   componentDidMount() {
+    console.warn('textinput mount')
     this.getOrientation();
     Dimensions.addEventListener('change', () => {
       this.getOrientation();
@@ -28,25 +31,33 @@ class CustomTextInput extends Component {
     Dimensions.removeEventListener('change');
   }
   render() {
+  
     const {title_font_size} = this.state;
     const {props} = this;
-    return (
-      <View style={styles.container}>
-        <Text style={[styles.title, {fontSize: title_font_size}]}>
-          {props.title}
-        </Text>
-        <TextInput
-          style={[
-            styles.textInput_simple,
-            {fontSize: title_font_size, height: this.state.input_height},
-          ]}
-          onChangeText={props.onChangeText}
-          value={props.value}
-          autoCompleteType={props.autoCompleteType}
-          secureTextEntry={props.secureTextEntry}
-        />
-      </View>
-    );
+    if(this.state.loading){
+      console.warn("!render")
+      return null
+    }else{
+      console.warn("render")
+      return (
+        <View style={styles.container}>
+          <Text style={[styles.title, {fontSize: title_font_size}]}>
+            {props.title}
+          </Text>
+          <TextInput
+            style={[
+              styles.textInput_simple,
+              {fontSize: title_font_size, height: this.state.input_height},
+            ]}
+            onChangeText={props.onChangeText}
+            value={props.value}
+            autoCompleteType={props.autoCompleteType}
+            secureTextEntry={props.secureTextEntry}
+          />
+        </View>
+      );
+    }
+
   }
 }
 
