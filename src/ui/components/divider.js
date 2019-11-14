@@ -5,6 +5,7 @@ const Divider = props => {
   return (
     <View
       style={{
+        opacity:0.5,
         borderBottomColor: 'black',
         borderBottomWidth: 1,
         marginVertical: '3%',

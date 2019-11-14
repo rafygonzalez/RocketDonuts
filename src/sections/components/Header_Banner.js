@@ -14,17 +14,17 @@ const HeaderBanner = props => {
     <View>
       {props.withTitle ? (
         <HeaderBannerWithTitle
-          width={wp('101%')}
-          height={hp('23.07%')}
+          width={wp('101.5%')}
+          height={hp('23.5%')}
           preserveAspectRatio="xMidYMid meet"
-          viewBox={`${wp('0.6%')} 0 414 180` }
+          viewBox={`${wp('0.52%')} 0 414 180` }
         />
       ) : props.withOrder ? (
         <HeaderBannerWithTitleOrder
-          width={wp('100%')}
-          height={hp('23.07%')}
-          preserveAspectRatio="xMidYMid meet"
-          viewBox={'0 0 414 180'}
+        width={wp('101.5%')}
+        height={hp('23.5%')}
+        preserveAspectRatio="xMidYMid meet"
+        viewBox={`${wp('0.52%')} 0 414 180` }
         />
       ) : props.menu ? (
         <HeaderBannerSvg
@@ -35,10 +35,10 @@ const HeaderBanner = props => {
         />
       ) : (
         <HeaderBannerSvg
-          width={wp('100%')}
-          height={hp('23.07%')}
-          preserveAspectRatio="xMidYMid meet"
-          viewBox={'0 0 414 180'}
+        width={wp('101.5%')}
+        height={hp('23.5%')}
+        preserveAspectRatio="xMidYMid meet"
+        viewBox={`${wp('0.52%')} 0 414 180` }
         />
       )}
       {props.back_button ? (

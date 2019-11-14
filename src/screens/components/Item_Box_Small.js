@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
   svgContainer: {justifyContent: 'center', alignItems: 'center'},
   textContainer: {
     justifyContent: 'center',
-    marginLeft: '5%',
+    marginLeft: '7%',
   },
-  text: {fontFamily: 'Rockwell', color: 'black', fontSize: wp('4%')},
+  text: {fontFamily: 'Rockwell', color: 'black', fontSize: wp('5%')},
 });
 export default Item_Box;

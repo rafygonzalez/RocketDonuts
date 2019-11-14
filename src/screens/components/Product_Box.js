@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   item_name_text: {
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'OpenSans-Regular',
     fontSize: wp('5%'),
     textAlign: 'center',
   },

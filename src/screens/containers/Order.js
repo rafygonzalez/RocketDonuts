@@ -4,11 +4,9 @@ import {
   SafeAreaView,
   StyleSheet,
   ScrollView,
-  Dimensions,
   Text,
   TouchableOpacity,
   Alert,
-  BackHandler,
 } from 'react-native';
 import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
 import HeaderBanner from '../../sections/components/Header_Banner';
@@ -21,18 +19,15 @@ import {getDonut} from '../components/Donuts_List';
 import {Dona, Rosquilla} from '../components/Products';
 //Redux
 import {connect} from 'react-redux';
-
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 class Order extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      orientation: '',
-      header_width: 0,
-      header_heigth: 0,
-      screen_width: 0,
-      screen_height: 0,
       order: this.props.Order.order,
-      title_add_more_fontsize: 0,
     };
     this.HeaderBanner_OnBack = this.HeaderBanner_OnBack.bind(this);
     this.DonutIncrement = this.DonutIncrement.bind(this);
@@ -47,32 +42,12 @@ class Order extends Component {
   static navigationOptions = {
     header: null,
   };
-  getOrientation = () => {
-    var {width, height} = Dimensions.get('window');
-    this.setState({
-      screen_width: width,
-      screen_height: height,
-      header_width: width,
-      header_heigth: (39.61 * width) / 100,
-      title_add_more_fontsize: (4.83 * width) / 100,
-    });
-  };
   componentDidUpdate(prevProps) {
     if (prevProps.Order.order !== this.state.order) {
       this.setState({order: prevProps.Order.order});
     }
   }
 
-  componentDidMount() {
-    this.getOrientation();
-    Dimensions.addEventListener('change', () => {
-      this.getOrientation();
-    });
-  }
-
-  componentWillUnmount() {
-    Dimensions.removeEventListener('change');
-  }
   gotoShoppingCart() {
     this.props.dispatch({
       type: 'SET_ORDER',
@@ -170,7 +145,6 @@ class Order extends Component {
     this.props.navigation.navigate(to);
   }
   render() {
-    const {screen_height, screen_width, header_heigth} = this.state;
     return (
       <SafeAreaView style={styles.area_container}>
         <ScrollView
@@ -182,10 +156,10 @@ class Order extends Component {
             onPressMenu={() => this.props.navigation.toggleDrawer()}
             menu_button
           />
-          <View style={[styles.stars_container, {top: header_heigth}]}>
+          <View style={[styles.stars_container]}>
             <Estrellas
-              width={screen_width}
-              height={screen_height}
+              width={wp('100%')}
+              height={hp('73.68%')}
               preserveAspectRatio="xMidYMid meet"
             />
           </View>
@@ -208,19 +182,9 @@ class Order extends Component {
 
           <View style={styles.title_container_add_more}>
             {this.state.order.length > 0 ? (
-              <Text
-                style={[
-                  styles.title_add_more,
-                  {fontSize: this.state.title_add_more_fontsize},
-                ]}>
-                ¿Deseas algo mas?
-              </Text>
+              <Text style={styles.title_add_more}>¿Deseas algo mas?</Text>
             ) : (
-              <Text
-                style={[
-                  styles.title_add_more,
-                  {fontSize: this.state.title_add_more_fontsize},
-                ]}>
+              <Text style={styles.title_add_more}>
                 No has hecho tu pedido, ¿Deseas algo?
               </Text>
             )}
@@ -229,21 +193,21 @@ class Order extends Component {
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
-              marginHorizontal: '9%',
+              marginHorizontal:'7%',
             }}>
             <Item_Box_Small
               onPress={() => {
                 this.GoTo('CustomDonut');
               }}
               item={Dona}
-              item_name={'Añadir Dona'}
+              item_name={'Dona'}
             />
             <Item_Box_Small
               onPress={() => {
                 this.GoTo('CustomBagel');
               }}
               item={Rosquilla}
-              item_name={'Añadir Rosquilla'}
+              item_name={'Rosquilla'}
             />
           </View>
 
@@ -285,8 +249,9 @@ class Order extends Component {
 }
 const styles = StyleSheet.create({
   title_add_more: {
-    fontFamily: 'Rockwell',
-    textAlign: 'center',
+    color: '#FF9800',
+    fontFamily: 'OpenSans-Bold',
+    fontSize: wp('6%'),
   },
   title_container_add_more: {
     justifyContent: 'center',
@@ -313,6 +278,7 @@ const styles = StyleSheet.create({
   },
   stars_container: {
     position: 'absolute',
+    top: hp('23.07%'),
   },
 });
 const mapStateToProps = reducers => {

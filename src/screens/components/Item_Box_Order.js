@@ -17,19 +17,23 @@ const Item_Box_Order = props => {
       <View style={styles.textContainer}>
         <Text style={[styles.text]}>{props.item_name}</Text>
       </View>
-
+      <View style={{width:wp('22%'),flexDirection:'row',justifyContent:'space-between'}}>
       <Button
         title="+"
         button_style="positive"
         size="small"
-        onPress={() => this.props.DonutIncrement(this.props.id)}
+        onPress={() => props.DonutIncrement(props.id)}
+      
       />
+
       <Button
         title="-"
         button_style="negative"
         size="small"
-        onPress={() => this.props.DonutDecrement(this.props.id)}
+        onPress={() => props.DonutDecrement(props.id)}
       />
+      </View>
+
     </View>
   );
 };
@@ -44,13 +48,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 16,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent:'space-between'
   },
   svgContainer: {justifyContent: 'center', alignItems: 'center'},
   textContainer: {
     justifyContent: 'center',
-    marginHorizontal: '5%',
   },
-  text: {fontFamily: 'Rockwell', color: 'white', fontSize: wp('6.8%')},
+  text: {fontFamily: 'Rockwell', color: 'white', fontSize: wp('5.8%')},
 });
 export default Item_Box_Order;

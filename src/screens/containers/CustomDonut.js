@@ -290,7 +290,7 @@ class CustomDonut extends Component {
 const styles = StyleSheet.create({
   title_add_more: {
     color: '#FF9800',
-    fontFamily: 'Poppins-Bold',
+    fontFamily: 'OpenSans-Bold',
     fontSize: wp('7%'),
   },
   title_container_add_more: {

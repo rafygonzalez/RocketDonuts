@@ -10,10 +10,9 @@ import {
   Alert,
   BackHandler,
 } from 'react-native';
-import Estrellas from '../../../assets/svg/Estrellas.svg';
+import Estrellas from '../../../assets/svg/Stars.svg';
 import HeaderBanner from '../../sections/components/Header_Banner';
 import OrderDetail from '../components/Order_Detail';
-import Divider from '../../ui/components/divider';
 import Button from '../../ui/components/button';
 
 import {getDonut} from '../components/Donuts_List';
@@ -22,18 +21,15 @@ import {Dona, Rosquilla} from '../components/Products';
 import {connect} from 'react-redux';
 
 import Layout from '../components/Layout';
-
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 class ShoppingCart extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      orientation: '',
-      header_width: 0,
-      header_heigth: 0,
-      screen_width: 0,
-      screen_height: 0,
       order: this.props.order,
-      title_add_more_fontsize: 0,
     };
     this.HeaderBanner_OnBack = this.HeaderBanner_OnBack.bind(this);
     this.DeleteOrder = this.DeleteOrder.bind(this);
@@ -42,34 +38,6 @@ class ShoppingCart extends Component {
   static navigationOptions = {
     header: null,
   };
-  getOrientation = () => {
-    var {width, height} = Dimensions.get('window');
-    this.setState({
-      screen_width: width,
-      screen_height: height,
-      header_width: width,
-      header_heigth: (39.61 * width) / 100,
-      title_add_more_fontsize: (4.83 * width) / 100,
-    });
-    /* if (this.refs.rootView) {
-      if (Dimensions.get('window').width < Dimensions.get('window').height) {
-        this.setState({orientation: 'portrait'});
-      } else {
-        this.setState({orientation: 'landscape'});
-      }
-    }*/
-  };
-  componentDidMount() {
-    this.getOrientation();
-    Dimensions.addEventListener('change', () => {
-      this.getOrientation();
-    });
-  }
-
-  componentWillUnmount() {
-    Dimensions.removeEventListener('change');
-  }
-
   DeleteOrder() {}
   HeaderBanner_OnBack() {
     this.props.navigation.goBack();
@@ -101,7 +69,6 @@ class ShoppingCart extends Component {
                           
                           */
   render() {
-    const {screen_height, screen_width, header_heigth} = this.state;
     return (
       <SafeAreaView style={styles.area_container}>
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
@@ -110,10 +77,10 @@ class ShoppingCart extends Component {
             onPress={this.HeaderBanner_OnBack}
             back_button
           />
-          <View style={[styles.stars_container, {top: header_heigth}]}>
+          <View style={[styles.stars_container]}>
             <Estrellas
-              width={screen_width}
-              height={screen_height}
+              width={wp('100%')}
+              height={hp('73.68%')}
               preserveAspectRatio="xMidYMid meet"
             />
           </View>
@@ -206,9 +173,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: '0.5%',
     paddingVertical: 16,
   },
-  title_add_more: {
-    fontFamily: 'Rockwell',
-  },
+
   title_container_add_more: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -234,6 +199,8 @@ const styles = StyleSheet.create({
   },
   stars_container: {
     position: 'absolute',
+
+    top: hp('23.07%'),
   },
 });
 const mapStateToProps = reducers => {

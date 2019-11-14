@@ -19,15 +19,15 @@ import Rosquilla from '../../../assets/svg/Rosquilla.svg';
 import {connect} from 'react-redux';
 import firebase from 'react-native-firebase';
 import {withNavigationFocus} from 'react-navigation';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      orientation: '',
-      header_width: 0,
-      header_heigth: 0,
-      screen_width: 0,
-      screen_height: 0,
       selectedProduct: '',
     };
     this.onSelectedProduct = this.onSelectedProduct.bind(this);
@@ -36,29 +36,14 @@ class Home extends Component {
   static navigationOptions = {
     header: null,
   };
-  getOrientation = () => {
-    var {width, height} = Dimensions.get('window');
-    this.setState({
-      screen_width: width,
-      screen_height: height,
-      header_width: width,
-      header_heigth: (39.61 * width) / 100,
-    });
-  };
+
 
   componentDidMount() {
-    this.getOrientation();
-    Dimensions.addEventListener('change', () => {
-      this.getOrientation();
-    });
     firebase.auth().onAuthStateChanged(user => {
       if (!user) {
         this.GoTo('Welcome');
       }
     });
-  }
-  componentWillUnmount() {
-    Dimensions.removeEventListener('change');
   }
   onSelectedProduct(name) {
     if (name === 'Donut') {
@@ -83,10 +68,10 @@ class Home extends Component {
             back_button={false}
             menu_button
           />
-          <View style={[styles.stars_container, {top: header_heigth}]}>
+          <View style={[styles.stars_container]}>
             <Estrellas
-              width={screen_width}
-              height={screen_height}
+             width={wp('100%')}
+             height={hp('73.68%')}
               preserveAspectRatio="xMidYMid meet"
             />
           </View>
@@ -154,6 +139,7 @@ const styles = StyleSheet.create({
   },
   stars_container: {
     position: 'absolute',
+    top: hp('23.07%'),
   },
 });
 const mapStateToProps = reducers => {

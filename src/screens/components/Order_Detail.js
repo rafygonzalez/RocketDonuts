@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginLeft: '10%',
   },
-  text: {fontFamily: 'Poppins-Bold', color: 'gray',fontSize: wp('6%')},
-  textDescription: {fontFamily: 'Poppins-Regular', color: 'black',fontSize: wp('4%'), marginTop:hp('2%')},
+  text: {fontFamily: 'Rockwell', color: 'gray',fontSize: wp('6%')},
+  textDescription: {fontFamily: 'OpenSans-Regular', color: 'black',fontSize: wp('4%'), marginTop:hp('2%')},
 });
 export default OrderDetail;
