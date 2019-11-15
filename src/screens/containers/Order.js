@@ -26,38 +26,23 @@ import {
 class Order extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      order: this.props.Order.order,
-    };
+    this.state = {};
     this.HeaderBanner_OnBack = this.HeaderBanner_OnBack.bind(this);
     this.DonutIncrement = this.DonutIncrement.bind(this);
     this.DonutDecrement = this.DonutDecrement.bind(this);
     this.DeleteDonut = this.DeleteDonut.bind(this);
     this.DeleteOrder = this.DeleteOrder.bind(this);
     this.MakeAnOrder = this.MakeAnOrder.bind(this);
-    this.gotoShoppingCart = this.gotoShoppingCart.bind(this);
     this.backHandler = null;
     this.GoTo = this.GoTo.bind(this);
   }
   static navigationOptions = {
     header: null,
   };
-  componentDidUpdate(prevProps) {
-    if (prevProps.Order.order !== this.state.order) {
-      this.setState({order: prevProps.Order.order});
-    }
-  }
 
-  gotoShoppingCart() {
-    this.props.dispatch({
-      type: 'SET_ORDER',
-      payload: {orderArray: this.state.order},
-    });
-    this.GoTo('ShoppingCart');
-  }
   DonutIncrement(id) {
     const idDonut = id;
-    let orderArray = this.state.order;
+    let orderArray = this.props.Order.order;
     const isDonut = ({id}) => id == idDonut;
     const index = orderArray.findIndex(isDonut);
     orderArray[index].quantity += 1;
@@ -67,9 +52,10 @@ class Order extends Component {
       payload: {orderArray: orderArray},
     });
   }
+
   DonutDecrement(id) {
     const idDonut = id;
-    let orderArray = this.state.order;
+    let orderArray = this.props.Order.order;
     const isDonut = ({id}) => id == idDonut;
     const index = orderArray.findIndex(isDonut);
     if (orderArray[index].quantity > 1) {
@@ -97,7 +83,7 @@ class Order extends Component {
   }
   DeleteDonut(id) {
     const idDonut = id;
-    let orderArray = this.state.order;
+    let orderArray = this.props.Order.order;
     const isDonut = ({id}) => id == idDonut;
     const index = orderArray.findIndex(isDonut);
     orderArray.splice(index, 1);
@@ -138,10 +124,6 @@ class Order extends Component {
   MakeAnOrder() {}
   HeaderBanner_OnBack() {}
   GoTo(to) {
-    this.props.dispatch({
-      type: 'CURRENT_SCREEN',
-      payload: to,
-    });
     this.props.navigation.navigate(to);
   }
   render() {
@@ -164,7 +146,7 @@ class Order extends Component {
             />
           </View>
           <View style={styles.products_container}>
-            {this.state.order.map((Donut, index) => {
+            {this.props.Order.order.map((Donut, index) => {
               return (
                 <Item_Box_Order
                   item={getDonut(Donut.cover, Donut.topping, Donut.type)}
@@ -178,10 +160,10 @@ class Order extends Component {
             })}
           </View>
 
-          {this.state.order.length > 0 && <Divider />}
+          {this.props.Order.order.length > 0 && <Divider />}
 
           <View style={styles.title_container_add_more}>
-            {this.state.order.length > 0 ? (
+            {this.props.Order.order.length > 0 ? (
               <Text style={styles.title_add_more}>¿Deseas algo mas?</Text>
             ) : (
               <Text style={styles.title_add_more}>
@@ -193,7 +175,7 @@ class Order extends Component {
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
-              marginHorizontal:'7%',
+              marginHorizontal: '7%',
             }}>
             <Item_Box_Small
               onPress={() => {
@@ -211,8 +193,8 @@ class Order extends Component {
             />
           </View>
 
-          {this.state.order.length > 0 && <Divider />}
-          {this.state.order.length > 0 && (
+          {this.props.Order.order.length > 0 && <Divider />}
+          {this.props.Order.order.length > 0 && (
             <View
               style={{
                 flex: 2,
@@ -226,7 +208,7 @@ class Order extends Component {
                 title="Continuar"
                 button_style="primary"
                 onPress={() => {
-                  this.gotoShoppingCart();
+                  this.GoTo('ShoppingCart');
                 }}
               />
               <Button
@@ -281,7 +263,7 @@ const styles = StyleSheet.create({
     top: hp('23.07%'),
   },
 });
-const mapStateToProps = reducers => {
-  return {Order: reducers.order, Global: reducers.globalReducer};
+const mapStateToProps = state => {
+  return {Order: state.order};
 };
 export default connect(mapStateToProps)(Order);

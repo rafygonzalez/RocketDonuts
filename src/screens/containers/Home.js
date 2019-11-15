@@ -40,7 +40,7 @@ class Home extends Component {
 
   async componentDidMount() {
     API.getConfigProducts().then(result => {
-      console.warn(result)
+      console.log(result);
     });
     auth().onAuthStateChanged(user => {
       if (!user) {

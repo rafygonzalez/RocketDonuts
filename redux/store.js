@@ -11,9 +11,12 @@ const orderPersistConfig = {
   storage: AsyncStorage,
   blacklist: ['order'],
 };
-
+const signPersistConfig = {
+  key: 'sign',
+  storage: AsyncStorage,
+};
 const reducer = combineReducers({
-  signReducer: persistReducer(orderPersistConfig, signReducer),
+  signReducer: persistReducer(signPersistConfig, signReducer),
   order: persistReducer(orderPersistConfig, orderReducer),
   globalReducer: globalReducer,
 });

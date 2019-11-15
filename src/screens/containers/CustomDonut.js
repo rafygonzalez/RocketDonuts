@@ -1,11 +1,5 @@
 import React, {Component} from 'react';
-import {
-  View,
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  Text,
-} from 'react-native';
+import {View, SafeAreaView, StyleSheet, ScrollView, Text} from 'react-native';
 import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
 import HeaderBanner from '../../sections/components/Header_Banner';
 import {Product_Box} from '../components/Product_Box';
@@ -99,7 +93,7 @@ class CustomDonut extends Component {
     let id = Math.random()
       .toString(36)
       .substring(7);
-    await this.props.dispatch({
+    this.props.dispatch({
       type: 'CUSTOM_DONUT',
       payload: {
         type: type,
@@ -130,10 +124,6 @@ class CustomDonut extends Component {
     });
   }
   GoTo(to) {
-    this.props.dispatch({
-      type: 'CURRENT_SCREEN',
-      payload: to,
-    });
     this.props.navigation.navigate(to);
   }
   render() {

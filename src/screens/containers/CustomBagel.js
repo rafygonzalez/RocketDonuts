@@ -123,10 +123,6 @@ class CustomBagel extends Component {
     });
   }
   GoTo(to) {
-    this.props.dispatch({
-      type: 'CURRENT_SCREEN',
-      payload: to,
-    });
     this.props.navigation.navigate(to);
   }
   render() {
