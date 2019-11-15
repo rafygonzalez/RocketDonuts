@@ -39,18 +39,34 @@ class Home extends Component {
   };
 
   async componentDidMount() {
+    auth().onAuthStateChanged(user => {
+      if (!user) {
+        this.GoTo('Welcome');
+      }
+    });
     API.getConfigProducts().then(result => {
       this.props.dispatch({
         type: 'CONFIG_PRODUCTS',
         payload: result,
       });
     });
-    auth().onAuthStateChanged(user => {
-      if (!user) {
-        this.GoTo('Welcome');
-      }
+    const averageUsd = await this.getDolarTodayApi();
+    this.props.dispatch({
+      type: 'USD_AVERAGE',
+      payload: averageUsd,
     });
   }
+  getDolarTodayApi = () => {
+    return new Promise(resolve => {
+      fetch('https://s3.amazonaws.com/dolartoday/data.json')
+        .then(result => {
+          return result.json();
+        })
+        .then(json => {
+          resolve(json.USD.promedio);
+        });
+    });
+  };
   onSelectedProduct(name) {
     if (name === 'Donut') {
       this.GoTo('CustomDonut');

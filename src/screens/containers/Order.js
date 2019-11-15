@@ -48,7 +48,6 @@ class Order extends Component {
     const isDonut = ({id}) => id == idDonut;
     const index = orderArray.findIndex(isDonut);
     orderArray[index].quantity += 1;
-    this.setState({order: orderArray});
     this.props.dispatch({
       type: 'SET_ORDER',
       payload: {orderArray: orderArray},
@@ -150,22 +149,20 @@ class Order extends Component {
   render() {
     return (
       <SafeAreaView style={styles.area_container}>
-        <ScrollView
-          persistentScrollbar={true}
-          contentContainerStyle={{flexGrow: 1}}>
-          <HeaderBanner
-            withOrder
-            onPress={this.HeaderBanner_OnBack}
-            onPressMenu={() => this.props.navigation.toggleDrawer()}
-            menu_button
+        <HeaderBanner
+          withOrder
+          onPress={this.HeaderBanner_OnBack}
+          onPressMenu={() => this.props.navigation.toggleDrawer()}
+          menu_button
+        />
+        <View style={[styles.stars_container]}>
+          <Estrellas
+            width={wp('100%')}
+            height={hp('73.68%')}
+            preserveAspectRatio="xMidYMid meet"
           />
-          <View style={[styles.stars_container]}>
-            <Estrellas
-              width={wp('100%')}
-              height={hp('73.68%')}
-              preserveAspectRatio="xMidYMid meet"
-            />
-          </View>
+        </View>
+        <ScrollView style={{maxHeight: hp('28%')}} persistentScrollbar={true}>
           <View style={styles.products_container}>
             {this.props.Order.order.map((Donut, index) => {
               return (
@@ -180,72 +177,71 @@ class Order extends Component {
               );
             })}
           </View>
+        </ScrollView>
+        {this.props.Order.order.length > 0 && <Divider />}
 
-          {this.props.Order.order.length > 0 && <Divider />}
+        <View style={styles.title_container_add_more}>
+          {this.props.Order.order.length > 0 ? (
+            <Text style={styles.title_add_more}>¿Deseas algo mas?</Text>
+          ) : (
+            <Text style={styles.title_add_more}>
+              No has hecho tu pedido, ¿Deseas algo?
+            </Text>
+          )}
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginHorizontal: '7%',
+          }}>
+          <Item_Box_Small
+            onPress={() => {
+              this.GoTo('CustomDonut');
+            }}
+            item={Dona}
+            item_name={'Dona'}
+          />
+          <Item_Box_Small
+            onPress={() => {
+              this.GoTo('CustomBagel');
+            }}
+            item={Rosquilla}
+            item_name={'Rosquilla'}
+          />
+        </View>
 
-          <View style={styles.title_container_add_more}>
-            {this.props.Order.order.length > 0 ? (
-              <Text style={styles.title_add_more}>¿Deseas algo mas?</Text>
-            ) : (
-              <Text style={styles.title_add_more}>
-                No has hecho tu pedido, ¿Deseas algo?
-              </Text>
-            )}
-          </View>
+        {this.props.Order.order.length > 0 && <Divider />}
+        {this.props.Order.order.length > 0 && (
           <View
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginHorizontal: '7%',
+              flex: 2,
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              marginVertical: 16,
+              marginHorizontal: '9%',
+              width: '82%',
             }}>
-            <Item_Box_Small
+            <Button
+              title="Continuar"
+              button_style="primary"
               onPress={() => {
-                this.GoTo('CustomDonut');
+                this.GoToCart();
               }}
-              item={Dona}
-              item_name={'Dona'}
             />
-            <Item_Box_Small
+            <Button
+              title="Cancelar Pedido"
+              button_style="simple"
               onPress={() => {
-                this.GoTo('CustomBagel');
+                this.DeleteOrder();
               }}
-              item={Rosquilla}
-              item_name={'Rosquilla'}
+              extra_style={{marginTop: '2%'}}
             />
+            <TouchableOpacity style={{marginTop: '5%'}}>
+              <Text>Términos y condiciones | Ayuda</Text>
+            </TouchableOpacity>
           </View>
-
-          {this.props.Order.order.length > 0 && <Divider />}
-          {this.props.Order.order.length > 0 && (
-            <View
-              style={{
-                flex: 2,
-                justifyContent: 'flex-end',
-                alignItems: 'center',
-                marginVertical: 16,
-                marginHorizontal: '9%',
-                width: '82%',
-              }}>
-              <Button
-                title="Continuar"
-                button_style="primary"
-                onPress={() => {
-                  this.GoToCart();
-                }}
-              />
-              <Button
-                title="Cancelar Pedido"
-                button_style="simple"
-                onPress={() => {
-                  this.DeleteOrder();
-                }}
-                extra_style={{marginTop: '2%'}}
-              />
-              <TouchableOpacity style={{marginTop: '5%'}}>
-                <Text>Términos y condiciones | Ayuda</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        </ScrollView>
+        )}
       </SafeAreaView>
     );
   }

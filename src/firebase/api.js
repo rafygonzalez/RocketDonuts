@@ -1,4 +1,4 @@
-import {auth,firestore} from 'react-native-firebase';
+import {auth, firestore} from 'react-native-firebase';
 import {GoogleSignin} from '@react-native-community/google-signin';
 export const signOut = () => auth().signOut();
 
@@ -11,9 +11,12 @@ class Api {
       else props.auth_state(false);
     });
   }
-  async getConfigProducts(){
-    const configData = await firestore().collection('Config').doc('Products').get()
-    return configData.data()
+  async getConfigProducts() {
+    const configData = await firestore()
+      .collection('Config')
+      .doc('Products')
+      .get();
+    return configData.data();
   }
   async createUser(
     name,
@@ -32,9 +35,10 @@ class Api {
       let user_account;
       let usercred;
       if (user == null) {
-        user_account = await 
-          auth()
-          .createUserWithEmailAndPassword(email, password);
+        user_account = await auth().createUserWithEmailAndPassword(
+          email,
+          password,
+        );
         auth().currentUser.sendEmailVerification();
         const email_uid = user_account.user.uid;
         db.collection('Users')
@@ -46,9 +50,7 @@ class Api {
             birthDate,
             uid: email_uid,
           });
-        usercred = await 
-          auth()
-          .currentUser.linkWithCredential(credential);
+        usercred = await auth().currentUser.linkWithCredential(credential);
         db.collection('Users')
           .doc(`${email_uid}`)
           .update({
@@ -57,9 +59,7 @@ class Api {
 
         success = true;
       } else if (user.providerData.length == 1) {
-        usercred = await 
-          auth()
-          .currentUser.linkWithCredential(credential);
+        usercred = await auth().currentUser.linkWithCredential(credential);
         const userUid = user.uid;
         db.collection('Users')
           .doc(`${userUid}`)
@@ -91,9 +91,7 @@ class Api {
         data.idToken,
         data.accessToken,
       );
-      const UserCredential = await 
-        auth()
-        .signInWithCredential(credential);
+      const UserCredential = await auth().signInWithCredential(credential);
       GoogleSignin.getCurrentUser().then(result => {});
     } catch (e) {
       console.error(e);

@@ -82,19 +82,8 @@ class ShoppingCart extends Component {
     return {Fecha: all[0], Hora: all[1]};
   }
 
-  getDolarTodayApi() {
-    return new Promise(resolve => {
-      fetch('https://s3.amazonaws.com/dolartoday/data.json')
-        .then(result => {
-          return result.json();
-        })
-        .then(json => {
-          resolve(json.USD.promedio);
-        });
-    });
-  }
-  async getAmount() {
-    const {config, orderQuantity} = this.props;
+  getAmount() {
+    const {config, orderQuantity} = this.props.order;
     const DonutPrice = config.Donuts.usdPrice;
     const BagelPrice = config.Bagel.usdPrice;
     var totalDonutPrice = 0;
@@ -108,12 +97,14 @@ class ShoppingCart extends Component {
     }
     TotalUSD = totalDonutPrice + totalBagelPrice;
 
-    const averageUsd = await this.getDolarTodayApi();
+    const averageUsd = this.props.global.usdAverage;
     const totalOrder = TotalUSD * averageUsd;
     this.setState({total: totalOrder.toFixed(2)});
   }
+
+  makeAnOrder = () => {};
   render() {
-    const {orderQuantity} = this.props;
+    const {orderQuantity} = this.props.order;
     return (
       <SafeAreaView style={styles.area_container}>
         <HeaderBanner
@@ -124,7 +115,7 @@ class ShoppingCart extends Component {
         <View style={[styles.stars_container]}>
           <Estrellas
             width={wp('100%')}
-            height={hp('73.68%')}
+            height={hp('100.68%')}
             preserveAspectRatio="xMidYMid meet"
           />
         </View>
@@ -133,7 +124,7 @@ class ShoppingCart extends Component {
             <ScrollView
               persistentScrollbar={true}
               style={{height: hp('38%'), backgroundColor: '#EDEEF4'}}>
-              {this.props.order.map((Item, index) => {
+              {this.props.order.order.map((Item, index) => {
                 return (
                   <Layout key={index}>
                     <OrderDetail
@@ -270,10 +261,10 @@ const styles = StyleSheet.create({
   stars_container: {
     position: 'absolute',
 
-    top: hp('23.07%'),
+    top: hp('25%'),
   },
 });
 const mapStateToProps = reducers => {
-  return reducers.order;
+  return {order: reducers.order, global: reducers.globalReducer};
 };
 export default connect(mapStateToProps)(ShoppingCart);
