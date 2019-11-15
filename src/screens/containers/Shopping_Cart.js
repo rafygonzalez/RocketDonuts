@@ -25,14 +25,29 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+
+const Divider = () => {
+  return (
+    <View
+      opacity={1}
+      style={{
+        width: '100%',
+        borderBottomColor: '#ECEDF2',
+        borderBottomWidth: 2,
+        marginVertical: '5%',
+      }}
+    />
+  );
+};
 class ShoppingCart extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {total: 0};
     this.HeaderBanner_OnBack = this.HeaderBanner_OnBack.bind(this);
     this.DeleteOrder = this.DeleteOrder.bind(this);
     this.getDonutDescription = this.getDonutDescription.bind(this);
+    this.getCurrentDate = this.getCurrentDate.bind(this);
+    this.getAmount = this.getAmount.bind(this);
   }
   static navigationOptions = {
     header: null,
@@ -41,7 +56,9 @@ class ShoppingCart extends Component {
   HeaderBanner_OnBack() {
     this.props.navigation.goBack();
   }
-
+  componentDidMount() {
+    this.getAmount();
+  }
   getDonutDescription(type, topping, cover, filling) {
     if (type == 'Dona') {
       if (topping.length > 1) {
@@ -57,17 +74,46 @@ class ShoppingCart extends Component {
       }
     }
   }
-  /*
-      Item.type == 'Dona' && Item.topping.length > 1 ? 
-                          `Rellena con ${Item.filling}, Cubierta de ${Item.cover} y Topping de ${Item.topping}`
-                          : 
-                          Item.type == 'Rosquilla' && Item.topping.length > 1  ? 
-                          `Cubierta de ${Item.cover} y Topping de ${Item.topping}`
-                          : 
-                          `Cubierta de ${Item.cover}`
-                          
-                          */
+  getCurrentDate() {
+    const today = new Date().toLocaleString('es', {
+      timeZone: 'America/Caracas',
+    });
+    const all = today.split(' ');
+    return {Fecha: all[0], Hora: all[1]};
+  }
+
+  getDolarTodayApi() {
+    return new Promise(resolve => {
+      fetch('https://s3.amazonaws.com/dolartoday/data.json')
+        .then(result => {
+          return result.json();
+        })
+        .then(json => {
+          resolve(json.USD.promedio);
+        });
+    });
+  }
+  async getAmount() {
+    const {config, orderQuantity} = this.props;
+    const DonutPrice = config.Donuts.usdPrice;
+    const BagelPrice = config.Bagel.usdPrice;
+    var totalDonutPrice = 0;
+    var totalBagelPrice = 0;
+    var TotalUSD = 0;
+    if (orderQuantity.totalDonut !== 0) {
+      totalDonutPrice = DonutPrice * orderQuantity.totalDonut;
+    }
+    if (orderQuantity.totalBagel !== 0) {
+      totalBagelPrice = BagelPrice * orderQuantity.totalBagel;
+    }
+    TotalUSD = totalDonutPrice + totalBagelPrice;
+
+    const averageUsd = await this.getDolarTodayApi();
+    const totalOrder = TotalUSD * averageUsd;
+    this.setState({total: totalOrder.toFixed(2)});
+  }
   render() {
+    const {orderQuantity} = this.props;
     return (
       <SafeAreaView style={styles.area_container}>
         <HeaderBanner
@@ -82,11 +128,11 @@ class ShoppingCart extends Component {
             preserveAspectRatio="xMidYMid meet"
           />
         </View>
-        <View style={{alignItems:'center', flexGrow: 1}}>
+        <View style={{alignItems: 'center', top: '2%'}}>
           <View style={styles.order_container}>
             <ScrollView
-                  persistentScrollbar={true}
-              style={{maxHeight: hp('25%'), backgroundColor: '#EDEEF4'}}>
+              persistentScrollbar={true}
+              style={{height: hp('38%'), backgroundColor: '#EDEEF4'}}>
               {this.props.order.map((Item, index) => {
                 return (
                   <Layout key={index}>
@@ -105,54 +151,92 @@ class ShoppingCart extends Component {
                 );
               })}
             </ScrollView>
-            <View
-              opacity={1}
-              style={{
-                width: '100%',
-                borderBottomColor: '#ECEDF2',
-                borderBottomWidth: 2,
-                marginVertical: '5%',
-              }}
-            />
-            <View
-              style={{
-                marginTop: '10%',
-                alignItems: 'center',
-                width: '85%',
-              }}>
-              <Button
-                title="Realizar Pedido"
-                button_style="primary"
-                onPress={() => {}}
-              />
-              <Button
-                title="Cancelar Pedido"
-                button_style="simple"
-                onPress={() => {}}
-                extra_style={{marginTop: '2%'}}
-              />
-            </View>
-          </View>
-        </View>
+            <Divider />
+            <View style={styles.detail_container}>
+              <Text style={styles.detail_title}>Detalles del pedido</Text>
+              {orderQuantity.totalDonut !== 0 && (
+                <View style={styles.detail_description_container}>
+                  <Text style={styles.detail_description_title}>
+                    Cant. Donas:
+                  </Text>
+                  <Text style={styles.detail_description_value}>
+                    {orderQuantity.totalDonut}
+                  </Text>
+                </View>
+              )}
+              {orderQuantity.totalBagel !== 0 && (
+                <View style={styles.detail_description_container}>
+                  <Text style={styles.detail_description_title}>
+                    Cant. Rosquillas:
+                  </Text>
+                  <Text style={styles.detail_description_value}>
+                    {' '}
+                    {orderQuantity.totalBagel}
+                  </Text>
+                </View>
+              )}
+              <View style={styles.detail_description_container}>
+                <Text style={styles.detail_description_title}>Fecha:</Text>
+                <Text style={styles.detail_description_value}>
+                  {this.getCurrentDate().Fecha}
+                </Text>
+              </View>
+              <View style={styles.detail_description_container}>
+                <Text style={styles.detail_description_title}>Hora:</Text>
+                <Text style={styles.detail_description_value}>
+                  {this.getCurrentDate().Hora}
+                </Text>
+              </View>
 
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-            marginVertical: 16,
-            marginHorizontal: '9%',
-            width: '82%',
-          }}>
-          <TouchableOpacity style={{marginTop: '5%'}}>
-            <Text style={{color: '#fff'}}>Términos y condiciones | Ayuda</Text>
-          </TouchableOpacity>
+              <Text style={styles.detail_total}>
+                Total Bs.S: {this.state.total}
+              </Text>
+            </View>
+            <Divider />
+            <Button
+              title="Realizar Pedido"
+              button_style="primary"
+              onPress={() => {}}
+            />
+            <Button
+              title="Cancelar Pedido"
+              button_style="simple"
+              onPress={() => {}}
+              extra_style={{marginTop: '3%'}}
+            />
+          </View>
         </View>
       </SafeAreaView>
     );
   }
 }
+
 const styles = StyleSheet.create({
+  detail_container: {
+    alignItems: 'center',
+  },
+  detail_title: {
+    fontFamily: 'Rockwell',
+    fontSize: wp('5%'),
+    color: '#151619',
+    marginBottom: hp('1%'),
+  },
+  detail_description_container: {flexDirection: 'row'},
+  detail_description_title: {
+    fontFamily: 'OpenSans-Regular',
+    fontSize: wp('4%'),
+    color: '#151619',
+    marginRight: wp('3%'),
+  },
+  detail_description_value: {
+    fontFamily: 'OpenSans-Regular',
+    fontSize: wp('4%'),
+  },
+  detail_total: {
+    marginTop: hp('2%'),
+    fontFamily: 'OpenSans-Regular',
+    fontSize: wp('4%'),
+  },
   area_order_container: {},
   order_container: {
     backgroundColor: 'white',
@@ -161,7 +245,6 @@ const styles = StyleSheet.create({
     borderColor: '#C7C8D6',
     width: '85%',
     alignItems: 'center',
-    flexGrow: 1,
   },
 
   title_container_add_more: {
@@ -169,11 +252,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   area_container: {
-    flex: 1,
     backgroundColor: '#313045',
+    height: '100%',
   },
   products_container: {
-    flexWrap: 'wrap',
     marginVertical: 8,
     marginHorizontal: 8,
     justifyContent: 'center',
@@ -182,8 +264,6 @@ const styles = StyleSheet.create({
   },
   background: {
     backgroundColor: '#313045',
-
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },

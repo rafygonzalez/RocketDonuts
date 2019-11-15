@@ -35,6 +35,8 @@ class Order extends Component {
     this.MakeAnOrder = this.MakeAnOrder.bind(this);
     this.backHandler = null;
     this.GoTo = this.GoTo.bind(this);
+    this.GoToCart = this.GoToCart.bind(this);
+    this.getQuantityOrder = this.getQuantityOrder.bind(this);
   }
   static navigationOptions = {
     header: null,
@@ -126,6 +128,25 @@ class Order extends Component {
   GoTo(to) {
     this.props.navigation.navigate(to);
   }
+  getQuantityOrder() {
+    const {order} = this.props.Order;
+    var totalDonut = 0;
+    var totalBagel = 0;
+    order.map(({type, quantity}) => {
+      if (type == 'Dona') {
+        totalDonut += quantity;
+      } else if (type == 'Rosquilla') totalBagel += quantity;
+    });
+    return {totalDonut, totalBagel};
+  }
+  GoToCart() {
+    const quantity = this.getQuantityOrder();
+    this.props.dispatch({
+      type: 'SET_ORDER_QUANTITY',
+      payload: quantity,
+    });
+    this.GoTo('ShoppingCart');
+  }
   render() {
     return (
       <SafeAreaView style={styles.area_container}>
@@ -208,7 +229,7 @@ class Order extends Component {
                 title="Continuar"
                 button_style="primary"
                 onPress={() => {
-                  this.GoTo('ShoppingCart');
+                  this.GoToCart();
                 }}
               />
               <Button
