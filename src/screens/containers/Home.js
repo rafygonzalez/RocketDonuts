@@ -17,12 +17,13 @@ import Dona from '../../../assets/svg/Dona.svg';
 import Rosquilla from '../../../assets/svg/Rosquilla.svg';
 //Redux
 import {connect} from 'react-redux';
-import firebase from 'react-native-firebase';
+import {auth, firestore} from 'react-native-firebase';
 import {withNavigationFocus} from 'react-navigation';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import API from '../../firebase/api';
 
 class Home extends Component {
   constructor(props) {
@@ -37,9 +38,11 @@ class Home extends Component {
     header: null,
   };
 
-
-  componentDidMount() {
-    firebase.auth().onAuthStateChanged(user => {
+  async componentDidMount() {
+    API.getConfigProducts().then(result => {
+      console.warn(result)
+    });
+    auth().onAuthStateChanged(user => {
       if (!user) {
         this.GoTo('Welcome');
       }
@@ -70,8 +73,8 @@ class Home extends Component {
           />
           <View style={[styles.stars_container]}>
             <Estrellas
-             width={wp('100%')}
-             height={hp('73.68%')}
+              width={wp('100%')}
+              height={hp('73.68%')}
               preserveAspectRatio="xMidYMid meet"
             />
           </View>

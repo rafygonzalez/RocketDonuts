@@ -300,6 +300,6 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = reducers => {
-  return reducers.globalReducer;
+  return reducers.order;
 };
 export default connect(mapStateToProps)(CustomBagel);

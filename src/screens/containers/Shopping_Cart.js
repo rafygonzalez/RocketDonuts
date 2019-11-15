@@ -85,6 +85,7 @@ class ShoppingCart extends Component {
         <View style={{alignItems:'center', flexGrow: 1}}>
           <View style={styles.order_container}>
             <ScrollView
+                  persistentScrollbar={true}
               style={{maxHeight: hp('25%'), backgroundColor: '#EDEEF4'}}>
               {this.props.order.map((Item, index) => {
                 return (
