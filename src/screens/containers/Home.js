@@ -107,7 +107,7 @@ class Home extends Component {
             <Product_Box
               onPress={() => this.onSelectedProduct('Bagel')}
               item={Rosquilla}
-              item_name={'Rosquilla'}
+              item_name={'Rosquillas'}
             />
             <Product_Box
               imageBackground
