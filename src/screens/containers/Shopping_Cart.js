@@ -26,6 +26,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
+import API from '../../firebase/api';
 const Divider = () => {
   return (
     <View
@@ -102,7 +103,9 @@ class ShoppingCart extends Component {
     this.setState({total: totalOrder.toFixed(2)});
   }
 
-  makeAnOrder = () => {};
+  makeAnOrder = () => {
+    API.makeAnOrder(this.props.order.order);
+  };
   render() {
     const {orderQuantity} = this.props.order;
     return (
@@ -119,11 +122,11 @@ class ShoppingCart extends Component {
             preserveAspectRatio="xMidYMid meet"
           />
         </View>
-        <View style={{alignItems: 'center', top: '2%'}}>
+        <View style={{alignItems: 'center', top: '1%'}}>
           <View style={styles.order_container}>
             <ScrollView
               persistentScrollbar={true}
-              style={{height: hp('38%'), backgroundColor: '#EDEEF4'}}>
+              style={{height: hp('35%'), backgroundColor: '#EDEEF4'}}>
               {this.props.order.order.map((Item, index) => {
                 return (
                   <Layout key={index}>
@@ -179,13 +182,20 @@ class ShoppingCart extends Component {
                 </Text>
               </View>
 
-              <Text style={styles.detail_total}>
-                Total Bs.S: {this.state.total}
-              </Text>
+              <View
+                style={[
+                  styles.detail_description_container,
+                  {marginTop: hp('1%')},
+                ]}>
+                <Text style={styles.detail_description_title}>Total Bs.S:</Text>
+                <Text style={styles.detail_description_value}>
+                  {this.state.total}
+                </Text>
+              </View>
             </View>
             <Divider />
             <Button
-              title="Realizar Pedido"
+              title="Continuar"
               button_style="primary"
               onPress={() => {}}
             />
@@ -207,14 +217,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   detail_title: {
-    fontFamily: 'Rockwell',
+    fontFamily: 'OpenSans-Bold',
     fontSize: wp('5%'),
     color: '#151619',
     marginBottom: hp('1%'),
   },
   detail_description_container: {flexDirection: 'row'},
   detail_description_title: {
-    fontFamily: 'OpenSans-Regular',
+    fontFamily: 'OpenSans-Bold',
     fontSize: wp('4%'),
     color: '#151619',
     marginRight: wp('3%'),
@@ -222,6 +232,7 @@ const styles = StyleSheet.create({
   detail_description_value: {
     fontFamily: 'OpenSans-Regular',
     fontSize: wp('4%'),
+    color: '#707070',
   },
   detail_total: {
     marginTop: hp('2%'),
@@ -236,6 +247,8 @@ const styles = StyleSheet.create({
     borderColor: '#C7C8D6',
     width: '85%',
     alignItems: 'center',
+    paddingHorizontal: wp('5%'),
+    paddingVertical: wp('5%'),
   },
 
   title_container_add_more: {

@@ -5,6 +5,9 @@ export const signOut = () => auth().signOut();
 export const currentUser = () => auth().currentUser;
 
 class Api {
+  constructor() {
+    this.currentUser = {};
+  }
   async Auth(props) {
     await auth().onAuthStateChanged(user => {
       if (user) props.auth_state(true);
@@ -18,6 +21,24 @@ class Api {
       .get();
     return configData.data();
   }
+  getCurrentUser = () => {
+    this.currentUser = auth().currentUser;
+  };
+  async makeAnOrder(order) {
+    this.getCurrentUser();
+    let orderid = Math.random()
+      .toString(36)
+      .substring(7);
+    await firestore()
+      .collection('Users')
+      .doc(this.currentUser.uid)
+      .update({orders: firestore.FieldValue.arrayUnion(orderid)});
+    await firestore()
+      .collection('Orders')
+      .doc(this.currentUser.uid)
+      .set({[orderid]: order}, {merge: true});
+  }
+
   async createUser(
     name,
     email,
