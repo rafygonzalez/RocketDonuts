@@ -10,18 +10,20 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 const HeaderBanner = props => {
+  const wpH = wp('101');
+  const hpH = wpH * 0.45
   return (
     <View>
       {props.withTitle ? (
         <HeaderBannerWithTitle
           width={wp('101%')}
-          height={hp('24%')}
+          height={hpH}
           preserveAspectRatio="xMidYMid meet"
         />
       ) : props.withOrder ? (
         <HeaderBannerWithTitleOrder
           width={wp('101%')}
-          height={hp('24%')}
+          height={hpH}
           preserveAspectRatio="xMidYMid meet"
         />
       ) : props.menu ? (
@@ -33,7 +35,7 @@ const HeaderBanner = props => {
       ) : (
         <HeaderBannerSvg
           width={wp('110.5%')}
-          height={hp('23.5%')}
+          height={hpH}
           preserveAspectRatio="xMidYMid meet"
         />
       )}

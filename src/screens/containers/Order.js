@@ -251,10 +251,9 @@ const styles = StyleSheet.create({
     color: '#FF9800',
     fontFamily: 'OpenSans-Bold',
     fontSize: wp('6%'),
+    textAlign:'center'
   },
   title_container_add_more: {
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   area_container: {
     flex: 1,
