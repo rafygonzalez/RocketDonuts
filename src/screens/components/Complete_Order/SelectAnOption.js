@@ -12,12 +12,16 @@ const Buttons = props => {
       <Button
         title="Servicio Delivery"
         button_style="primary"
-        onPress={() => {}}
+        onPress={() => {
+          props.optionHandler('delivery');
+        }}
       />
       <Button
         title="Buscar a la Fábrica"
         button_style="simple"
-        onPress={() => {}}
+        onPress={() => {
+          props.optionHandler('factory');
+        }}
         extra_style={{marginTop: '3%'}}
       />
     </View>
@@ -26,9 +30,9 @@ const Buttons = props => {
 const SelectAnOption = props => {
   return (
     <Body
-      title="Seleccione una opción"
+      title="Selecciona una opción"
       onBack={props.onBack}
-      buttons_component={<Buttons />}>
+      buttons_component={<Buttons optionHandler={props.optionHandler} />}>
       <Text style={styles.title}>¿Quieres que te lo llevemos?</Text>
     </Body>
   );
