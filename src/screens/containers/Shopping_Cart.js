@@ -197,7 +197,9 @@ class ShoppingCart extends Component {
             <Button
               title="Continuar"
               button_style="primary"
-              onPress={() => {}}
+              onPress={() => {
+                this.props.navigation.navigate('CompleteOrder');
+              }}
             />
             <Button
               title="Cancelar Pedido"

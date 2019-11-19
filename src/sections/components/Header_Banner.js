@@ -11,7 +11,7 @@ import {
 } from 'react-native-responsive-screen';
 const HeaderBanner = props => {
   const wpH = wp('101');
-  const hpH = wpH * 0.45
+  const hpH = wpH * 0.45;
   return (
     <View>
       {props.withTitle ? (
