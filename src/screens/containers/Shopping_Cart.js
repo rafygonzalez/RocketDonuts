@@ -76,17 +76,14 @@ class ShoppingCart extends Component {
     }
   }
   getCurrentDate() {
-    const today = new Date().toLocaleString('es', {
-      timeZone: 'America/Caracas',
-    });
-    const all = today.split(' ');
-    return {Fecha: all[0], Hora: all[1]};
+    const today = new Date()
+    return {Fecha: `${today.getDate()}/${today.getMonth()+1}/${today.getFullYear()}`, Hora: `${today.getHours()}:${today.getMinutes()}`};
   }
 
   getAmount() {
     const {config, orderQuantity} = this.props.order;
-    const DonutPrice = config.Donuts.usdPrice;
-    const BagelPrice = config.Bagel.usdPrice;
+    const DonutPrice = config.Products.Donuts.usdPrice;
+    const BagelPrice = config.Products.Bagel.usdPrice;
     var totalDonutPrice = 0;
     var totalBagelPrice = 0;
     var TotalUSD = 0;
@@ -101,6 +98,10 @@ class ShoppingCart extends Component {
     const averageUsd = this.props.global.usdAverage;
     const totalOrder = TotalUSD * averageUsd;
     this.setState({total: totalOrder.toFixed(2)});
+    this.props.dispatch({
+      type: 'SET_ORDER_TOTAL_PRICE',
+      payload: totalOrder.toFixed(2),
+    });
   }
 
   makeAnOrder = () => {

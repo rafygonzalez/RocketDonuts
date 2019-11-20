@@ -14,12 +14,20 @@ class Api {
       else props.auth_state(false);
     });
   }
-  async getConfigProducts() {
-    const configData = await firestore()
-      .collection('Config')
-      .doc('Products')
-      .get();
-    return configData.data();
+  async getConfig() {
+    let Products = {}
+    let BankData = {}
+    const querySnapshot = await firestore().collection('Config').get()
+    querySnapshot.forEach(function(doc){
+      switch(doc.id){
+        case 'Products':
+           Products = doc.data()
+           break;
+        case 'BankData':
+          BankData = doc.data()
+      }
+    })
+    return {BankData, Products};
   }
   getCurrentUser = () => {
     this.currentUser = auth().currentUser;

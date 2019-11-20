@@ -11,6 +11,8 @@ import {
 import SelectAnOption from '../components/Complete_Order/SelectAnOption';
 import SelectAnAddress from '../components/Complete_Order/SelectAnAddress';
 import SelectPayment from '../components/Complete_Order/SelectPayment';
+import ShowBankData from '../components/Complete_Order/ShowBankData';
+import AttachScreenshot from '../components/Complete_Order/AttachScreenshot';
 
 class CompleteOrder extends Component {
   constructor(props) {
@@ -20,12 +22,18 @@ class CompleteOrder extends Component {
       option: null,
       address: '',
       payment_method: '',
+      amount:''
     };
     this.handleSteps = this.handleSteps.bind(this);
     this.optionHandler = this.optionHandler.bind(this);
     this.pickerOnChangeValue = this.pickerOnChangeValue.bind(this);
+    this.Global_OnChange = this.Global_OnChange.bind(this);
   }
   handleSteps() {
+    const {step, option} = this.state;
+    if(step == 2 && option == 'factory'){
+
+    }
     this.setState({step: this.state.step + 1});
   }
   optionHandler(option) {
@@ -35,6 +43,9 @@ class CompleteOrder extends Component {
   pickerOnChangeValue(value, name) {
     this.setState({[name]: value});
   }
+  Global_OnChange(text, name) {
+    this.setState({[name]: text});
+  }
   render() {
     const {step, option} = this.state;
     return (
@@ -42,7 +53,7 @@ class CompleteOrder extends Component {
         <View style={styles.container}>
           <Stars />
           <View style={styles.Logo_Container}>
-            <Logo width={wp('90%')} height={wp('90%') * 0.5} />
+            <Logo width={wp('80%')} height={wp('80%') * 0.5} />
             {step == 1 ? (
               <SelectAnOption optionHandler={this.optionHandler} />
             ) : step == 2 && option == 'delivery' ? (
@@ -51,11 +62,17 @@ class CompleteOrder extends Component {
                 address={this.state.address}
               />
             ) : step == 2 && option == 'factory' ? (
-              <SelectPayment
+              <SelectPayment optionHandler={this.handleSteps}
                 pickerOnChangeValue={this.pickerOnChangeValue}
                 payment_method={this.state.payment_method}
+                Global_OnChange={this.Global_OnChange}
+                amount={this.state.amount}
               />
-            ) : null}
+            ) : step == 3 ?
+               <ShowBankData optionHandler={this.handleSteps}/>
+               : step == 4 &&
+               <AttachScreenshot optionHandler={this.handleSteps}/>
+            }
           </View>
         </View>
       </LinearGradient>

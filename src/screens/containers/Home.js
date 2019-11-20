@@ -44,7 +44,7 @@ class Home extends Component {
         this.GoTo('Welcome');
       }
     });
-    API.getConfigProducts().then(result => {
+    API.getConfig().then(result => {
       this.props.dispatch({
         type: 'CONFIG_PRODUCTS',
         payload: result,
