@@ -15,18 +15,20 @@ class Api {
     });
   }
   async getConfig() {
-    let Products = {}
-    let BankData = {}
-    const querySnapshot = await firestore().collection('Config').get()
-    querySnapshot.forEach(function(doc){
-      switch(doc.id){
+    let Products = {};
+    let BankData = {};
+    const querySnapshot = await firestore()
+      .collection('Config')
+      .get();
+    querySnapshot.forEach(function(doc) {
+      switch (doc.id) {
         case 'Products':
-           Products = doc.data()
-           break;
+          Products = doc.data();
+          break;
         case 'BankData':
-          BankData = doc.data()
+          BankData = doc.data();
       }
-    })
+    });
     return {BankData, Products};
   }
   getCurrentUser = () => {
@@ -45,6 +47,7 @@ class Api {
       .collection('Orders')
       .doc(this.currentUser.uid)
       .set({[orderid]: order}, {merge: true});
+    return orderid;
   }
 
   async createUser(

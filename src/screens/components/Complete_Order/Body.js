@@ -6,17 +6,22 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import BackArrow from '../../../../assets/svg/BackArrow_Black.svg';
+const Layout = props => props.children;
 const Body = props => {
   return (
     <View style={styles.body_container}>
-      <TouchableOpacity onPress={() => {}}>
-        <View style={styles.body_top}>
-          {props.onBack !== false && <BackArrow width={24} height={24} />}
-          <Text style={styles.body_title}>{props.title}</Text>
-        </View>
-      </TouchableOpacity>
+      {props.title !== undefined && (
+        <Layout>
+          <TouchableOpacity onPress={() => {}}>
+            <View style={styles.body_top}>
+              {props.onBack !== false && <BackArrow width={24} height={24} />}
+              <Text style={styles.body_title}>{props.title}</Text>
+            </View>
+          </TouchableOpacity>
+          <Divider />
+        </Layout>
+      )}
 
-      <Divider />
       {props.children}
       {props.buttons_component}
     </View>

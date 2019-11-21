@@ -13,6 +13,7 @@ import SelectAnAddress from '../components/Complete_Order/SelectAnAddress';
 import SelectPayment from '../components/Complete_Order/SelectPayment';
 import ShowBankData from '../components/Complete_Order/ShowBankData';
 import AttachScreenshot from '../components/Complete_Order/AttachScreenshot';
+import Finish from '../components/Complete_Order/Finish';
 
 class CompleteOrder extends Component {
   constructor(props) {
@@ -21,8 +22,8 @@ class CompleteOrder extends Component {
       step: 1,
       option: null,
       address: '',
-      payment_method: '',
-      amount:''
+      payment_method: 'transferencia',
+      amount: '',
     };
     this.handleSteps = this.handleSteps.bind(this);
     this.optionHandler = this.optionHandler.bind(this);
@@ -31,8 +32,7 @@ class CompleteOrder extends Component {
   }
   handleSteps() {
     const {step, option} = this.state;
-    if(step == 2 && option == 'factory'){
-
+    if (step == 2 && option == 'factory') {
     }
     this.setState({step: this.state.step + 1});
   }
@@ -47,7 +47,7 @@ class CompleteOrder extends Component {
     this.setState({[name]: text});
   }
   render() {
-    const {step, option} = this.state;
+    const {step, option, payment_method} = this.state;
     return (
       <LinearGradient colors={['#242441', '#55537B']} style={styles.background}>
         <View style={styles.container}>
@@ -62,17 +62,28 @@ class CompleteOrder extends Component {
                 address={this.state.address}
               />
             ) : step == 2 && option == 'factory' ? (
-              <SelectPayment optionHandler={this.handleSteps}
+              <SelectPayment
+                optionHandler={this.handleSteps}
                 pickerOnChangeValue={this.pickerOnChangeValue}
                 payment_method={this.state.payment_method}
                 Global_OnChange={this.Global_OnChange}
                 amount={this.state.amount}
               />
-            ) : step == 3 ?
-               <ShowBankData optionHandler={this.handleSteps}/>
-               : step == 4 &&
-               <AttachScreenshot optionHandler={this.handleSteps}/>
-            }
+            ) : step == 3 && payment_method == 'transferencia' ? (
+              <ShowBankData
+                optionHandler={this.handleSteps}
+                datos="transferencia"
+              />
+            ) : step == 3 && payment_method == 'pago_movil' ? (
+              <ShowBankData
+                optionHandler={this.handleSteps}
+                datos="pago_movil"
+              />
+            ) : step == 3 && payment_method == 'bs' ? (
+              <Finish />
+            ) : (
+              step == 4 && <AttachScreenshot optionHandler={this.handleSteps} />
+            )}
           </View>
         </View>
       </LinearGradient>
