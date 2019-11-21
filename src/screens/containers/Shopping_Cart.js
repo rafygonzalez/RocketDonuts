@@ -76,8 +76,12 @@ class ShoppingCart extends Component {
     }
   }
   getCurrentDate() {
-    const today = new Date()
-    return {Fecha: `${today.getDate()}/${today.getMonth()+1}/${today.getFullYear()}`, Hora: `${today.getHours()}:${today.getMinutes()}`};
+    const today = new Date();
+    return {
+      Fecha: `${today.getDate()}/${today.getMonth() +
+        1}/${today.getFullYear()}`,
+      Hora: `${today.getHours()}:${today.getMinutes()}`,
+    };
   }
 
   getAmount() {
@@ -101,6 +105,10 @@ class ShoppingCart extends Component {
     this.props.dispatch({
       type: 'SET_ORDER_TOTAL_PRICE',
       payload: totalOrder.toFixed(2),
+    });
+    this.props.dispatch({
+      type: 'SET_ORDER_TOTAL_PRICE_DOLAR',
+      payload: TotalUSD.toFixed(2),
     });
   }
 

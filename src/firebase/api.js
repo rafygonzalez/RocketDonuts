@@ -36,9 +36,9 @@ class Api {
   };
   async makeAnOrder(order) {
     this.getCurrentUser();
-    let orderid = Math.random()
-      .toString(36)
-      .substring(7);
+    var min = 0;
+    var max = 99999;
+    var orderid = Math.floor(Math.random() * (max - min)) + min;
     await firestore()
       .collection('Users')
       .doc(this.currentUser.uid)

@@ -13,17 +13,24 @@ const Finish = props => {
         En breves momentos procesaremos la orden, podrás ver su estado a través
         de las notificaciones o podrás visualizarlo en la sección "Mis Pedidos"
       </Text>
-      <Text style={styles.title_congratulations}>Orden #{props.orderid}</Text>
+      <Text style={styles.title_code}>Código:#{props.orderId}</Text>
       <Button
         title="Continuar"
         button_style="primary"
-        onPress={() => props.GoTo('Inicio')}
+        onPress={() => props.FinishOrder()}
         extra_style={{marginTop: 32}}
       />
     </Body>
   );
 };
 const styles = StyleSheet.create({
+  title_code: {
+    fontFamily: 'Poppins-Bold',
+    fontSize: 20,
+    color: '#FF700F',
+    textAlign: 'center',
+    marginTop: '2%',
+  },
   title_congratulations: {
     fontFamily: 'Poppins-Bold',
     fontSize: 24,

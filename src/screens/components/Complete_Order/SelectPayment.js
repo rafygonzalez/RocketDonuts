@@ -14,7 +14,13 @@ const Buttons = props => {
   return (
     <View style={{width: '100%'}}>
       <Button
-        title="Continuar"
+        title={
+          props.payment_method == 'bs'
+            ? 'Realizar Pedido'
+            : props.payment_method == 'dolar'
+            ? 'Realizar Pedido'
+            : 'Continuar'
+        }
         button_style="primary"
         onPress={() => {
           props.optionHandler();
@@ -51,6 +57,7 @@ const SelectPayment = props => {
   const {orderQuantity} = props;
   return (
     <Layout>
+      <ScrollView></ScrollView>
       <Body title="Detalles de tu pedido" onBack={false}>
         <View style={styles.detail_container}>
           {orderQuantity.totalDonut !== 0 && (
@@ -95,16 +102,25 @@ const SelectPayment = props => {
               {props.totalPrice}
             </Text>
           </View>
+          <View style={[styles.detail_description_container]}>
+            <Text style={styles.detail_description_title}>Total Dólares:</Text>
+            <Text style={styles.detail_description_value}>
+              {props.totalPriceUSD}
+            </Text>
+          </View>
         </View>
       </Body>
       <View style={{height: '1%'}} />
       <Body
         title="Selecciona un metodo de pago"
         onBack={props.onBack}
-        buttons_component={<Buttons optionHandler={props.optionHandler} />}>
-        <ScrollView
-          style={styles.scroll_view}
-         >
+        buttons_component={
+          <Buttons
+            payment_method={props.payment_method}
+            optionHandler={props.optionHandler}
+          />
+        }>
+        <ScrollView style={styles.scroll_view}>
           <Picker
             title={'Metodo de pago'}
             selectedValue={props.payment_method}
@@ -118,7 +134,10 @@ const SelectPayment = props => {
               {label: 'Efectivo Dólares', value: 'dolar'},
             ]}
           />
-          <Input payment_method={props.payment_method} />
+          <Input
+            payment_method={props.payment_method}
+            Global_OnChange={props.Global_OnChange}
+          />
         </ScrollView>
       </Body>
     </Layout>
