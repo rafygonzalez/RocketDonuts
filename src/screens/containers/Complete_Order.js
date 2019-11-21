@@ -16,7 +16,8 @@ import AttachScreenshot from '../components/Complete_Order/AttachScreenshot';
 import Finish from '../components/Complete_Order/Finish';
 import API from '../../firebase/api';
 import {connect} from 'react-redux';
-
+import ShowScreenshot from '../components/Complete_Order/ShowScreenshot';
+import ImagePicker from 'react-native-image-picker';
 const MakeOrder = props => {
   const {
     optionHandler,
@@ -24,6 +25,8 @@ const MakeOrder = props => {
     handleSteps,
     FinishOrder,
     Global_OnChange,
+    uploadCapture,
+    imageSource,
   } = props; // functions
 
   const {address, orderId, step, option, payment_method, amount} = props; // States
@@ -58,7 +61,9 @@ const MakeOrder = props => {
   ) {
     return <Finish orderId={orderId} FinishOrder={FinishOrder} />;
   } else if (step == 4) {
-    return <AttachScreenshot optionHandler={handleSteps} />;
+    return <AttachScreenshot optionHandler={uploadCapture} />;
+  } else if (step == 5) {
+    return <ShowScreenshot avatarSource={imageSource} />;
   }
 };
 
@@ -73,12 +78,14 @@ class CompleteOrder extends Component {
       amount: '',
       orderId: '',
       makingOrder: false,
+      imageSource: '',
     };
     this.handleSteps = this.handleSteps.bind(this);
     this.optionHandler = this.optionHandler.bind(this);
     this.pickerOnChangeValue = this.pickerOnChangeValue.bind(this);
     this.Global_OnChange = this.Global_OnChange.bind(this);
     this.FinishOrder = this.FinishOrder.bind(this);
+    this.uploadCapture = this.uploadCapture.bind(this);
   }
 
   handleSteps() {
@@ -116,6 +123,36 @@ class CompleteOrder extends Component {
   FinishOrder() {
     this.props.navigation.navigate('Inicio');
   }
+  uploadCapture() {
+    const options = {
+      title: null,
+      customButtons: null,
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+
+    ImagePicker.launchImageLibrary(options, response => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        const source = {uri: response.uri};
+
+        // You can also display the image using data:
+        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+        this.setState({imageSource: source});
+        this.handleSteps();
+      }
+    });
+  }
   render() {
     const {step, option, payment_method} = this.state;
     return (
@@ -132,12 +169,14 @@ class CompleteOrder extends Component {
               address={this.state.address}
               orderId={this.state.orderId}
               amount={this.state.amount}
+              imageSource={this.state.imageSource}
               //functions
               optionHandler={this.optionHandler}
               pickerOnChangeValue={this.pickerOnChangeValue}
               handleSteps={this.handleSteps}
               FinishOrder={this.FinishOrder}
               Global_OnChange={this.Global_OnChange}
+              uploadCapture={this.uploadCapture}
             />
           </View>
         </View>
@@ -146,44 +185,6 @@ class CompleteOrder extends Component {
   }
 }
 
-/*  {step == 1 ? (
-              <SelectAnOption optionHandler={this.optionHandler} />
-            ) : step == 2 && option == 'delivery' ? (
-              <SelectAnAddress
-                pickerOnChangeValue={this.pickerOnChangeValue}
-                address={this.state.address}
-              />
-            ) : step == 2 && option == 'factory' ? (
-              <SelectPayment
-                optionHandler={this.handleSteps}
-                pickerOnChangeValue={this.pickerOnChangeValue}
-                payment_method={this.state.payment_method}
-                Global_OnChange={this.Global_OnChange}
-                amount={this.state.amount}
-              />
-            ) : step == 3 && payment_method == 'transferencia' ? (
-              <ShowBankData
-                optionHandler={this.handleSteps}
-                datos="transferencia"
-              />
-            ) : step == 3 && payment_method == 'pago_movil' ? (
-              <ShowBankData
-                optionHandler={this.handleSteps}
-                datos="pago_movil"
-              />
-            ) : step == 3 && payment_method == 'bs' ? (
-              <Finish
-                orderId={this.state.orderId}
-                FinishOrder={this.FinishOrder}
-              />
-            ) : step == 3 && payment_method == 'dolar' ? (
-              <Finish
-                orderId={this.state.orderId}
-                FinishOrder={this.FinishOrder}
-              />
-            ) : (
-              step == 4 && <AttachScreenshot optionHandler={this.handleSteps} />
-            )} */
 const styles = StyleSheet.create({
   ActivityIndicator: {
     marginTop: 32,

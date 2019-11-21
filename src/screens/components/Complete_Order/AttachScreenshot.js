@@ -6,22 +6,19 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+
 const Buttons = props => {
   return (
     <View style={{width: '100%'}}>
       <Button
         title="Adjuntar captura de pantalla"
         button_style="primary"
-        onPress={() => {
-          props.optionHandler('delivery');
-        }}
+        onPress={() => props.optionHandler()}
       />
       <Button
         title="Tomar Foto con mi cámara"
         button_style="simple"
-        onPress={() => {
-          props.optionHandler('factory');
-        }}
+        onPress={() => {}}
         extra_style={{marginTop: '3%'}}
       />
     </View>
@@ -33,7 +30,10 @@ const AttachScreenshot = props => {
       title="Selecciona una opción"
       onBack={props.onBack}
       buttons_component={<Buttons optionHandler={props.optionHandler} />}>
-      <Text style={styles.title}>Adjunta la captura de pantalla de la transferencia o toma una foto desde tu celular</Text>
+      <Text style={styles.title}>
+        Adjunta la captura de pantalla de la transferencia o toma una foto desde
+        tu celular
+      </Text>
     </Body>
   );
 };
