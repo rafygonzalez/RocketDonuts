@@ -13,13 +13,14 @@ const Buttons = props => {
       <Button
         title="Adjuntar captura de pantalla"
         button_style="primary"
-        onPress={() => props.optionHandler()}
+        onPress={() => props.optionHandler('local')}
       />
       <Button
         title="Tomar Foto con mi cámara"
         button_style="simple"
         onPress={() => {}}
         extra_style={{marginTop: '3%'}}
+        onPress={() => props.optionHandler('camera')}
       />
     </View>
   );
@@ -39,7 +40,7 @@ const AttachScreenshot = props => {
 };
 const styles = StyleSheet.create({
   title: {
-    fontFamily: 'OpenSans-Bold',
+    fontFamily: 'Poppins-Bold',
     fontSize: wp('4%'),
     textAlign: 'center',
     color: '#313045',

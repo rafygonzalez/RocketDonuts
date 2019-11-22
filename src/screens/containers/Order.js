@@ -23,6 +23,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {Product_Box} from '../components/Product_Box';
 class Order extends Component {
   constructor(props) {
     super(props);
@@ -162,81 +163,113 @@ class Order extends Component {
             preserveAspectRatio="xMidYMid meet"
           />
         </View>
-        <ScrollView style={{maxHeight: hp('28%')}} persistentScrollbar={true}>
-          <View style={styles.products_container}>
-            {this.props.Order.order.map((Donut, index) => {
-              return (
-                <Item_Box_Order
-                  item={getDonut(Donut.cover, Donut.topping, Donut.type)}
-                  item_name={`${Donut.type} x ${Donut.quantity}`}
-                  key={index}
-                  id={Donut.id}
-                  DonutIncrement={this.DonutIncrement}
-                  DonutDecrement={this.DonutDecrement}
-                />
-              );
-            })}
-          </View>
-        </ScrollView>
+        {this.props.Order.order.length > 0 && (
+          <ScrollView style={{maxHeight: hp('30%')}} persistentScrollbar={true}>
+            <View style={styles.products_container}>
+              {this.props.Order.order.map((Donut, index) => {
+                return (
+                  <Item_Box_Order
+                    item={getDonut(Donut.cover, Donut.topping, Donut.type)}
+                    item_name={`${Donut.type} x ${Donut.quantity}`}
+                    key={index}
+                    id={Donut.id}
+                    DonutIncrement={this.DonutIncrement}
+                    DonutDecrement={this.DonutDecrement}
+                  />
+                );
+              })}
+            </View>
+          </ScrollView>
+        )}
         {this.props.Order.order.length > 0 && <Divider />}
 
         <View style={styles.title_container_add_more}>
           {this.props.Order.order.length > 0 ? (
-            <Text style={styles.title_add_more}>¿Deseas algo mas?</Text>
+            <View>
+              <Text style={styles.title_add_more}>¿Deseas algo mas?</Text>
+
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginHorizontal: '7%',
+                }}>
+                <Item_Box_Small
+                  onPress={() => {
+                    this.GoTo('CustomDonut');
+                  }}
+                  item={Dona}
+                  item_name={'Dona'}
+                />
+                <Item_Box_Small
+                  onPress={() => {
+                    this.GoTo('CustomBagel');
+                  }}
+                  item={Rosquilla}
+                  item_name={'Rosquilla'}
+                />
+              </View>
+            </View>
           ) : (
-            <Text style={styles.title_add_more}>
-              No has hecho tu pedido, ¿Deseas algo?
-            </Text>
+            <View style={{marginTop: '10%'}}>
+              <Text style={styles.title_add_more}>
+                No has hecho tu pedido, ¿Deseas algo?
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: hp('2%'),
+                }}>
+                <Product_Box
+                  onPress={() => {
+                    this.GoTo('CustomDonut');
+                  }}
+                  item={Dona}
+                  item_name={'Donas'}
+                />
+                <Product_Box
+                  onPress={() => {
+                    this.GoTo('CustomBagel');
+                  }}
+                  item={Rosquilla}
+                  item_name={'Rosquillas'}
+                />
+              </View>
+            </View>
           )}
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginHorizontal: '7%',
-          }}>
-          <Item_Box_Small
-            onPress={() => {
-              this.GoTo('CustomDonut');
-            }}
-            item={Dona}
-            item_name={'Dona'}
-          />
-          <Item_Box_Small
-            onPress={() => {
-              this.GoTo('CustomBagel');
-            }}
-            item={Rosquilla}
-            item_name={'Rosquilla'}
-          />
         </View>
 
         {this.props.Order.order.length > 0 && <Divider />}
         {this.props.Order.order.length > 0 && (
           <View
             style={{
-              flex: 2,
+              flex: 1,
               justifyContent: 'flex-end',
               alignItems: 'center',
               marginVertical: 16,
               marginHorizontal: '9%',
               width: '82%',
             }}>
-            <Button
-              title="Continuar"
-              button_style="primary"
-              onPress={() => {
-                this.GoToCart();
-              }}
-            />
-            <Button
-              title="Cancelar Pedido"
-              button_style="simple"
-              onPress={() => {
-                this.DeleteOrder();
-              }}
-              extra_style={{marginTop: '2%'}}
-            />
+            <View style={{flexDirection: 'row'}}>
+              <Button
+                title="Cancelar Pedido"
+                button_style="simple"
+                onPress={() => {
+                  this.DeleteOrder();
+                }}
+              />
+              <Button
+                title="Continuar"
+                button_style="primary"
+                onPress={() => {
+                  this.GoToCart();
+                }}
+                extra_style={{marginLeft: '2%'}}
+              />
+            </View>
+
             <TouchableOpacity style={{marginTop: '5%'}}>
               <Text>Términos y condiciones | Ayuda</Text>
             </TouchableOpacity>
@@ -248,13 +281,13 @@ class Order extends Component {
 }
 const styles = StyleSheet.create({
   title_add_more: {
-    color: '#FF9800',
-    fontFamily: 'OpenSans-Bold',
-    fontSize: wp('6%'),
-    textAlign:'center'
+    color: '#313045',
+    fontFamily: 'Poppins-Bold',
+    fontSize: wp('5.8%'),
+    textAlign: 'center',
+    marginHorizontal: wp('5%'),
   },
-  title_container_add_more: {
-  },
+  title_container_add_more: {},
   area_container: {
     flex: 1,
     backgroundColor: '#ECEDF2',

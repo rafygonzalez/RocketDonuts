@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     borderWidth: 0.5,
     borderColor: '#C7C8D6',
-    width: '95%',
+    width: wp('85%'),
     alignItems: 'center',
     paddingHorizontal: wp('5%'),
     paddingVertical: wp('5%'),

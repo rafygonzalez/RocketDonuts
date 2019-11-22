@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
   description_congratulations: {
     marginTop: 32,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Rockwell',
     fontSize: 20,
     color: '#313045',
     textAlign: 'center',

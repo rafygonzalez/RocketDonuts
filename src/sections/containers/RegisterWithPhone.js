@@ -1,6 +1,5 @@
 import React from 'react';
-import {StyleSheet, Dimensions, View, Alert ,
-  ToastAndroid} from 'react-native';
+import {StyleSheet, Dimensions, View, Alert, ToastAndroid} from 'react-native';
 import Register_With_Email from '../components/Register_With_Email';
 import PersonalInfo from '../components/Personal_Info';
 import Verify_Phone_Number from '../components/Verify_Phone_Number';
@@ -28,7 +27,7 @@ class RegisterWithPhone extends React.Component {
       country: '',
       state: '',
       city: '',
-      areaCode:'424',
+      areaCode: '424',
       phoneNumber: '',
       verificationCode: '',
       userid: '',
@@ -212,8 +211,11 @@ class RegisterWithPhone extends React.Component {
                     );
                     break;
                   default:
-                    ToastAndroid.show('¡Ups! has ocurrido un error, vuelva a intentar más tarde.', ToastAndroid.SHORT);
-      
+                    ToastAndroid.show(
+                      '¡Ups! has ocurrido un error, vuelva a intentar más tarde.',
+                      ToastAndroid.SHORT,
+                    );
+
                     break;
                 }
               } else {
@@ -224,8 +226,10 @@ class RegisterWithPhone extends React.Component {
               }
             });
           } else {
-            ToastAndroid.show('No has enviado un codigo de verificación, por favor, envialo y vuelva a intentarlo.', ToastAndroid.SHORT);
-        
+            ToastAndroid.show(
+              'No has enviado un codigo de verificación, por favor, envialo y vuelva a intentarlo.',
+              ToastAndroid.SHORT,
+            );
           }
 
           //    this.setState({step: this.state.step + 1});
@@ -248,24 +252,28 @@ class RegisterWithPhone extends React.Component {
           sendedCode: true,
         });
         ToastAndroid.show('¡Código Enviado!', ToastAndroid.SHORT);
-      }).catch(error => {
+      })
+      .catch(error => {
         this.setState({sendingCode: false});
-        switch(error.code){
+        switch (error.code) {
           case 'auth/invalid-phone-number':
-              Alert.alert(
-                `Ha ocurrido un error`,
-                `El formato del número de teléfono proporcionado es incorrecto. Ingrese el número de teléfono en el siguiente formato: [Código de area][Número de Teléfono]`,
-                [{text: 'OK', onPress: () => {}}],
-                {cancelable: false},
-              );
-          break;
+            Alert.alert(
+              `Ha ocurrido un error`,
+              `El formato del número de teléfono proporcionado es incorrecto. Ingrese el número de teléfono en el siguiente formato: [Código de area][Número de Teléfono]`,
+              [{text: 'OK', onPress: () => {}}],
+              {cancelable: false},
+            );
+            break;
           default:
-              ToastAndroid.show('¡Ups! ha ocurrido un error, vuelva a intentarlo.', ToastAndroid.SHORT);
+            ToastAndroid.show(
+              '¡Ups! ha ocurrido un error, vuelva a intentarlo.',
+              ToastAndroid.SHORT,
+            );
             break;
         }
 
-         console.warn(error)
-      })
+        console.warn(error);
+      });
   }
 
   render() {
@@ -353,7 +361,7 @@ const styles = StyleSheet.create({
   },
   description_congratulations: {
     marginTop: 32,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Rockwell',
     fontSize: 20,
     color: '#313045',
     textAlign: 'center',

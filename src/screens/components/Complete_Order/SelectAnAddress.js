@@ -42,13 +42,13 @@ const SelectAnAddress = props => {
 };
 const styles = StyleSheet.create({
   description: {
-    fontFamily: 'OpenSans-regular',
+    fontFamily: 'Rockwell',
     fontSize: wp('4%'),
     textAlign: 'center',
     color: '#313045',
   },
   title: {
-    fontFamily: 'OpenSans-Bold',
+    fontFamily: 'Poppins-Bold',
     fontSize: wp('4%'),
     textAlign: 'center',
     color: '#313045',

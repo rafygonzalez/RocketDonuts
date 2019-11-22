@@ -2,30 +2,28 @@ import React, {Component} from 'react';
 import {View, Text, StyleSheet, TextInput, Dimensions} from 'react-native';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
-const CustomTextInput = (props) => {
-      return (
-        <View style={styles.container}>
-          <Text style={[styles.title, {fontSize:wp('4%')}]}>
-            {props.title}
-          </Text>
-          <TextInput
-            style={[
-              styles.textInput_simple,
-              {fontSize: wp('4%'), height: wp('10%')},
-            ]}
-            onChangeText={props.onChangeText}
-            value={props.value}
-            autoCompleteType={props.autoCompleteType}
-            secureTextEntry={props.secureTextEntry}
-          />
-        </View>
-      );
-}
+const CustomTextInput = props => {
+  return (
+    <View style={styles.container}>
+      <Text style={[styles.title, {fontSize: wp('4%')}]}>{props.title}</Text>
+      <TextInput
+        style={[
+          styles.textInput_simple,
+          {fontSize: wp('4%'), height: wp('10%')},
+        ]}
+        onChangeText={props.onChangeText}
+        value={props.value}
+        autoCompleteType={props.autoCompleteType}
+        secureTextEntry={props.secureTextEntry}
+      />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {},
   title: {
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Rockwell',
     color: '#76799E',
     marginVertical: 8,
   },

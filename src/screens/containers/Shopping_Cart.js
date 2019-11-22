@@ -116,7 +116,7 @@ class ShoppingCart extends Component {
     API.makeAnOrder(this.props.order.order);
   };
   render() {
-    const {orderQuantity} = this.props.order;
+    const {orderQuantity, totalPriceUSD} = this.props.order;
     return (
       <SafeAreaView style={styles.area_container}>
         <HeaderBanner
@@ -135,7 +135,7 @@ class ShoppingCart extends Component {
           <View style={styles.order_container}>
             <ScrollView
               persistentScrollbar={true}
-              style={{height: hp('35%'), backgroundColor: '#EDEEF4'}}>
+              style={{maxHeight: hp('17%'), backgroundColor: '#EDEEF4'}}>
               {this.props.order.order.map((Item, index) => {
                 return (
                   <Layout key={index}>
@@ -178,18 +178,6 @@ class ShoppingCart extends Component {
                   </Text>
                 </View>
               )}
-              <View style={styles.detail_description_container}>
-                <Text style={styles.detail_description_title}>Fecha:</Text>
-                <Text style={styles.detail_description_value}>
-                  {this.getCurrentDate().Fecha}
-                </Text>
-              </View>
-              <View style={styles.detail_description_container}>
-                <Text style={styles.detail_description_title}>Hora:</Text>
-                <Text style={styles.detail_description_value}>
-                  {this.getCurrentDate().Hora}
-                </Text>
-              </View>
 
               <View
                 style={[
@@ -201,21 +189,31 @@ class ShoppingCart extends Component {
                   {this.state.total}
                 </Text>
               </View>
+              <View style={[styles.detail_description_container]}>
+                <Text style={styles.detail_description_title}>
+                  Total Dólares:
+                </Text>
+                <Text style={styles.detail_description_value}>
+                  {totalPriceUSD}
+                </Text>
+              </View>
             </View>
             <Divider />
-            <Button
-              title="Continuar"
-              button_style="primary"
-              onPress={() => {
-                this.props.navigation.navigate('CompleteOrder');
-              }}
-            />
-            <Button
-              title="Cancelar Pedido"
-              button_style="simple"
-              onPress={() => {}}
-              extra_style={{marginTop: '3%'}}
-            />
+            <View style={{flexDirection: 'row'}}>
+              <Button
+                title="Cancelar"
+                button_style="simple"
+                onPress={() => {}}
+              />
+              <Button
+                title="Continuar"
+                button_style="primary"
+                onPress={() => {
+                  this.props.navigation.navigate('CompleteOrder');
+                }}
+                extra_style={{marginLeft: '3%'}}
+              />
+            </View>
           </View>
         </View>
       </SafeAreaView>
@@ -228,26 +226,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   detail_title: {
-    fontFamily: 'OpenSans-Bold',
-    fontSize: wp('5%'),
-    color: '#151619',
+    fontFamily: 'Poppins-Bold',
+    fontSize: wp('4%'),
+    color: '#313045',
     marginBottom: hp('1%'),
   },
   detail_description_container: {flexDirection: 'row'},
   detail_description_title: {
-    fontFamily: 'OpenSans-Bold',
+    fontFamily: 'Poppins-Bold',
     fontSize: wp('4%'),
-    color: '#151619',
+    color: '#313045',
     marginRight: wp('3%'),
   },
   detail_description_value: {
-    fontFamily: 'OpenSans-Regular',
+    fontFamily: 'Poppins-Regular',
     fontSize: wp('4%'),
     color: '#707070',
   },
   detail_total: {
     marginTop: hp('2%'),
-    fontFamily: 'OpenSans-Regular',
+    fontFamily: 'Rockwell',
     fontSize: wp('4%'),
   },
   area_order_container: {},

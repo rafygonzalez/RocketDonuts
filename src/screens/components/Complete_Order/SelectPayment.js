@@ -57,7 +57,6 @@ const SelectPayment = props => {
   const {orderQuantity} = props;
   return (
     <Layout>
-      <ScrollView></ScrollView>
       <Body title="Detalles de tu pedido" onBack={false}>
         <View style={styles.detail_container}>
           {orderQuantity.totalDonut !== 0 && (
@@ -79,18 +78,6 @@ const SelectPayment = props => {
               </Text>
             </View>
           )}
-          <View style={styles.detail_description_container}>
-            <Text style={styles.detail_description_title}>Fecha:</Text>
-            <Text style={styles.detail_description_value}>
-              {getCurrentDate().Fecha}
-            </Text>
-          </View>
-          <View style={styles.detail_description_container}>
-            <Text style={styles.detail_description_title}>Hora:</Text>
-            <Text style={styles.detail_description_value}>
-              {getCurrentDate().Hora}
-            </Text>
-          </View>
 
           <View
             style={[
@@ -153,36 +140,36 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   detail_title: {
-    fontFamily: 'OpenSans-Bold',
-    fontSize: wp('5%'),
-    color: '#151619',
+    fontFamily: 'Poppins-Bold',
+    fontSize: wp('4%'),
+    color: '#313045',
     marginBottom: hp('1%'),
   },
   detail_description_container: {flexDirection: 'row'},
   detail_description_title: {
-    fontFamily: 'OpenSans-Bold',
+    fontFamily: 'Poppins-Bold',
     fontSize: wp('4%'),
-    color: '#151619',
+    color: '#313045',
     marginRight: wp('3%'),
   },
   detail_description_value: {
-    fontFamily: 'OpenSans-Regular',
+    fontFamily: 'Poppins-Regular',
     fontSize: wp('4%'),
     color: '#707070',
   },
   detail_total: {
     marginTop: hp('2%'),
-    fontFamily: 'OpenSans-Regular',
+    fontFamily: 'Rockwell',
     fontSize: wp('4%'),
   },
   description: {
-    fontFamily: 'OpenSans-regular',
+    fontFamily: 'Rockwell',
     fontSize: wp('4%'),
     textAlign: 'center',
     color: '#313045',
   },
   title: {
-    fontFamily: 'OpenSans-Bold',
+    fontFamily: 'Poppins-Bold',
     fontSize: wp('4%'),
     textAlign: 'center',
     color: '#313045',

@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   },
   fontTitle: {
     marginTop: '3%',
-    fontFamily: 'OpenSans-Regular',
+    fontFamily: 'Rockwell',
     fontSize: 16,
     color: '#313045',
   },

@@ -67,14 +67,14 @@ const styles = StyleSheet.create({
     marginBottom: '5%',
   },
   title: {
-    fontFamily: 'OpenSans-Bold',
+    fontFamily: 'Poppins-Bold',
     fontSize: wp('4%'),
     textAlign: 'center',
     color: '#313045',
     marginVertical: hp('1%'),
   },
   description: {
-    fontFamily: 'OpenSans-Regular',
+    fontFamily: 'Rockwell',
     fontSize: wp('4%'),
     textAlign: 'center',
     color: '#313045',

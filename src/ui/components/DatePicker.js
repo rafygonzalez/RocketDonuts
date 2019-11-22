@@ -42,7 +42,7 @@ const DatePicker = props => {
 
 const styles = StyleSheet.create({
   title: {
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Rockwell',
     fontSize: 16,
     color: '#76799E',
     marginVertical: 8,
@@ -64,7 +64,4 @@ const mapStateToProps = reducers => {
   return reducers.signReducer;
 };
 
-export default connect(
-  mapStateToProps,
-  signActions,
-)(DatePicker);
+export default connect(mapStateToProps, signActions)(DatePicker);

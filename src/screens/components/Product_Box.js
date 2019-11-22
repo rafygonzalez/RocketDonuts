@@ -1,53 +1,39 @@
 import React from 'react';
+import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
 import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
- 
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
-export const Product_Box = (props) => {
+export const Product_Box = props => {
+  const Item = props.item;
+  if (props.imageBackground) {
+    return (
+      <TouchableOpacity
+        onPress={props.onPress}
+        style={[styles.item_box_lg_container]}>
+        <Image source={props.imgSrc} style={styles.imgSrc} />
 
-  
-    const Item = props.item;
-    if (props.imageBackground) {
-      return (
-        <TouchableOpacity
-          onPress={props.onPress}
-          style={[
-            styles.item_box_lg_container
-          ]}>
-          <Image
-            source={props.imgSrc}
-            style={styles.imgSrc}
-          />
-
-          <View style={styles.item_name_lgcontainer}>
-            <Text style={styles.item_name_lgtext}>{props.item_name}</Text>
-          </View>
-        </TouchableOpacity>
-      );
-    } else {
-      return (
-        <TouchableOpacity
-          onPress={props.onPress}
-          style={[
-            styles.item_box_container
-          ]}>
-          <View style={[styles.svg_container]}>
-            <Item width={wp('19.79%')} height={hp('10.04%')} />
-          </View>
-          <View style={styles.item_name_container}>
-            <Text style={styles.item_name_text}>{props.item_name}</Text>
-          </View>
-        </TouchableOpacity>
-      );
-    }
+        <View style={styles.item_name_lgcontainer}>
+          <Text style={styles.item_name_lgtext}>{props.item_name}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  } else {
+    return (
+      <TouchableOpacity
+        onPress={props.onPress}
+        style={[styles.item_box_container]}>
+        <View style={[styles.svg_container]}>
+          <Item width={wp('19.79%')} height={hp('10.04%')} />
+        </View>
+        <View style={styles.item_name_container}>
+          <Text style={styles.item_name_text}>{props.item_name}</Text>
+        </View>
+      </TouchableOpacity>
+    );
   }
-
+};
 
 const styles = StyleSheet.create({
   img: {},
@@ -59,7 +45,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   item_name_text: {
-    fontFamily: 'OpenSans-Regular',
+    fontFamily: 'Rockwell',
     fontSize: wp('5%'),
     textAlign: 'center',
   },
@@ -71,12 +57,12 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     marginVertical: 8,
     marginHorizontal: 8,
-    width: wp('83%'), 
-    height: hp('17%')
+    width: wp('83%'),
+    height: hp('17%'),
   },
-  imgSrc:{
-    width: wp('83%'), 
-    height: hp('17%')
+  imgSrc: {
+    width: wp('83%'),
+    height: hp('17%'),
   },
   item_box_container: {
     borderRadius: 3,
@@ -89,8 +75,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     width: wp('39.61%'),
     height: hp('22%'),
-    paddingVertical:hp('1%'),
-    paddingHorizontal:wp('1%'),
+    paddingVertical: hp('1%'),
+    paddingHorizontal: wp('1%'),
   },
   svg_container: {
     alignItems: 'center',

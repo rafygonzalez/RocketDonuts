@@ -25,7 +25,7 @@ const CustomPicker = props => {
 
 const styles = StyleSheet.create({
   title: {
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Rockwell',
     fontSize: 16,
     color: '#76799E',
     marginVertical: 8,

@@ -54,12 +54,27 @@ class CustomDonut extends Component {
     this.HeaderBanner_OnBack = this.HeaderBanner_OnBack.bind(this);
     this.FinishCustomization = this.FinishCustomization.bind(this);
     this.CancelCustomization = this.CancelCustomization.bind(this);
+    this.getDonutDescription = this.getDonutDescription.bind(this);
     this.GoTo = this.GoTo.bind(this);
   }
   static navigationOptions = {
     header: null,
   };
-
+  getDonutDescription(type, topping, cover, filling) {
+    if (type == 'Dona') {
+      if (topping.length > 1) {
+        return `Rellena con ${filling}, Cubierta de ${cover} y Topping de ${topping}`;
+      } else {
+        return `Rellena con ${filling} y Cubierta de ${cover}`;
+      }
+    } else if (type == 'Rosquilla') {
+      if (topping.length > 1) {
+        return `Cubierta de ${cover} y Topping de ${topping}`;
+      } else {
+        return `Cubierta de ${cover}`;
+      }
+    }
+  }
   onSelectedProduct(name) {
     this.setState({
       selectedProduct: name,
@@ -173,6 +188,20 @@ class CustomDonut extends Component {
                 />
               )}
             </View>
+            {customizeStep == 4 && (
+              <View
+                style={{marginHorizontal: wp('9%'), justifyContent: 'center'}}>
+                <Text style={styles.textTitle}>Has personalizado tu dona</Text>
+                <Text style={styles.textDescription}>
+                  {this.getDonutDescription(
+                    'Dona',
+                    this.state.toppingDonut,
+                    this.state.coverDonut,
+                    this.state.fillingDonut,
+                  )}
+                </Text>
+              </View>
+            )}
             <View style={{flex: 1}}>
               {customizeStep == 1 ? (
                 <View>
@@ -245,28 +274,30 @@ class CustomDonut extends Component {
                 customizeStep == 4 && (
                   <View
                     style={{
-                      flex: 2,
+                      flex: 1,
                       justifyContent: 'flex-end',
                       alignItems: 'center',
                       marginVertical: 16,
                       marginHorizontal: '9%',
                       width: '82%',
                     }}>
-                    <Button
-                      title="Finalizar"
-                      button_style="primary"
-                      onPress={() => {
-                        this.FinishCustomization('Dona');
-                      }}
-                    />
-                    <Button
-                      title="Cancelar"
-                      button_style="simple"
-                      onPress={() => {
-                        this.CancelCustomization();
-                      }}
-                      extra_style={{marginTop: '2%'}}
-                    />
+                    <View style={{flexDirection: 'row'}}>
+                      <Button
+                        title="Cancelar"
+                        button_style="simple"
+                        onPress={() => {
+                          this.CancelCustomization();
+                        }}
+                      />
+                      <Button
+                        title="Finalizar"
+                        button_style="primary"
+                        onPress={() => {
+                          this.FinishCustomization('Dona');
+                        }}
+                        extra_style={{marginLeft: '2%'}}
+                      />
+                    </View>
                   </View>
                 )
               )}
@@ -280,7 +311,7 @@ class CustomDonut extends Component {
 const styles = StyleSheet.create({
   title_add_more: {
     color: '#FF9800',
-    fontFamily: 'OpenSans-Bold',
+    fontFamily: 'Poppins-Bold',
     fontSize: wp('7%'),
   },
   title_container_add_more: {
@@ -316,6 +347,18 @@ const styles = StyleSheet.create({
   stars_container: {
     position: 'absolute',
     top: hp('23.07%'),
+  },
+  textTitle: {
+    fontFamily: 'Poppins-Bold',
+    color: '#313045',
+    fontSize: wp('4%'),
+    marginTop: hp('2%'),
+  },
+  textDescription: {
+    fontFamily: 'Poppins-Regular',
+    color: '#313045',
+    fontSize: wp('3.5%'),
+    marginTop: hp('1%'),
   },
 });
 const mapStateToProps = reducers => {

@@ -138,6 +138,8 @@ class CompleteOrder extends Component {
   decrementSteps() {
     if (this.state.step !== 1) {
       this.setState({step: this.state.step - 1});
+    } else {
+      this.props.navigation.goBack();
     }
   }
   handleSteps() {
@@ -232,7 +234,7 @@ class CompleteOrder extends Component {
   FinishOrder() {
     this.props.navigation.navigate('Inicio');
   }
-  uploadCapture() {
+  uploadCapture(mode) {
     const options = {
       title: null,
       customButtons: null,
@@ -241,24 +243,43 @@ class CompleteOrder extends Component {
         path: 'images',
       },
     };
+    if (mode == 'local') {
+      ImagePicker.launchImageLibrary(options, response => {
+        //console.log('Response = ', response);
 
-    ImagePicker.launchImageLibrary(options, response => {
-      //console.log('Response = ', response);
+        if (response.didCancel) {
+          //console.log('User cancelled image picker');
+        } else if (response.error) {
+          //console.log('ImagePicker Error: ', response.error);
+        } else if (response.customButton) {
+          //console.log('User tapped custom button: ', response.customButton);
+        } else {
+          // You can also display the image using data:
+          // const source = { uri: 'data:image/jpeg;base64,' + response.data };
 
-      if (response.didCancel) {
-        //console.log('User cancelled image picker');
-      } else if (response.error) {
-        //console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        //console.log('User tapped custom button: ', response.customButton);
-      } else {
-        // You can also display the image using data:
-        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+          this.setState({imageSource: response});
+          this.handleSteps();
+        }
+      });
+    } else if (mode == 'camera') {
+      ImagePicker.launchCamera(options, response => {
+        //console.log('Response = ', response);
 
-        this.setState({imageSource: response});
-        this.handleSteps();
-      }
-    });
+        if (response.didCancel) {
+          //console.log('User cancelled image picker');
+        } else if (response.error) {
+          //console.log('ImagePicker Error: ', response.error);
+        } else if (response.customButton) {
+          //console.log('User tapped custom button: ', response.customButton);
+        } else {
+          // You can also display the image using data:
+          // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+          this.setState({imageSource: response});
+          this.handleSteps();
+        }
+      });
+    }
   }
   render() {
     const {step, option, payment_method} = this.state;

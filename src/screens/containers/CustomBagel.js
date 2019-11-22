@@ -256,7 +256,7 @@ class CustomBagel extends Component {
 const styles = StyleSheet.create({
   title_add_more: {
     color: '#FF9800',
-    fontFamily: 'OpenSans-Bold',
+    fontFamily: 'Poppins-Bold',
     fontSize: wp('7%'),
   },
   title_container_add_more: {
