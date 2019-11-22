@@ -9,11 +9,16 @@ import {
 const Buttons = props => {
   return (
     <View style={{width: '100%'}}>
-      <Button title="Aceptar" button_style="primary" onPress={() => {}} />
+      <Button
+        title="Aceptar"
+        button_style="primary"
+        onPress={() => props.optionHandler()}
+      />
     </View>
   );
 };
 const ShowScreenshot = props => {
+  console.log(props.avatarSource);
   return (
     <Body
       title="Captura de pantalla"
@@ -21,7 +26,7 @@ const ShowScreenshot = props => {
       buttons_component={<Buttons optionHandler={props.optionHandler} />}>
       <Text style={styles.title}>Vista previa</Text>
       <View style={styles.uploadAvatar_container}>
-        <Image source={props.avatarSource} style={styles.uploadAvatar} />
+        <Image source={{uri: props.avatarSource}} style={styles.uploadAvatar} />
       </View>
     </Body>
   );

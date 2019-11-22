@@ -33,6 +33,7 @@ class Api {
   }
   getCurrentUser = () => {
     this.currentUser = auth().currentUser;
+    return this.currentUser;
   };
   async makeAnOrder(order) {
     this.getCurrentUser();

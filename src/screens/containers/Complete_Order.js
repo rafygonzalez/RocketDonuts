@@ -18,6 +18,7 @@ import API from '../../firebase/api';
 import {connect} from 'react-redux';
 import ShowScreenshot from '../components/Complete_Order/ShowScreenshot';
 import ImagePicker from 'react-native-image-picker';
+import {storage} from 'react-native-firebase';
 const MakeOrder = props => {
   const {
     optionHandler,
@@ -63,7 +64,9 @@ const MakeOrder = props => {
   } else if (step == 4) {
     return <AttachScreenshot optionHandler={uploadCapture} />;
   } else if (step == 5) {
-    return <ShowScreenshot avatarSource={imageSource} />;
+    return (
+      <ShowScreenshot optionHandler={handleSteps} avatarSource={imageSource} />
+    );
   }
 };
 
@@ -78,7 +81,7 @@ class CompleteOrder extends Component {
       amount: '',
       orderId: '',
       makingOrder: false,
-      imageSource: '',
+      imageSource: {},
     };
     this.handleSteps = this.handleSteps.bind(this);
     this.optionHandler = this.optionHandler.bind(this);
@@ -86,8 +89,20 @@ class CompleteOrder extends Component {
     this.Global_OnChange = this.Global_OnChange.bind(this);
     this.FinishOrder = this.FinishOrder.bind(this);
     this.uploadCapture = this.uploadCapture.bind(this);
+    this.makeOrderObject = this.makeOrderObject.bind(this);
+    this.uriToBlob = this.uriToBlob.bind(this);
   }
-
+  makeOrderObject() {
+    let order = {};
+    order.order = this.props.order.order;
+    order.totalPrice = this.props.order.totalPrice;
+    order.quantity = this.props.order.orderQuantity;
+    order.payment_method = this.state.payment_method;
+    order.cashAmount = this.state.amount;
+    order.usdAverage = this.props.global.usdAverage;
+    order.date = new Date();
+    return order;
+  }
   handleSteps() {
     const {step, payment_method} = this.state;
 
@@ -95,20 +110,65 @@ class CompleteOrder extends Component {
       (step == 2 && payment_method == 'bs') ||
       (step == 2 && payment_method == 'dolar')
     ) {
-      let order = {};
-      order.order = this.props.order.order;
-      order.totalPrice = this.props.order.totalPrice;
-      order.quantity = this.props.order.orderQuantity;
-      order.payment_method = this.state.payment_method;
-      order.cashAmount = this.state.amount;
-      order.usdAverage = this.props.global.usdAverage;
-      order.date = new Date();
+      let order = this.makeOrderObject();
       API.makeAnOrder(order).then(id => {
         this.setState({orderId: id, step: this.state.step + 1});
       });
+    } else if (step == 5) {
+      let order = this.makeOrderObject();
+      API.makeAnOrder(order)
+        .then(id => {
+          const fileName = this.state.imageSource.fileName;
+          const folder = API.getCurrentUser().uid;
+          var storageRef = storage().ref();
+          var imagesRef = storageRef.child(folder + '/orders/' + id);
+          var fileRef = imagesRef.child(fileName);
+          var uploadTask = fileRef.putFile(this.state.imageSource.path);
+
+          uploadTask.on(
+            'state_changed',
+            function(snapshot) {
+              var progress =
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              console.log(progress);
+              switch (snapshot.state) {
+                case storage.TaskState.PAUSED: // or 'paused'
+                  console.log('Upload is paused');
+                  break;
+                case storage.TaskState.RUNNING: // or 'running'
+                  console.log('Upload is running');
+                  break;
+              }
+            },
+            function(error) {
+              // A full list of error codes is available at
+              // https://firebase.google.com/docs/storage/web/handle-errors
+              switch (error.code) {
+                case 'storage/unauthorized':
+                  // User doesn't have permission to access the object
+                  break;
+
+                case 'storage/canceled':
+                  // User canceled the upload
+                  break;
+                case 'storage/unknown':
+                  // Unknown error occurred, inspect error.serverResponse
+                  break;
+              }
+            },
+            function(snapshot) {
+              // Upload completed successfully, now we can get the download URL
+              console.log(snapshot.downloadUrl);
+            },
+          );
+        })
+        .catch(err => {
+          console.log(err);
+        });
     } else {
       this.setState({step: this.state.step + 1});
     }
+    //this.setState({orderId: id, step: this.state.step + 1});
   }
   optionHandler(option) {
     this.setState({option});
@@ -143,12 +203,10 @@ class CompleteOrder extends Component {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        const source = {uri: response.uri};
-
         // You can also display the image using data:
         // const source = { uri: 'data:image/jpeg;base64,' + response.data };
 
-        this.setState({imageSource: source});
+        this.setState({imageSource: response});
         this.handleSteps();
       }
     });
@@ -169,7 +227,7 @@ class CompleteOrder extends Component {
               address={this.state.address}
               orderId={this.state.orderId}
               amount={this.state.amount}
-              imageSource={this.state.imageSource}
+              imageSource={this.state.imageSource.uri}
               //functions
               optionHandler={this.optionHandler}
               pickerOnChangeValue={this.pickerOnChangeValue}
