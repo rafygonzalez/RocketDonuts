@@ -12,7 +12,10 @@ const Body = props => {
     <View style={styles.body_container}>
       {props.title !== undefined && (
         <Layout>
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity
+            onPress={() => {
+              props.onBack();
+            }}>
             <View style={styles.body_top}>
               {props.onBack !== false && <BackArrow width={24} height={24} />}
               <Text style={styles.body_title}>{props.title}</Text>

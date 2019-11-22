@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, ProgressBarAndroid} from 'react-native';
 import Body from './Body';
 import Button from '../../../ui/components/button';
 import {
@@ -18,7 +18,7 @@ const Buttons = props => {
   );
 };
 const ShowScreenshot = props => {
-  console.log(props.avatarSource);
+  //console.log(props.avatarSource);
   return (
     <Body
       title="Captura de pantalla"
@@ -28,6 +28,22 @@ const ShowScreenshot = props => {
       <View style={styles.uploadAvatar_container}>
         <Image source={{uri: props.avatarSource}} style={styles.uploadAvatar} />
       </View>
+
+      {props.uploading && (
+        <View style={{width: '100%'}}>
+          <Text style={styles.title}>
+            {props.uploadProgress == 100
+              ? 'Completado'
+              : `Subiendo ${props.uploadProgress.toFixed(2)} %`}
+          </Text>
+
+          <ProgressBarAndroid
+            styleAttr="Horizontal"
+            indeterminate={false}
+            progress={props.uploadProgress / 100}
+          />
+        </View>
+      )}
     </Body>
   );
 };
@@ -50,7 +66,7 @@ const styles = StyleSheet.create({
     fontSize: wp('4%'),
     textAlign: 'center',
     color: '#313045',
-    marginVertical: hp('2%'),
+    marginVertical: hp('1%'),
   },
 });
 export default ShowScreenshot;
