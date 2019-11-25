@@ -8,6 +8,10 @@ import Button from '../../ui/components/button';
 import {connect} from 'react-redux';
 import MenuIcon from '../../../assets/svg/MenuIcon.svg';
 import {ScrollView} from 'react-native-gesture-handler';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 /*import MapboxGL from '@react-native-mapbox-gl/maps';
 MapboxGL.setAccessToken(
   'pk.eyJ1IjoicmFmeWdvbnphbGV6MDg5IiwiYSI6ImNqejhlMDVjODFrZ2kzaW1qbDV1bnh2cHoifQ.T3vurNbpjgq_aRL7QjuvpQ',
@@ -30,10 +34,10 @@ class Profile extends Component {
     super(props);
     this.state = {};
   }
-  componentDidMount() {
-     
-  }
+  componentDidMount() {}
   render() {
+    const {currentUser} = this.props;
+    console.log(currentUser);
     return (
       <LinearGradient colors={['#242441', '#55537B']} style={styles.background}>
         <View style={styles.Menu}>
@@ -41,12 +45,17 @@ class Profile extends Component {
             onPress={() => this.props.navigation.toggleDrawer()}>
             <MenuIcon color={'#fff'} width={24} height={24} />
           </TouchableOpacity>
-          <View style={{marginLeft: '5%'}}>
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginLeft: wp('12.5%'),
+            }}>
             <Logo width={244} height={84} />
           </View>
         </View>
         <View style={styles.container_stars}>
-          <Stars />
+          <Stars width={wp('100%')} height={hp('110%')} />
         </View>
         <ScrollView>
           <View
@@ -56,7 +65,7 @@ class Profile extends Component {
             }}>
             <View style={styles.box_profile}>
               <View style={styles.top}>
-                <Text style={styles.fontInfo}>Perfil</Text>
+                <Text style={styles.profile_title}>Perfil</Text>
                 <View>
                   <Button
                     title="Editar"
@@ -67,28 +76,21 @@ class Profile extends Component {
                 </View>
               </View>
               <Divider />
+
               <View style={styles.center}>
                 <View style={{marginHorizontal: '3%'}}>
                   <ProfileImage width={104} height={128} />
                 </View>
                 <View>
-                  <Text style={styles.fontTitle}>Nombre:</Text>
+                  <Text style={styles.fontTitle}>Nombre y Apellido:</Text>
                   <Text style={styles.fontInfo}>
-   
+                    {currentUser.name} {currentUser.lastname}
                   </Text>
                   <Text style={styles.fontTitle}>E-Mail:</Text>
+                  <Text style={styles.fontInfo}>{currentUser.email}</Text>
                   <Text style={styles.fontTitle}>Teléfono:</Text>
-                  <Text style={styles.fontInfo}>
-                   </Text>
+                  <Text style={styles.fontInfo}>{currentUser.phoneNumber}</Text>
                 </View>
-              </View>
-              <Divider />
-              <View style={{height: '6%'}}>
-                <Button
-                  title="Cerrar Sesión"
-                  button_style="simple"
-                  onPress={() => {}}
-                />
               </View>
             </View>
             <View style={styles.box_addresses}>
@@ -99,7 +101,9 @@ class Profile extends Component {
                     title="+"
                     button_style="primary"
                     size="small"
-                    onPress={() => {this.props.navigation.navigate('Location')}}
+                    onPress={() => {
+                      this.props.navigation.navigate('Location');
+                    }}
                   />
                 </View>
               </View>
@@ -117,11 +121,17 @@ const box = {
   borderWidth: 0.5,
   borderColor: '#C7C8D6',
   width: '85%',
-  marginVertical: '5%',
+  marginVertical: '3%',
   paddingVertical: '5%',
 };
 const styles = StyleSheet.create({
+  profile_title: {
+    fontFamily: 'Rockwell',
+    fontSize: wp('6%'),
+    color: '#151619',
+  },
   Menu: {
+    width: '100%',
     zIndex: 1,
     flexDirection: 'row',
     paddingHorizontal: 16,
@@ -129,7 +139,8 @@ const styles = StyleSheet.create({
   },
   center: {
     marginHorizontal: '3%',
-    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   top: {
     marginHorizontal: '3%',
@@ -139,13 +150,15 @@ const styles = StyleSheet.create({
   fontTitle: {
     marginTop: '3%',
     fontFamily: 'Rockwell',
-    fontSize: 16,
-    color: '#313045',
+    fontSize: wp('3.5%'),
+    color: '#151619',
+    textAlign: 'center',
   },
   fontInfo: {
-    fontFamily: 'Rockwell',
-    fontSize: 18,
+    fontFamily: 'Poppins-Regular',
+    fontSize: wp('4%'),
     color: '#313045',
+    textAlign: 'center',
   },
   container_stars: {
     position: 'absolute',
