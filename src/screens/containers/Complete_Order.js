@@ -162,6 +162,10 @@ class CompleteOrder extends Component {
             this.setState({uploadProgress: progress});
           };
           const nextStep = () => {
+            this.props.dispatch({
+              type: 'SET_ORDER',
+              payload: {orderArray: []},
+            });
             this.setState({step: step + 1});
           };
           this.setState({orderId: id});
