@@ -53,7 +53,31 @@ class ShoppingCart extends Component {
   static navigationOptions = {
     header: null,
   };
-  DeleteOrder() {}
+  DeleteOrder() {
+    Alert.alert(
+      `¿Deseas cancelar tu pedido?`,
+      `Si cancelas tu pedido, eliminaras toda la lista`,
+      [
+        {
+          text: 'Cancel',
+          onPress: () => {},
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: () => {
+            this.setState({order: []});
+            this.props.dispatch({
+              type: 'SET_ORDER',
+              payload: {orderArray: []},
+            });
+            this.GoTo('Inicio');
+          },
+        },
+      ],
+      {cancelable: false},
+    );
+  }
   HeaderBanner_OnBack() {
     this.props.navigation.goBack();
   }
@@ -203,7 +227,7 @@ class ShoppingCart extends Component {
               <Button
                 title="Cancelar"
                 button_style="simple"
-                onPress={() => {}}
+                onPress={() => {this.DeleteOrder()}}
               />
               <Button
                 title="Continuar"

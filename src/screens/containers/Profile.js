@@ -30,8 +30,9 @@ class Profile extends Component {
     super(props);
     this.state = {};
   }
-  async getUser() {}
-  componentDidMount() {}
+  componentDidMount() {
+     
+  }
   render() {
     return (
       <LinearGradient colors={['#242441', '#55537B']} style={styles.background}>
@@ -73,15 +74,12 @@ class Profile extends Component {
                 <View>
                   <Text style={styles.fontTitle}>Nombre:</Text>
                   <Text style={styles.fontInfo}>
-                    {this.props.userData.name +
-                      ' ' +
-                      this.props.userData.lastname}
+   
                   </Text>
                   <Text style={styles.fontTitle}>E-Mail:</Text>
                   <Text style={styles.fontTitle}>Teléfono:</Text>
                   <Text style={styles.fontInfo}>
-                    {this.props.userData.phoneNumber}
-                  </Text>
+                   </Text>
                 </View>
               </View>
               <Divider />
@@ -101,7 +99,7 @@ class Profile extends Component {
                     title="+"
                     button_style="primary"
                     size="small"
-                    onPress={() => {}}
+                    onPress={() => {this.props.navigation.navigate('Location')}}
                   />
                 </View>
               </View>
@@ -167,6 +165,6 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = reducers => {
-  return reducers.signReducer;
+  return reducers.globalReducer;
 };
 export default connect(mapStateToProps)(Profile);

@@ -254,7 +254,7 @@ class Order extends Component {
             }}>
             <View style={{flexDirection: 'row'}}>
               <Button
-                title="Cancelar Pedido"
+                title="Cancelar"
                 button_style="simple"
                 onPress={() => {
                   this.DeleteOrder();

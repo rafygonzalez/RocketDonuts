@@ -8,12 +8,39 @@ class Api {
   constructor() {
     this.currentUser = {};
   }
-  async Auth(props) {
-    await auth().onAuthStateChanged(user => {
+   Auth(props) {
+     auth().onAuthStateChanged(user => {
       if (user) props.auth_state(true);
       else props.auth_state(false);
     });
   }
+  Load(dispatch){
+    this.getCurrentUser();
+    return new Promise(async (resolve, reject) => {
+    try{
+      const averageUSD = await this.getDolarTodayApi();
+      const AppConfig = await this.getConfig();
+      const DataUser = await this.getDataUser(this.currentUser.uid)
+      dispatch('USD_AVERAGE', averageUSD);
+      dispatch('CONFIG_PRODUCTS', AppConfig);
+      dispatch('CURRENT_USER', DataUser);
+      resolve('successfully')
+    }catch(e){
+      reject(e)
+    }
+  });
+  }
+  getDolarTodayApi = () => {
+    return new Promise(async (resolve,reject) => {
+      try{
+        const data = await fetch('https://s3.amazonaws.com/dolartoday/data.json')
+        const json = await data.json()
+        resolve(json.USD.promedio)
+      }catch(e){
+        reject(e)
+      }
+    });
+  };
   async getConfig() {
     let Products = {};
     let BankData = {};
@@ -35,12 +62,16 @@ class Api {
     this.currentUser = auth().currentUser;
     return this.currentUser;
   };
+  getDataUser = async (uid) => {
+      const snapshot = await firestore().collection('Users').doc(uid).get()
+      return snapshot.data()
+  }
   async makeAnOrder(order) {
-    this.getCurrentUser();
     var min = 0;
     var max = 99999;
     var orderid = Math.floor(Math.random() * (max - min)) + min;
-    await firestore()
+    try{
+      await firestore()
       .collection('Users')
       .doc(this.currentUser.uid)
       .update({orders: firestore.FieldValue.arrayUnion(orderid)});
@@ -48,6 +79,10 @@ class Api {
       .collection('Orders')
       .doc(this.currentUser.uid)
       .set({[orderid]: order}, {merge: true});
+    }catch(error){
+      // manejar errores
+    }
+
     return orderid;
   }
 

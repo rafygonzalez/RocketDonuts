@@ -15,7 +15,9 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.6.2",
+    "@react-native-community/geolocation": "^2.0.2",
     "@react-native-community/google-signin": "^3.0.3",
+    "@react-native-community/netinfo": "^4.6.1",
     "@react-native-mapbox-gl/maps": "^7.0.8",
     "jetifier": "^1.6.4",
     "react": "16.8.6",

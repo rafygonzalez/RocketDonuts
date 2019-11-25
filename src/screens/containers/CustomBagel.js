@@ -57,11 +57,28 @@ class CustomBagel extends Component {
     this.HeaderBanner_OnBack = this.HeaderBanner_OnBack.bind(this);
     this.FinishCustomization = this.FinishCustomization.bind(this);
     this.CancelCustomization = this.CancelCustomization.bind(this);
+    this.getDonutDescription = this.getDonutDescription.bind(this);
     this.GoTo = this.GoTo.bind(this);
   }
   static navigationOptions = {
     header: null,
   };
+
+  getDonutDescription(type, topping, cover, filling) {
+    if (type == 'Dona') {
+      if (topping.length > 1) {
+        return `Rellena con ${filling}, Cubierta de ${cover} y Topping de ${topping}`;
+      } else {
+        return `Rellena con ${filling} y Cubierta de ${cover}`;
+      }
+    } else if (type == 'Rosquilla') {
+      if (topping.length > 1) {
+        return `Cubierta de ${cover} y Topping de ${topping}`;
+      } else {
+        return `Cubierta de ${cover}`;
+      }
+    }
+  }
   onSelectedProduct(name) {
     this.setState({
       selectedProduct: name,
@@ -172,6 +189,19 @@ class CustomBagel extends Component {
                 />
               )}
             </View>
+            {customizeStep == 3 && (
+              <View
+                style={{marginHorizontal: wp('9%'), justifyContent: 'center'}}>
+                <Text style={styles.textTitle}>Has personalizado tu Rosquilla</Text>
+                <Text style={styles.textDescription}>
+                  {this.getDonutDescription(
+                    'Rosquilla',
+                    this.state.toppingDonut,
+                    this.state.coverDonut,
+                  )}
+                </Text>
+              </View>
+            )}
             <View style={{flex: 1}}>
               {customizeStep == 1 ? (
                 <View>
@@ -220,30 +250,32 @@ class CustomBagel extends Component {
               ) : (
                 customizeStep == 3 && (
                   <View
-                    style={{
-                      flex: 2,
-                      justifyContent: 'flex-end',
-                      alignItems: 'center',
-                      marginVertical: 16,
-                      marginHorizontal: '9%',
-                      width: '82%',
-                    }}>
-                    <Button
-                      title="Finalizar"
-                      button_style="primary"
-                      onPress={() => {
-                        this.FinishCustomization('Rosquilla');
-                      }}
-                    />
+                  style={{
+                    flex: 1,
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                    marginVertical: 16,
+                    marginHorizontal: '9%',
+                    width: '82%',
+                  }}>
+                  <View style={{flexDirection: 'row'}}>
                     <Button
                       title="Cancelar"
                       button_style="simple"
                       onPress={() => {
                         this.CancelCustomization();
                       }}
-                      extra_style={{marginTop: '2%'}}
+                    />
+                    <Button
+                      title="Finalizar"
+                      button_style="primary"
+                      onPress={() => {
+                        this.FinishCustomization('Dona');
+                      }}
+                      extra_style={{marginLeft: '2%'}}
                     />
                   </View>
+                </View>
                 )
               )}
             </View>
@@ -293,6 +325,18 @@ const styles = StyleSheet.create({
   stars_container: {
     top: hp('23.07%'),
     position: 'absolute',
+  },
+  textTitle: {
+    fontFamily: 'Poppins-Bold',
+    color: '#313045',
+    fontSize: wp('4%'),
+    marginTop: hp('2%'),
+  },
+  textDescription: {
+    fontFamily: 'Poppins-Regular',
+    color: '#313045',
+    fontSize: wp('3.5%'),
+    marginTop: hp('1%'),
   },
 });
 const mapStateToProps = reducers => {

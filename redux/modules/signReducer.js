@@ -11,18 +11,6 @@ const initialState = {
   isDecrementing: false,
   userData: {},
 };
-/*userData:{
-    name:'',
-    lastname:'',
-    email:'',
-    password:'',
-    birthDate:'',
-    country:'',
-    state:'',
-    city:'',
-    phoneNumer:'',
-    userid:''
-  }*/
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_USER_DATA: {

@@ -18,18 +18,21 @@ import Rosquilla from '../../../assets/svg/Rosquilla.svg';
 //Redux
 import {connect} from 'react-redux';
 import {auth, firestore} from 'react-native-firebase';
-import {withNavigationFocus} from 'react-navigation';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import API from '../../firebase/api';
-
+import ModalExample from '../../ui/components/Modal'
+import NetInfo from "@react-native-community/netinfo";
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedProduct: '',
+      loading:true,
+      error:false
+    
     };
     this.onSelectedProduct = this.onSelectedProduct.bind(this);
     this.GoTo = this.GoTo.bind(this);
@@ -37,36 +40,28 @@ class Home extends Component {
   static navigationOptions = {
     header: null,
   };
-
+  dispatch = (type,payload) => {
+    this.props.dispatch({type:type,payload:payload})
+  }
   async componentDidMount() {
+    const unsubscribe = NetInfo.addEventListener(state => {
+  console.log("Connection type", state.type);
+  console.log("Is connected?", state.isConnected);
+});
     auth().onAuthStateChanged(user => {
       if (!user) {
         this.GoTo('Welcome');
+      }else{
+        API.Load(this.dispatch).then(state=>{
+           this.setState({loading:false})
+        }).catch(e => {
+          console.warn("Error cargando la app:"+e)
+          this.setState({loading:false,error:true})
+        })
       }
     });
-    API.getConfig().then(result => {
-      this.props.dispatch({
-        type: 'CONFIG_PRODUCTS',
-        payload: result,
-      });
-    });
-    const averageUsd = await this.getDolarTodayApi();
-    this.props.dispatch({
-      type: 'USD_AVERAGE',
-      payload: averageUsd,
-    });
   }
-  getDolarTodayApi = () => {
-    return new Promise(resolve => {
-      fetch('https://s3.amazonaws.com/dolartoday/data.json')
-        .then(result => {
-          return result.json();
-        })
-        .then(json => {
-          resolve(json.USD.promedio);
-        });
-    });
-  };
+
   onSelectedProduct(name) {
     if (name === 'Donut') {
       this.GoTo('CustomDonut');
@@ -79,7 +74,7 @@ class Home extends Component {
   }
   render() {
     const {screen_height, screen_width, header_heigth} = this.state;
-
+    
     return (
       <SafeAreaView style={styles.area_container}>
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
@@ -115,6 +110,7 @@ class Home extends Component {
               imgSrc={require('../../../assets/img/Promo-Espacial.png')}
               item_name={'Promo Espacial'}
             />
+            <ModalExample modalVisible={this.state.loading}/>
           </View>
           <View
             style={{
@@ -167,4 +163,4 @@ const styles = StyleSheet.create({
 const mapStateToProps = reducers => {
   return reducers.globalReducer;
 };
-export default connect(mapStateToProps)(withNavigationFocus(Home));
+export default connect(mapStateToProps)(Home);

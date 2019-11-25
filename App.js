@@ -31,6 +31,7 @@ import ShoppingCart from './src/screens/containers/Shopping_Cart';
 import CompleteOrder from './src/screens/containers/Complete_Order';
 
 import ProfileScreen from './src/screens/containers/Profile';
+import Location from './src/screens/containers/Location'
 //
 import Loading from './src/screens/containers/Splash';
 import firebase from 'react-native-firebase';
@@ -152,6 +153,9 @@ const NavigationApp = createStackNavigator(
     CompleteOrder: {
       screen: CompleteOrder,
     },
+    Location:{
+      screen: Location
+    }
   },
   {
     headerMode: 'none',
