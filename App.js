@@ -31,7 +31,8 @@ import ShoppingCart from './src/screens/containers/Shopping_Cart';
 import CompleteOrder from './src/screens/containers/Complete_Order';
 
 import ProfileScreen from './src/screens/containers/Profile';
-import Location from './src/screens/containers/Location'
+import Location from './src/screens/containers/Location';
+import MyOrders from './src/screens/containers/My_Orders';
 //
 import Loading from './src/screens/containers/Splash';
 import firebase from 'react-native-firebase';
@@ -57,6 +58,7 @@ const DrawerWithLogoutButton = props => {
         <HeaderBanner menu back_button={false} />
         <DrawerItems {...props} />
       </SafeAreaView>
+
       <TouchableOpacity onPress={() => signOut()}>
         <View style={stylesButton.item}>
           <View style={stylesButton.iconContainer}>
@@ -95,19 +97,25 @@ const MainDrawer = createDrawerNavigator(
     Inicio: {
       screen: HomeScreen,
       navigationOptions: {
-        drawerIcon: () => <HomeIcon width={24} height={24} />,
+        drawerIcon: () => <HomeIcon width={32} height={32} />,
+      },
+    },
+    Perfil: {
+      screen: ProfileScreen,
+      navigationOptions: {
+        drawerIcon: () => <AccountCircle width={32} height={32} />,
+      },
+    },
+    'Mis Pedidos': {
+      screen: MyOrders,
+      navigationOptions: {
+        drawerIcon: () => <OrderIcon width={32} height={32} />,
       },
     },
     'Mi Pedido': {
       screen: OrderScreen,
       navigationOptions: {
         drawerIcon: () => <OrderIcon width={24} height={24} />,
-      },
-    },
-    'Mi Perfil': {
-      screen: ProfileScreen,
-      navigationOptions: {
-        drawerIcon: () => <AccountCircle width={24} height={24} />,
       },
     },
   },
@@ -153,9 +161,9 @@ const NavigationApp = createStackNavigator(
     CompleteOrder: {
       screen: CompleteOrder,
     },
-    Location:{
-      screen: Location
-    }
+    Location: {
+      screen: Location,
+    },
   },
   {
     headerMode: 'none',

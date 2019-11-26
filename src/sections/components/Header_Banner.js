@@ -5,6 +5,7 @@ import MenuIcon from '../../../assets/svg/MenuIcon.svg';
 import HeaderBannerSvg from '../../../assets/svg/Header_Banner.svg';
 import HeaderBannerWithTitle from '../../../assets/svg/Header_Banner_With_Title.svg';
 import HeaderBannerWithTitleOrder from '../../../assets/svg/Header_Banner_With_Title_Order.svg';
+import HeaderBannerWithTitleMyOrders from '../../../assets/svg/Header_Banner_With_Title_My_Orders.svg';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -22,6 +23,12 @@ const HeaderBanner = props => {
         />
       ) : props.withOrder ? (
         <HeaderBannerWithTitleOrder
+          width={wp('101%')}
+          height={hpH}
+          preserveAspectRatio="xMidYMid meet"
+        />
+      ) : props.withMyOrders ? (
+        <HeaderBannerWithTitleMyOrders
           width={wp('101%')}
           height={hpH}
           preserveAspectRatio="xMidYMid meet"
