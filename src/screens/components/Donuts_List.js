@@ -94,3 +94,19 @@ export function getDonut(cubierta, topping, type) {
       return 'No hay una combinación disponible';
   }
 }
+
+export function getDonutDescription(type, topping, cover, filling) {
+  if (type == 'Dona') {
+    if (topping.length > 1) {
+      return `Rellena con ${filling}, Cubierta de ${cover} y Topping de ${topping}`;
+    } else {
+      return `Rellena con ${filling} y Cubierta de ${cover}`;
+    }
+  } else if (type == 'Rosquilla') {
+    if (topping.length > 1) {
+      return `Cubierta de ${cover} y Topping de ${topping}`;
+    } else {
+      return `Cubierta de ${cover}`;
+    }
+  }
+}

@@ -12,7 +12,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-export default ModalExample = props => {
+export default Modal_Loading = props => {
   return (
     <Modal
       animationType="fade"
@@ -24,8 +24,8 @@ export default ModalExample = props => {
       <View style={styles.area_container}>
         <View style={styles.body_container}>
           <Text style={styles.loading_text}>Cargando</Text>
-       
-          <ActivityIndicator size="large" color="#FF700F"/>
+
+          <ActivityIndicator size="large" color="#FF700F" />
         </View>
       </View>
     </Modal>
@@ -40,9 +40,9 @@ const styles = StyleSheet.create({
   },
   loading_text: {
     fontFamily: 'Poppins-Regular',
-    color:"#313045",
+    color: '#313045',
     fontSize: wp('5'),
-    marginBottom:"15%"
+    marginBottom: '15%',
   },
   body_container: {
     zIndex: 0,

@@ -8,12 +8,15 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import Box from '../components/My_Orders/Box';
+import Modal_Order from '../components/My_Orders/Modal_Order';
 class MyOrders extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
   render() {
+    console.log(this.props);
     return (
       <SafeAreaView style={styles.area_container}>
         <HeaderBanner
@@ -29,6 +32,10 @@ class MyOrders extends Component {
             preserveAspectRatio="xMidYMid meet"
           />
         </View>
+        <View style={styles.order_container}>
+          <Box />
+        </View>
+        <Modal_Order modalVisible={true} order={this.props.Order.order} />
       </SafeAreaView>
     );
   }
@@ -38,15 +45,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ECEDF2',
   },
-  background: {
-    backgroundColor: '#313045',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   stars_container: {
     position: 'absolute',
     top: hp('23.07%'),
+  },
+  order_container: {
+    marginHorizontal: '3%',
+    marginVertical: '3%',
   },
 });
 const mapStateToProps = state => {

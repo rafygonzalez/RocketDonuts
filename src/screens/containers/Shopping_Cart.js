@@ -15,7 +15,7 @@ import HeaderBanner from '../../sections/components/Header_Banner';
 import OrderDetail from '../components/Order_Detail';
 import Button from '../../ui/components/button';
 
-import {getDonut} from '../components/Donuts_List';
+import {getDonut, getDonutDescription} from '../components/Donuts_List';
 import {Dona, Rosquilla} from '../components/Products';
 //Redux
 import {connect} from 'react-redux';
@@ -46,7 +46,6 @@ class ShoppingCart extends Component {
     this.state = {total: 0};
     this.HeaderBanner_OnBack = this.HeaderBanner_OnBack.bind(this);
     this.DeleteOrder = this.DeleteOrder.bind(this);
-    this.getDonutDescription = this.getDonutDescription.bind(this);
     this.getCurrentDate = this.getCurrentDate.bind(this);
     this.getAmount = this.getAmount.bind(this);
   }
@@ -84,21 +83,7 @@ class ShoppingCart extends Component {
   componentDidMount() {
     this.getAmount();
   }
-  getDonutDescription(type, topping, cover, filling) {
-    if (type == 'Dona') {
-      if (topping.length > 1) {
-        return `Rellena con ${filling}, Cubierta de ${cover} y Topping de ${topping}`;
-      } else {
-        return `Rellena con ${filling} y Cubierta de ${cover}`;
-      }
-    } else if (type == 'Rosquilla') {
-      if (topping.length > 1) {
-        return `Cubierta de ${cover} y Topping de ${topping}`;
-      } else {
-        return `Cubierta de ${cover}`;
-      }
-    }
-  }
+
   getCurrentDate() {
     const today = new Date();
     return {
@@ -166,7 +151,7 @@ class ShoppingCart extends Component {
                     <OrderDetail
                       item={getDonut(Item.cover, Item.topping, Item.type)}
                       item_name={`${Item.type} x ${Item.quantity}`}
-                      description={this.getDonutDescription(
+                      description={getDonutDescription(
                         Item.type,
                         Item.topping,
                         Item.cover,
@@ -227,7 +212,9 @@ class ShoppingCart extends Component {
               <Button
                 title="Cancelar"
                 button_style="simple"
-                onPress={() => {this.DeleteOrder()}}
+                onPress={() => {
+                  this.DeleteOrder();
+                }}
               />
               <Button
                 title="Continuar"

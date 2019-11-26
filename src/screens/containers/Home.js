@@ -23,7 +23,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import API from '../../firebase/api';
-import ModalExample from '../../ui/components/Modal';
+import Modal_Loading from '../../ui/components/Modal';
 //import NetInfo from "@react-native-community/netinfo";
 class Home extends Component {
   constructor(props) {
@@ -111,7 +111,7 @@ class Home extends Component {
               imgSrc={require('../../../assets/img/Promo-Espacial.png')}
               item_name={'Promo Espacial'}
             />
-            <ModalExample modalVisible={this.state.loading} />
+            <Modal_Loading modalVisible={this.state.loading} />
           </View>
           <View
             style={{
