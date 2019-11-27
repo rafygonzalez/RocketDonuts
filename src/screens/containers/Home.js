@@ -17,13 +17,14 @@ import Dona from '../../../assets/svg/Dona.svg';
 import Rosquilla from '../../../assets/svg/Rosquilla.svg';
 //Redux
 import {connect} from 'react-redux';
-import {auth, firestore, messaging} from 'react-native-firebase';
+import {auth, firestore, messaging, notifications} from 'react-native-firebase';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import API from '../../firebase/api';
 import Modal_Loading from '../../ui/components/Modal';
+import NotificationsAndroid from '../../firebase/notifications';
 //import NetInfo from "@react-native-community/netinfo";
 class Home extends Component {
   constructor(props) {
@@ -44,10 +45,6 @@ class Home extends Component {
     this.props.dispatch({type: type, payload: payload});
   };
   async componentDidMount() {
-    /* const unsubscribe = NetInfo.addEventListener(state => {
-  console.log("Connection type", state.type);
-  console.log("Is connected?", state.isConnected);
-});*/
     auth().onAuthStateChanged(user => {
       if (!user) {
         this.GoTo('Welcome');
@@ -55,10 +52,8 @@ class Home extends Component {
         API.Load(this.dispatch)
           .then(state => {
             this.setState({loading: false});
-            this.messageListener = messaging().onMessage(message => {
-              console.log(message);
-              // Process your message as required
-            });
+            const notification = new NotificationsAndroid();
+            notification.onMessageListener();
           })
           .catch(e => {
             console.warn('Error cargando la app:' + e);

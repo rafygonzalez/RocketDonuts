@@ -36,12 +36,31 @@ class Api {
       const enabled = await messaging().hasPermission();
       if (enabled) {
         const fcmToken = await messaging().getToken();
-        if (fcmToken) await this.push_token(fcmToken);
-        else reject('The user doesn´t have a device token yet');
+        if (fcmToken) {
+          await this.push_token(fcmToken);
+          await this.push_to_user(fcmToken, this.currentUser.uid);
+        } else reject('The user doesn´t have a device token yet');
         resolve(true);
       } else {
         await messaging().requestPermission();
       }
+    });
+  };
+  push_to_user = (token, userId) => {
+    return new Promise((resolve, reject) => {
+      const db = firestore();
+      db.collection('Users')
+        .doc(userId)
+        .update({
+          tokenMessaging: token,
+        })
+        .then(() => {
+          resolve(true);
+        })
+        .catch(error => {
+          console.error(`Error al insertar el token en la BD => ${error}`);
+          reject(error);
+        });
     });
   };
   push_token = token => {

@@ -132,6 +132,7 @@ class CompleteOrder extends Component {
     order.payment_method = this.state.payment_method;
     order.cashAmount = this.state.amount;
     order.usdAverage = this.props.global.usdAverage;
+    order.state = 'Por Confirmar';
     order.date = new Date();
     return order;
   }
