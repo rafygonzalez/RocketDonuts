@@ -25,7 +25,7 @@ export default Modal_Order = props => {
       transparent={true}
       visible={props.modalVisible}
       onRequestClose={() => {
-        Alert.alert('Modal has been closed.');
+        props.toggleModal();
       }}>
       <View style={styles.area_container}>
         <View style={styles.body_container}>

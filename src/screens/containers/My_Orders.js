@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, SafeAreaView, StyleSheet} from 'react-native';
+import {View, SafeAreaView, StyleSheet, ScrollView} from 'react-native';
 import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
 import HeaderBanner from '../../sections/components/Header_Banner';
 //Redux
@@ -10,13 +10,26 @@ import {
 } from 'react-native-responsive-screen';
 import Box from '../components/My_Orders/Box';
 import Modal_Order from '../components/My_Orders/Modal_Order';
+import api from '../../firebase/api';
 class MyOrders extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      modalVisible: false,
+      orders: [],
+    };
   }
+  componentDidMount() {
+    api.getUserOrders().then(orders => {
+      console.log(orders);
+      this.setState({orders});
+    });
+  }
+  toggleModal = () => {
+    this.setState({modalVisible: !this.state.modalVisible});
+  };
   render() {
-    console.log(this.props);
+    const {orders} = this.state;
     return (
       <SafeAreaView style={styles.area_container}>
         <HeaderBanner
@@ -32,10 +45,17 @@ class MyOrders extends Component {
             preserveAspectRatio="xMidYMid meet"
           />
         </View>
-        <View style={styles.order_container}>
-          <Box />
-        </View>
-        <Modal_Order modalVisible={true} order={this.props.Order.order} />
+        <ScrollView style={styles.order_container}>
+          {orders.length > 0 &&
+            orders.map(order => {
+              return <Box key={order.key} toggleModal={this.toggleModal} />;
+            })}
+        </ScrollView>
+        <Modal_Order
+          modalVisible={this.state.modalVisible}
+          toggleModal={this.toggleModal}
+          order={this.props.Order.order}
+        />
       </SafeAreaView>
     );
   }
@@ -55,6 +75,6 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = state => {
-  return {Order: state.order};
+  return {Order: state.order, Global: state.globalReducer};
 };
 export default connect(mapStateToProps)(MyOrders);

@@ -1,4 +1,4 @@
-import {auth, firestore} from 'react-native-firebase';
+import {auth, firestore, messaging} from 'react-native-firebase';
 import {GoogleSignin} from '@react-native-community/google-signin';
 export const signOut = () => auth().signOut();
 
@@ -8,36 +8,82 @@ class Api {
   constructor() {
     this.currentUser = {};
   }
-   Auth(props) {
-     auth().onAuthStateChanged(user => {
+  Auth(props) {
+    auth().onAuthStateChanged(user => {
       if (user) props.auth_state(true);
       else props.auth_state(false);
     });
   }
-  Load(dispatch){
+  Load(dispatch) {
     this.getCurrentUser();
     return new Promise(async (resolve, reject) => {
-    try{
-      const averageUSD = await this.getDolarTodayApi();
-      const AppConfig = await this.getConfig();
-      const DataUser = await this.getDataUser(this.currentUser.uid)
-      dispatch('USD_AVERAGE', averageUSD);
-      dispatch('CONFIG_PRODUCTS', AppConfig);
-      dispatch('CURRENT_USER', DataUser);
-      resolve('successfully')
-    }catch(e){
-      reject(e)
-    }
-  });
+      try {
+        const averageUSD = await this.getDolarTodayApi();
+        const AppConfig = await this.getConfig();
+        const DataUser = await this.getDataUser(this.currentUser.uid);
+        const fcmToken = await this.getFcmToken();
+        dispatch('USD_AVERAGE', averageUSD);
+        dispatch('CONFIG_PRODUCTS', AppConfig);
+        dispatch('CURRENT_USER', DataUser);
+        resolve('successfully');
+      } catch (e) {
+        reject(e);
+      }
+    });
   }
+  getFcmToken = () => {
+    return new Promise(async (resolve, reject) => {
+      const enabled = await messaging().hasPermission();
+      if (enabled) {
+        const fcmToken = await messaging().getToken();
+        if (fcmToken) await this.push_token(fcmToken);
+        else reject('The user doesn´t have a device token yet');
+        resolve(true);
+      } else {
+        await messaging().requestPermission();
+      }
+    });
+  };
+  push_token = token => {
+    return new Promise((resolve, reject) => {
+      const db = firestore();
+      db.collection('Tokens')
+        .doc(token)
+        .set({
+          token: token,
+        })
+        .then(() => {
+          resolve(true);
+        })
+        .catch(error => {
+          console.error(`Error al insertar el token en la BD => ${error}`);
+          reject(error);
+        });
+    });
+  };
+  getUserOrders = async () => {
+    const orders = await firestore()
+      .collection('Orders')
+      .doc(this.currentUser.uid)
+      .get();
+    let ordersTemp = [];
+    let data = orders.data();
+    Object.keys(data).map(value => {
+      data[value].order[0].key = value;
+      ordersTemp.push(data[value].order[0]);
+    });
+    return ordersTemp;
+  };
   getDolarTodayApi = () => {
-    return new Promise(async (resolve,reject) => {
-      try{
-        const data = await fetch('https://s3.amazonaws.com/dolartoday/data.json')
-        const json = await data.json()
-        resolve(json.USD.promedio)
-      }catch(e){
-        reject(e)
+    return new Promise(async (resolve, reject) => {
+      try {
+        const data = await fetch(
+          'https://s3.amazonaws.com/dolartoday/data.json',
+        );
+        const json = await data.json();
+        resolve(json.USD.promedio);
+      } catch (e) {
+        reject(e);
       }
     });
   };
@@ -62,24 +108,27 @@ class Api {
     this.currentUser = auth().currentUser;
     return this.currentUser;
   };
-  getDataUser = async (uid) => {
-      const snapshot = await firestore().collection('Users').doc(uid).get()
-      return snapshot.data()
-  }
+  getDataUser = async uid => {
+    const snapshot = await firestore()
+      .collection('Users')
+      .doc(uid)
+      .get();
+    return snapshot.data();
+  };
   async makeAnOrder(order) {
     var min = 0;
     var max = 99999;
     var orderid = Math.floor(Math.random() * (max - min)) + min;
-    try{
+    try {
       await firestore()
-      .collection('Users')
-      .doc(this.currentUser.uid)
-      .update({orders: firestore.FieldValue.arrayUnion(orderid)});
-    await firestore()
-      .collection('Orders')
-      .doc(this.currentUser.uid)
-      .set({[orderid]: order}, {merge: true});
-    }catch(error){
+        .collection('Users')
+        .doc(this.currentUser.uid)
+        .update({orders: firestore.FieldValue.arrayUnion(orderid)});
+      await firestore()
+        .collection('Orders')
+        .doc(this.currentUser.uid)
+        .set({[orderid]: order}, {merge: true});
+    } catch (error) {
       // manejar errores
     }
 

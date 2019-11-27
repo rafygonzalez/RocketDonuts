@@ -4,7 +4,7 @@ import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 const Box = props => {
   return (
-    <TouchableOpacity style={styles.box_container}>
+    <TouchableOpacity onPress={()=> props.toggleModal()}style={styles.box_container}>
       <View>
         <Text style={styles.state}>Estado</Text>
         <Text style={styles.state_info}>Por Confirmar</Text>
