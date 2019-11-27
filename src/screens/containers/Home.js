@@ -17,7 +17,7 @@ import Dona from '../../../assets/svg/Dona.svg';
 import Rosquilla from '../../../assets/svg/Rosquilla.svg';
 //Redux
 import {connect} from 'react-redux';
-import {auth, firestore} from 'react-native-firebase';
+import {auth, firestore, messaging} from 'react-native-firebase';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -35,6 +35,7 @@ class Home extends Component {
     };
     this.onSelectedProduct = this.onSelectedProduct.bind(this);
     this.GoTo = this.GoTo.bind(this);
+    this.messageListener = null;
   }
   static navigationOptions = {
     header: null,
@@ -54,6 +55,10 @@ class Home extends Component {
         API.Load(this.dispatch)
           .then(state => {
             this.setState({loading: false});
+            this.messageListener = messaging().onMessage(message => {
+              console.log(message);
+              // Process your message as required
+            });
           })
           .catch(e => {
             console.warn('Error cargando la app:' + e);
@@ -62,7 +67,9 @@ class Home extends Component {
       }
     });
   }
-
+  componentWillUnmount() {
+    this.messageListener();
+  }
   onSelectedProduct(name) {
     if (name === 'Donut') {
       this.GoTo('CustomDonut');
