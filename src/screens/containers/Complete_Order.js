@@ -133,6 +133,7 @@ class CompleteOrder extends Component {
     order.cashAmount = this.state.amount;
     order.usdAverage = this.props.global.usdAverage;
     order.state = 'Por Confirmar';
+    order.uid = API.currentUser.uid;
     order.date = new Date();
     return order;
   }

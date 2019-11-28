@@ -83,13 +83,11 @@ class Api {
   getUserOrders = async () => {
     const orders = await firestore()
       .collection('Orders')
-      .doc(this.currentUser.uid)
+      .where('uid', '==', this.currentUser.uid)
       .get();
     let ordersTemp = [];
-    let data = orders.data();
-    Object.keys(data).map(value => {
-      data[value].order[0].key = value;
-      ordersTemp.push(data[value].order[0]);
+    orders.docs.map(value => {
+      ordersTemp.push(value.data());
     });
     return ordersTemp;
   };
@@ -147,10 +145,8 @@ class Api {
 
       await firestore()
         .collection('Orders')
-        .doc(this.currentUser.uid)
-        .collection('userOrder')
         .doc(`${orderid}`)
-        .set({order});
+        .set(order);
     } catch (error) {
       console.log(error);
       // manejar errores
