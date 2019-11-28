@@ -1,17 +1,37 @@
 import React from 'react';
 import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
-
+const colors = {
+  red: '#F41943',
+  orange: '#FF700F',
+  green: '#51F269',
+};
 const Box = props => {
   return (
-    <TouchableOpacity onPress={()=> props.toggleModal()}style={styles.box_container}>
+    <TouchableOpacity
+      onPress={() => props.toggleModal()}
+      style={styles.box_container}>
       <View>
         <Text style={styles.state}>Estado</Text>
-        <Text style={styles.state_info}>Por Confirmar</Text>
+        <Text
+          style={[
+            styles.state_info,
+            props.state == 'Por Confirmar'
+              ? {color: colors.red}
+              : props.state == 'En Elaboración'
+              ? {color: colors.orange}
+              : props.state == 'En Camino'
+              ? {color: colors.orange}
+              : props.state == 'Entregado'
+              ? {color: colors.green}
+              : props.state == 'Terminado' && {color: colors.green},
+          ]}>
+          {props.state}
+        </Text>
       </View>
       <View>
-        <Text style={styles.date_title}>Fecha: 25/11/2019</Text>
-        <Text style={styles.code_number}>Código:789654</Text>
+        <Text style={styles.date_title}>Fecha: </Text>
+        <Text style={styles.code_number}>Código:{props.codeNumber}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -20,11 +40,7 @@ const font_family = {
   fontFamily: 'Poppins-Regular',
   fontSize: wp('4%'),
 };
-const colors = {
-  red: '#F41943',
-  orange: '#FF700F',
-  green: '#51F269',
-};
+
 const styles = StyleSheet.create({
   state: {
     ...font_family,

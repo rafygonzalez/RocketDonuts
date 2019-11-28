@@ -80,6 +80,18 @@ class Api {
         });
     });
   };
+  userOrdersListener = handle => {
+    return firestore()
+      .collection('Orders')
+      .where('uid', '==', this.currentUser.uid)
+      .onSnapshot(function(orders) {
+        let ordersTemp = [];
+        orders.docs.map(value => {
+          ordersTemp.push(value.data());
+        });
+        handle(ordersTemp);
+      });
+  };
   getUserOrders = async () => {
     const orders = await firestore()
       .collection('Orders')
@@ -136,7 +148,7 @@ class Api {
     var min = 0;
     var max = 99999;
     var orderid = Math.floor(Math.random() * (max - min)) + min;
-
+    order.codeNumber = orderid;
     try {
       await firestore()
         .collection('Users')

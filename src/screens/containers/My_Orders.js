@@ -18,12 +18,17 @@ class MyOrders extends Component {
       modalVisible: false,
       orders: [],
     };
+    this.updateOrder = this.updateOrder.bind(this);
+    this.orderListener = null;
+  }
+  updateOrder(orders) {
+    this.setState({orders});
   }
   componentDidMount() {
-    api.getUserOrders().then(orders => {
-      console.log(orders);
-      this.setState({orders});
-    });
+    this.orderListener = api.userOrdersListener(this.updateOrder);
+  }
+  componentWillUnmount() {
+    this.orderListener();
   }
   toggleModal = () => {
     this.setState({modalVisible: !this.state.modalVisible});
@@ -48,7 +53,15 @@ class MyOrders extends Component {
         <ScrollView style={styles.order_container}>
           {orders.length > 0 &&
             orders.map(order => {
-              return <Box key={order.key} toggleModal={this.toggleModal} />;
+              return (
+                <Box
+                  state={order.state}
+                  date={order.date}
+                  codeNumber={order.codeNumber}
+                  key={order.codeNumber}
+                  toggleModal={this.toggleModal}
+                />
+              );
             })}
         </ScrollView>
         <Modal_Order
