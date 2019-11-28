@@ -138,16 +138,21 @@ class Api {
     var min = 0;
     var max = 99999;
     var orderid = Math.floor(Math.random() * (max - min)) + min;
+
     try {
       await firestore()
         .collection('Users')
         .doc(this.currentUser.uid)
         .update({orders: firestore.FieldValue.arrayUnion(orderid)});
+
       await firestore()
         .collection('Orders')
         .doc(this.currentUser.uid)
-        .set({[orderid]: order}, {merge: true});
+        .collection('userOrder')
+        .doc(`${orderid}`)
+        .set({order});
     } catch (error) {
+      console.log(error);
       // manejar errores
     }
 
