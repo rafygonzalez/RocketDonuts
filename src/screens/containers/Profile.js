@@ -37,7 +37,7 @@ class Profile extends Component {
   componentDidMount() {}
   render() {
     const {currentUser} = this.props;
-    console.log(currentUser);
+    //console.log(currentUser);
     return (
       <LinearGradient colors={['#242441', '#55537B']} style={styles.background}>
         <View style={styles.Menu}>

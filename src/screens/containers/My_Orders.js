@@ -12,6 +12,10 @@ import Box from '../components/My_Orders/Box';
 import Modal_Order from '../components/My_Orders/Modal_Order';
 import api from '../../firebase/api';
 import Modal from '../../ui/components/Modal';
+const Layout = props => {
+  return props.children;
+};
+
 class MyOrders extends Component {
   constructor(props) {
     super(props);
@@ -69,7 +73,7 @@ class MyOrders extends Component {
           />
         </View>
         {!this.state.loading ? (
-          <View>
+          <Layout>
             <ScrollView style={styles.order_container}>
               {orders.length > 0 &&
                 orders.map(order => {
@@ -91,7 +95,7 @@ class MyOrders extends Component {
                 order={this.state.orderSelected}
               />
             )}
-          </View>
+          </Layout>
         ) : (
           <Modal modalVisible={this.state.loading} />
         )}
@@ -110,6 +114,7 @@ const styles = StyleSheet.create({
     top: hp('23.07%'),
   },
   order_container: {
+    flex: 1,
     marginHorizontal: '3%',
     marginVertical: '3%',
   },

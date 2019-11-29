@@ -187,10 +187,10 @@ class CompleteOrder extends Component {
               uploadProgress(progress);
               switch (snapshot.state) {
                 case storage.TaskState.PAUSED: // or 'paused'
-                  //console.log('Upload is paused');
+                  ////console.log('Upload is paused');
                   break;
                 case storage.TaskState.RUNNING: // or 'running'
-                  //console.log('Upload is running');
+                  ////console.log('Upload is running');
                   break;
               }
             },
@@ -211,7 +211,7 @@ class CompleteOrder extends Component {
               }
             },
             function(snapshot) {
-              //console.log(snapshot);
+              ////console.log(snapshot);
               setTimeout(() => {
                 nextStep();
               }, 3000);
@@ -221,7 +221,7 @@ class CompleteOrder extends Component {
           );
         })
         .catch(err => {
-          //console.log(err);
+          ////console.log(err);
         });
     } else {
       this.setState({step: this.state.step + 1});
@@ -252,14 +252,14 @@ class CompleteOrder extends Component {
     };
     if (mode == 'local') {
       ImagePicker.launchImageLibrary(options, response => {
-        //console.log('Response = ', response);
+        ////console.log('Response = ', response);
 
         if (response.didCancel) {
-          //console.log('User cancelled image picker');
+          ////console.log('User cancelled image picker');
         } else if (response.error) {
-          //console.log('ImagePicker Error: ', response.error);
+          ////console.log('ImagePicker Error: ', response.error);
         } else if (response.customButton) {
-          //console.log('User tapped custom button: ', response.customButton);
+          ////console.log('User tapped custom button: ', response.customButton);
         } else {
           // You can also display the image using data:
           // const source = { uri: 'data:image/jpeg;base64,' + response.data };
@@ -270,14 +270,14 @@ class CompleteOrder extends Component {
       });
     } else if (mode == 'camera') {
       ImagePicker.launchCamera(options, response => {
-        //console.log('Response = ', response);
+        ////console.log('Response = ', response);
 
         if (response.didCancel) {
-          //console.log('User cancelled image picker');
+          ////console.log('User cancelled image picker');
         } else if (response.error) {
-          //console.log('ImagePicker Error: ', response.error);
+          ////console.log('ImagePicker Error: ', response.error);
         } else if (response.customButton) {
-          //console.log('User tapped custom button: ', response.customButton);
+          ////console.log('User tapped custom button: ', response.customButton);
         } else {
           // You can also display the image using data:
           // const source = { uri: 'data:image/jpeg;base64,' + response.data };

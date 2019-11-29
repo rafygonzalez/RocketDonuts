@@ -7,15 +7,15 @@ export default class NotificationsAndroid {
   }
   onMessageListener() {
     this.messageListener = messaging().onMessage(async message => {
-      console.log(message);
+      //console.log(message);
       const {titulo, descripcion, subtitle} = message.data;
       this.createChannel(
-        'Nuevo Pedido',
+        'Estado de Tu Pedido',
         'Tu pedido',
         'Se utiliza para poder notificar el estado de cada pedido realizado por el usuario.',
       );
       await this.buildNotification(
-        'Nuevo Pedido',
+        'Estado de Tu Pedido',
         titulo,
         descripcion,
         subtitle,
@@ -40,7 +40,7 @@ export default class NotificationsAndroid {
     const channel = new notifications.Android.Channel(
       channelId,
       channelDescription,
-      notifications.Android.Importance.High,
+      notifications.Android.Importance.Max,
       //notifications.Android.Importance.High,
     ).setDescription(message);
 

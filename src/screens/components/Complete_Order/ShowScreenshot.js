@@ -18,7 +18,7 @@ const Buttons = props => {
   );
 };
 const ShowScreenshot = props => {
-  //console.log(props.avatarSource);
+  ////console.log(props.avatarSource);
   return (
     <Body
       title="Captura de pantalla"

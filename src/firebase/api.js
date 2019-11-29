@@ -160,7 +160,7 @@ class Api {
         .doc(`${orderid}`)
         .set(order);
     } catch (error) {
-      console.log(error);
+      //console.log(error);
       // manejar errores
     }
 
