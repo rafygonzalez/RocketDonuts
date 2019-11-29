@@ -9,7 +9,7 @@ const colors = {
 const Box = props => {
   return (
     <TouchableOpacity
-      onPress={() => props.toggleModal()}
+      onPress={() => props.toggleModal(props.codeNumber)}
       style={styles.box_container}>
       <View>
         <Text style={styles.state}>Estado</Text>

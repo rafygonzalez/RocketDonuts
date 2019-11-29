@@ -148,6 +148,7 @@ class Order extends Component {
     this.GoTo('ShoppingCart');
   }
   render() {
+    console.log(this.props.Order.order);
     return (
       <SafeAreaView style={styles.area_container}>
         <HeaderBanner

@@ -18,7 +18,9 @@ import OrderDetail from '../Order_Detail';
 import {getDonut, getDonutDescription} from '../Donuts_List';
 import Divider from '../Divider';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+
 export default Modal_Order = props => {
+  const {totalPrice, totalPriceUSD, quantity} = props.order;
   return (
     <Modal
       animationType="fade"
@@ -37,8 +39,11 @@ export default Modal_Order = props => {
           <Divider />
           <ScrollView
             persistentScrollbar={true}
-            style={{maxHeight: hp('17%'), backgroundColor: '#EDEEF4'}}>
-            {props.order.map((Item, index) => {
+            style={{
+              maxHeight: hp('17%'),
+              backgroundColor: '#EDEEF4',
+            }}>
+            {props.order.order.map((Item, index) => {
               return (
                 <Layout key={index}>
                   <OrderDetail
@@ -56,11 +61,54 @@ export default Modal_Order = props => {
               );
             })}
           </ScrollView>
+          <Divider />
+          <View style={styles.detail_container}>
+            <Text style={styles.detail_title}>Detalles del pedido</Text>
+            {quantity.totalDonut !== 0 && (
+              <View style={styles.detail_description_container}>
+                <Text style={styles.detail_description_title}>
+                  Cant. Donas:
+                </Text>
+                <Text style={styles.detail_description_value}>
+                  {quantity.totalDonut}
+                </Text>
+              </View>
+            )}
+            {quantity.totalBagel !== 0 && (
+              <View style={styles.detail_description_container}>
+                <Text style={styles.detail_description_title}>
+                  Cant. Rosquillas:
+                </Text>
+                <Text style={styles.detail_description_value}>
+                  {' '}
+                  {quantity.totalBagel}
+                </Text>
+              </View>
+            )}
+
+            <View
+              style={[
+                styles.detail_description_container,
+                {marginTop: hp('1%')},
+              ]}>
+              <Text style={styles.detail_description_title}>Total Bs.S:</Text>
+              <Text style={styles.detail_description_value}>{totalPrice}</Text>
+            </View>
+            <View style={[styles.detail_description_container]}>
+              <Text style={styles.detail_description_title}>
+                Total Dólares:
+              </Text>
+              <Text style={styles.detail_description_value}>
+                {totalPriceUSD}
+              </Text>
+            </View>
+          </View>
         </View>
       </View>
     </Modal>
   );
 };
+/*       */
 const styles = StyleSheet.create({
   area_container: {
     flex: 1,
@@ -85,5 +133,31 @@ const styles = StyleSheet.create({
     height: hp('70%'),
     paddingHorizontal: wp('5%'),
     paddingVertical: wp('5%'),
+  },
+  detail_container: {
+    alignItems: 'center',
+  },
+  detail_title: {
+    fontFamily: 'Poppins-Bold',
+    fontSize: wp('4%'),
+    color: '#313045',
+    marginBottom: hp('1%'),
+  },
+  detail_description_container: {flexDirection: 'row'},
+  detail_description_title: {
+    fontFamily: 'Poppins-Bold',
+    fontSize: wp('4%'),
+    color: '#313045',
+    marginRight: wp('3%'),
+  },
+  detail_description_value: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: wp('4%'),
+    color: '#707070',
+  },
+  detail_total: {
+    marginTop: hp('2%'),
+    fontFamily: 'Rockwell',
+    fontSize: wp('4%'),
   },
 });

@@ -192,7 +192,9 @@ class CustomBagel extends Component {
             {customizeStep == 3 && (
               <View
                 style={{marginHorizontal: wp('9%'), justifyContent: 'center'}}>
-                <Text style={styles.textTitle}>Has personalizado tu Rosquilla</Text>
+                <Text style={styles.textTitle}>
+                  Has personalizado tu Rosquilla
+                </Text>
                 <Text style={styles.textDescription}>
                   {this.getDonutDescription(
                     'Rosquilla',
@@ -250,32 +252,32 @@ class CustomBagel extends Component {
               ) : (
                 customizeStep == 3 && (
                   <View
-                  style={{
-                    flex: 1,
-                    justifyContent: 'flex-end',
-                    alignItems: 'center',
-                    marginVertical: 16,
-                    marginHorizontal: '9%',
-                    width: '82%',
-                  }}>
-                  <View style={{flexDirection: 'row'}}>
-                    <Button
-                      title="Cancelar"
-                      button_style="simple"
-                      onPress={() => {
-                        this.CancelCustomization();
-                      }}
-                    />
-                    <Button
-                      title="Finalizar"
-                      button_style="primary"
-                      onPress={() => {
-                        this.FinishCustomization('Dona');
-                      }}
-                      extra_style={{marginLeft: '2%'}}
-                    />
+                    style={{
+                      flex: 1,
+                      justifyContent: 'flex-end',
+                      alignItems: 'center',
+                      marginVertical: 16,
+                      marginHorizontal: '9%',
+                      width: '82%',
+                    }}>
+                    <View style={{flexDirection: 'row'}}>
+                      <Button
+                        title="Cancelar"
+                        button_style="simple"
+                        onPress={() => {
+                          this.CancelCustomization();
+                        }}
+                      />
+                      <Button
+                        title="Finalizar"
+                        button_style="primary"
+                        onPress={() => {
+                          this.FinishCustomization('Rosquilla');
+                        }}
+                        extra_style={{marginLeft: '2%'}}
+                      />
+                    </View>
                   </View>
-                </View>
                 )
               )}
             </View>

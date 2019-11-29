@@ -128,6 +128,7 @@ class CompleteOrder extends Component {
     let order = {};
     order.order = this.props.order.order;
     order.totalPrice = this.props.order.totalPrice;
+    order.totalPriceUSD = this.props.order.totalPriceUSD;
     order.quantity = this.props.order.orderQuantity;
     order.payment_method = this.state.payment_method;
     order.cashAmount = this.state.amount;

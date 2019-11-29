@@ -11,18 +11,22 @@ import {
 import Box from '../components/My_Orders/Box';
 import Modal_Order from '../components/My_Orders/Modal_Order';
 import api from '../../firebase/api';
+import Modal from '../../ui/components/Modal';
 class MyOrders extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: true,
       modalVisible: false,
       orders: [],
+      orderSelected: {},
     };
     this.updateOrder = this.updateOrder.bind(this);
     this.orderListener = null;
+    this.isEmpty = this.isEmpty.bind(this);
   }
   updateOrder(orders) {
-    this.setState({orders});
+    this.setState({orders, loading: false});
   }
   componentDidMount() {
     this.orderListener = api.userOrdersListener(this.updateOrder);
@@ -30,11 +34,25 @@ class MyOrders extends Component {
   componentWillUnmount() {
     this.orderListener();
   }
-  toggleModal = () => {
-    this.setState({modalVisible: !this.state.modalVisible});
+  toggleModal = code => {
+    const {orders} = this.state;
+    const isOrder = ({codeNumber}) => codeNumber == code;
+    var orderSelected = orders.filter(isOrder);
+
+    this.setState({
+      modalVisible: !this.state.modalVisible,
+      orderSelected: orderSelected[0],
+    });
   };
+  isEmpty(obj) {
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key)) return false;
+    }
+    return true;
+  }
   render() {
     const {orders} = this.state;
+
     return (
       <SafeAreaView style={styles.area_container}>
         <HeaderBanner
@@ -50,29 +68,38 @@ class MyOrders extends Component {
             preserveAspectRatio="xMidYMid meet"
           />
         </View>
-        <ScrollView style={styles.order_container}>
-          {orders.length > 0 &&
-            orders.map(order => {
-              return (
-                <Box
-                  state={order.state}
-                  date={order.date}
-                  codeNumber={order.codeNumber}
-                  key={order.codeNumber}
-                  toggleModal={this.toggleModal}
-                />
-              );
-            })}
-        </ScrollView>
-        <Modal_Order
-          modalVisible={this.state.modalVisible}
-          toggleModal={this.toggleModal}
-          order={this.props.Order.order}
-        />
+        {!this.state.loading ? (
+          <View>
+            <ScrollView style={styles.order_container}>
+              {orders.length > 0 &&
+                orders.map(order => {
+                  return (
+                    <Box
+                      state={order.state}
+                      date={order.date}
+                      codeNumber={order.codeNumber}
+                      key={order.codeNumber}
+                      toggleModal={this.toggleModal}
+                    />
+                  );
+                })}
+            </ScrollView>
+            {!this.isEmpty(this.state.orderSelected) && (
+              <Modal_Order
+                modalVisible={this.state.modalVisible}
+                toggleModal={this.toggleModal}
+                order={this.state.orderSelected}
+              />
+            )}
+          </View>
+        ) : (
+          <Modal modalVisible={this.state.loading} />
+        )}
       </SafeAreaView>
     );
   }
 }
+/*          */
 const styles = StyleSheet.create({
   area_container: {
     flex: 1,
