@@ -2,11 +2,10 @@ import {messaging, notifications} from 'react-native-firebase';
 
 export default class NotificationsAndroid {
   constructor() {
-    this.messageListener = null;
     this.notification = new notifications.Notification();
   }
   onMessageListener() {
-    this.messageListener = messaging().onMessage(async message => {
+    return messaging().onMessage(async message => {
       //console.log(message);
       const {titulo, descripcion, subtitle} = message.data;
       this.createChannel(

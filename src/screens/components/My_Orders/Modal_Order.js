@@ -58,31 +58,36 @@ export default Modal_Order = props => {
             </Text>
           </TouchableOpacity>
           <Divider />
-          <ScrollView
-            persistentScrollbar={true}
-            style={{
-              maxHeight: hp('17%'),
-              backgroundColor: '#EDEEF4',
-            }}>
-            {props.order.order.map((Item, index) => {
-              return (
-                <Layout key={index}>
-                  <OrderDetail
-                    item={getDonut(Item.cover, Item.topping, Item.type)}
-                    item_name={`${Item.type} x ${Item.quantity}`}
-                    description={getDonutDescription(
-                      Item.type,
-                      Item.topping,
-                      Item.cover,
-                      Item.filling,
-                    )}
-                    key={index}
-                  />
-                </Layout>
-              );
-            })}
-          </ScrollView>
-          <Divider />
+          {!props.screenshotVisible && (
+            <Layout>
+              <ScrollView
+                persistentScrollbar={true}
+                style={{
+                  maxHeight: hp('17%'),
+                  backgroundColor: '#EDEEF4',
+                }}>
+                {props.order.order.map((Item, index) => {
+                  return (
+                    <Layout key={index}>
+                      <OrderDetail
+                        item={getDonut(Item.cover, Item.topping, Item.type)}
+                        item_name={`${Item.type} x ${Item.quantity}`}
+                        description={getDonutDescription(
+                          Item.type,
+                          Item.topping,
+                          Item.cover,
+                          Item.filling,
+                        )}
+                        key={index}
+                      />
+                    </Layout>
+                  );
+                })}
+              </ScrollView>
+              <Divider />
+            </Layout>
+          )}
+
           <View style={styles.detail_container}>
             <Text style={styles.detail_title}>Detalles del pedido</Text>
             {quantity.totalDonut !== 0 && (

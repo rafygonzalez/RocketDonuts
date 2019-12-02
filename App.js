@@ -42,6 +42,7 @@ import OrderIcon from './assets/svg/Order.svg';
 import SignOutIcon from './assets/svg/sign-out-option.svg';
 import HeaderBanner from './src/sections/components/Header_Banner';
 import AccountCircle from './assets/svg/account_circle.svg';
+import Recent_activity from './assets/svg/recent_activity.svg';
 const signOut = () => {
   firebase.auth().signOut();
 };
@@ -94,16 +95,16 @@ const stylesButton = StyleSheet.create({
 
 const MainDrawer = createDrawerNavigator(
   {
+    'Actividad Reciente': {
+      screen: OrderScreen,
+      navigationOptions: {
+        drawerIcon: () => <Recent_activity width={32} height={32} />,
+      },
+    },
     Inicio: {
       screen: HomeScreen,
       navigationOptions: {
         drawerIcon: () => <HomeIcon width={32} height={32} />,
-      },
-    },
-    Perfil: {
-      screen: ProfileScreen,
-      navigationOptions: {
-        drawerIcon: () => <AccountCircle width={32} height={32} />,
       },
     },
     'Mis Pedidos': {
@@ -112,10 +113,10 @@ const MainDrawer = createDrawerNavigator(
         drawerIcon: () => <OrderIcon width={32} height={32} />,
       },
     },
-    'Mi Pedido': {
-      screen: OrderScreen,
+    Perfil: {
+      screen: ProfileScreen,
       navigationOptions: {
-        drawerIcon: () => <OrderIcon width={24} height={24} />,
+        drawerIcon: () => <AccountCircle width={32} height={32} />,
       },
     },
   },

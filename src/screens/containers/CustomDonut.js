@@ -127,7 +127,7 @@ class CustomDonut extends Component {
       coverDonut: '',
       toppingDonut: '',
     });
-    this.GoTo('Mi Pedido');
+    this.GoTo('Actividad Reciente');
   }
   CancelCustomization() {
     this.setState({

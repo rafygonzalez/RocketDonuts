@@ -52,8 +52,8 @@ class Home extends Component {
         API.Load(this.dispatch)
           .then(state => {
             this.setState({loading: false});
-            const notification = new NotificationsAndroid();
-            notification.onMessageListener();
+            this.messageListener = new NotificationsAndroid();
+            this.messageListener = this.messageListener.onMessageListener();
           })
           .catch(e => {
             console.warn('Error cargando la app:' + e);
