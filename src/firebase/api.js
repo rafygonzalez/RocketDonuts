@@ -163,8 +163,13 @@ class Api {
       //console.log(error);
       // manejar errores
     }
-
     return orderid;
+  }
+  async updateOrder(order, object) {
+    await firestore()
+      .collection('Orders')
+      .doc(`${order.codeNumber}`)
+      .update(object);
   }
 
   async createUser(

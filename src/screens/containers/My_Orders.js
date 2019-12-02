@@ -24,10 +24,12 @@ class MyOrders extends Component {
       modalVisible: false,
       orders: [],
       orderSelected: {},
+      ShowScreenshot: false,
     };
     this.updateOrder = this.updateOrder.bind(this);
     this.orderListener = null;
     this.isEmpty = this.isEmpty.bind(this);
+    this.ShowScreenshot = this.ShowScreenshot.bind(this);
   }
   updateOrder(orders) {
     this.setState({orders, loading: false});
@@ -53,6 +55,9 @@ class MyOrders extends Component {
       if (obj.hasOwnProperty(key)) return false;
     }
     return true;
+  }
+  ShowScreenshot() {
+    this.setState({ShowScreenshot: !this.state.ShowScreenshot});
   }
   render() {
     const {orders} = this.state;
@@ -90,6 +95,8 @@ class MyOrders extends Component {
             </ScrollView>
             {!this.isEmpty(this.state.orderSelected) && (
               <Modal_Order
+                ShowScreenshot={this.ShowScreenshot}
+                screenshotVisible={this.state.ShowScreenshot}
                 modalVisible={this.state.modalVisible}
                 toggleModal={this.toggleModal}
                 order={this.state.orderSelected}

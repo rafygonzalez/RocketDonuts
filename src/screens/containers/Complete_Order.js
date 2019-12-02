@@ -211,10 +211,11 @@ class CompleteOrder extends Component {
               }
             },
             function(snapshot) {
-              ////console.log(snapshot);
+              const {downloadURL} = snapshot;
+              API.updateOrder(order, {downloadURL});
               setTimeout(() => {
                 nextStep();
-              }, 3000);
+              }, 1000);
 
               // Upload completed successfully, now we can get the download URL
             },

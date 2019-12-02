@@ -2,9 +2,9 @@ import React, {useState} from 'react';
 import {
   Modal,
   Text,
-  TouchableHighlight,
+  TouchableOpacity,
   View,
-  Alert,
+  Image,
   StyleSheet,
   ActivityIndicator,
   ScrollView,
@@ -17,10 +17,10 @@ import Layout from '../Layout';
 import OrderDetail from '../Order_Detail';
 import {getDonut, getDonutDescription} from '../Donuts_List';
 import Divider from '../Divider';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export default Modal_Order = props => {
   const {totalPrice, totalPriceUSD, quantity} = props.order;
+
   return (
     <Modal
       animationType="fade"
@@ -31,10 +31,31 @@ export default Modal_Order = props => {
       }}>
       <View style={styles.area_container}>
         <View style={styles.body_container}>
-          <View></View>
+          <View>
+            <TouchableOpacity onPress={() => props.toggleModal()}>
+              <Text style={styles.text_closeModal}>Cerrar</Text>
+            </TouchableOpacity>
+          </View>
           <Divider />
-          <TouchableOpacity>
-            <Text>Ver Soporte de Pago Adjuntado</Text>
+          {props.screenshotVisible && (
+            <View style={styles.uploadAvatar_container}>
+              <Image
+                onLoad={() => {
+                  console.log('Loaded...');
+                }}
+                source={{uri: props.order.downloadURL}}
+                style={styles.uploadAvatar}
+              />
+            </View>
+          )}
+
+          <TouchableOpacity
+            onPress={() => {
+              props.ShowScreenshot();
+            }}>
+            <Text style={styles.text_show}>
+              {props.screenshotVisible ? 'Ocultar' : 'Mostrar Soporte de Pago'}
+            </Text>
           </TouchableOpacity>
           <Divider />
           <ScrollView
@@ -110,6 +131,19 @@ export default Modal_Order = props => {
 };
 /*       */
 const styles = StyleSheet.create({
+  uploadAvatar_container: {
+    width: '100%',
+    height: hp('30%'),
+    backgroundColor: '#EDEEF4',
+    marginVertical: hp('2%'),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  uploadAvatar: {
+    width: '100%',
+    height: hp('30%'),
+    resizeMode: 'contain',
+  },
   area_container: {
     flex: 1,
     alignItems: 'center',
@@ -123,16 +157,29 @@ const styles = StyleSheet.create({
     marginBottom: '15%',
   },
   body_container: {
-    zIndex: 0,
     position: 'absolute',
     backgroundColor: 'white',
     borderRadius: 3,
     borderWidth: 0.5,
     borderColor: '#C7C8D6',
     width: wp('85%'),
-    height: hp('70%'),
+    maxHeight: hp('90%'),
     paddingHorizontal: wp('5%'),
     paddingVertical: wp('5%'),
+  },
+  text_closeModal: {
+    fontFamily: 'Poppins-Bold',
+    fontSize: wp('4%'),
+    color: '#151619',
+    marginBottom: hp('1%'),
+    textAlign: 'right',
+  },
+  text_show: {
+    textAlign: 'center',
+    fontFamily: 'Poppins-Bold',
+    fontSize: wp('4%'),
+    color: '#FF700F',
+    marginBottom: hp('1%'),
   },
   detail_container: {
     alignItems: 'center',
