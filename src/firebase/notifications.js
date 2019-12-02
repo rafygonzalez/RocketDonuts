@@ -1,26 +1,35 @@
 import {messaging, notifications} from 'react-native-firebase';
-
+// Patron de Diseño: Singleton
 export default class NotificationsAndroid {
+  static instance;
   constructor() {
     this.notification = new notifications.Notification();
   }
+  static getInstance() {
+    if (!NotificationsAndroid.instance) {
+      NotificationsAndroid.instance = new NotificationsAndroid();
+    }
+    return NotificationsAndroid.instance;
+  }
   onMessageListener() {
     return messaging().onMessage(async message => {
-      //console.log(message);
-      const {titulo, descripcion, subtitle} = message.data;
-      this.createChannel(
-        'Estado de Tu Pedido',
-        'Tu pedido',
-        'Se utiliza para poder notificar el estado de cada pedido realizado por el usuario.',
-      );
-      await this.buildNotification(
-        'Estado de Tu Pedido',
-        titulo,
-        descripcion,
-        subtitle,
-      );
-      notifications().displayNotification(this.notification);
+      this.displayNotification(message);
     });
+  }
+  async displayNotification(message) {
+    const {titulo, descripcion, subtitle} = message.data;
+    this.createChannel(
+      'Estado de Tu Pedido',
+      'Tu pedido',
+      'Se utiliza para poder notificar el estado de cada pedido realizado por el usuario.',
+    );
+    await this.buildNotification(
+      'Estado de Tu Pedido',
+      titulo,
+      descripcion,
+      subtitle,
+    );
+    notifications().displayNotification(this.notification);
   }
   buildNotification(id, title, body, subtitle) {
     return new Promise(resolve => {

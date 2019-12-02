@@ -17,7 +17,7 @@ import Dona from '../../../assets/svg/Dona.svg';
 import Rosquilla from '../../../assets/svg/Rosquilla.svg';
 //Redux
 import {connect} from 'react-redux';
-import {auth, firestore, messaging, notifications} from 'react-native-firebase';
+import {auth} from 'react-native-firebase';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -37,6 +37,7 @@ class Home extends Component {
     this.onSelectedProduct = this.onSelectedProduct.bind(this);
     this.GoTo = this.GoTo.bind(this);
     this.messageListener = null;
+    this.NotificationInstance = NotificationsAndroid.getInstance();
   }
   static navigationOptions = {
     header: null,
@@ -52,8 +53,7 @@ class Home extends Component {
         API.Load(this.dispatch)
           .then(state => {
             this.setState({loading: false});
-            this.messageListener = new NotificationsAndroid();
-            this.messageListener = this.messageListener.onMessageListener();
+            this.messageListener = this.NotificationInstance.onMessageListener();
           })
           .catch(e => {
             console.warn('Error cargando la app:' + e);
