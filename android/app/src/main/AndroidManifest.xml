@@ -15,6 +15,9 @@
       android:icon="@mipmap/ic_launcher"
       android:roundIcon="@mipmap/ic_launcher_round"
       android:theme="@style/AppTheme">
+         <meta-data
+     android:name="com.google.android.geo.API_KEY"
+     android:value="AIzaSyBFpdMOluoz71jAgH3wuHVyk_CYOZymNog"/>
       <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713"/>

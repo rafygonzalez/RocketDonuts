@@ -30,6 +30,9 @@ import io.invertase.firebase.storage.RNFirebaseStoragePackage;
 
 import java.util.List;
 
+
+
+
 public class MainApplication extends MultiDexApplication implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
@@ -58,6 +61,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
             packages.add(new RNFirebaseNotificationsPackage());
             //packages.add(new RNFirebasePerformancePackage());
             packages.add(new RNFirebaseStoragePackage());
+     
         return packages;
     }
 

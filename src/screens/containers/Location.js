@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
-import MapboxGL from '@react-native-mapbox-gl/maps';
+//import MapboxGL from '@react-native-mapbox-gl/maps';
 import Geolocation from '@react-native-community/geolocation';
-MapboxGL.setAccessToken(
+/*MapboxGL.setAccessToken(
   'pk.eyJ1IjoicmFmeWdvbnphbGV6MDg5IiwiYSI6ImNqejhlMDVjODFrZ2kzaW1qbDV1bnh2cHoifQ.T3vurNbpjgq_aRL7QjuvpQ',
-);
-
+);*/
+import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 const styles = StyleSheet.create({
   page: {
     flex: 1,
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'tomato',
   },
   map: {
-    flex: 1,
+    ...StyleSheet.absoluteFillObject,
   },
 });
 
@@ -31,14 +31,12 @@ export default class Location extends Component {
     };
   }
 
-  componentDidMount() {
-    MapboxGL.setTelemetryEnabled(false);
-  }
+  componentDidMount() {}
   findCoordinates = () => {
     Geolocation.getCurrentPosition(
       position => {
         const location = JSON.stringify(position);
-        console.warn(location)
+        console.warn(location);
         this.setState({location});
       },
       error => Alert.alert(error.message),
@@ -49,21 +47,15 @@ export default class Location extends Component {
     return (
       <View style={styles.page}>
         <View style={styles.container}>
-       
-            <MapboxGL.MapView style={styles.map}>
-              <MapboxGL.Camera
-                zoomLevel={20}
-                centerCoordinate={[
-                 -64.69938,10.144183
-                ]}
-              />
-            </MapboxGL.MapView>
-        
-
-          <TouchableOpacity onPress={this.findCoordinates}>
-            <Text>Find My Coords?</Text>
-            <Text>Location: {this.state.location}</Text>
-          </TouchableOpacity>
+          <MapView
+            provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+            style={styles.map}
+            region={{
+              latitude: 37.78825,
+              longitude: -122.4324,
+              latitudeDelta: 0.015,
+              longitudeDelta: 0.0121,
+            }}></MapView>
         </View>
       </View>
     );
