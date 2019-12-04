@@ -3,7 +3,7 @@ import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import RKMaps from '../../google_maps/maps';
 import geoCode from '../../google_maps/geoCode';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
-
+import Button from '../../ui/components/button';
 const styles = StyleSheet.create({
   page: {
     flex: 1,
@@ -24,6 +24,7 @@ export default class Location extends Component {
     this.state = {
       location: null,
       mapisReady: false,
+      formatted_address: 'Cargando',
     };
     this._map = null;
     this.onMapReady = this.onMapReady.bind(this);
@@ -33,16 +34,18 @@ export default class Location extends Component {
   async onMapReady() {
     try {
       const position = await this.Maps.getCurrentPosition();
+      const dir = await this.GeoCode.reverse(position.coords);
+      this.setState({
+        location: position,
+        formatted_address: dir[0].formatted_address,
+      });
+
       setTimeout(
         async () => await this.Maps.animateCamera(position.coords, this._map),
         1500,
       );
-      this.setState({location: position});
-      const dir = await this.GeoCode.reverse(position.coords);
-      console.log(dir);
     } catch (e) {}
   }
-
   render() {
     const {location} = this.state;
     return (
@@ -77,10 +80,16 @@ export default class Location extends Component {
         </View>
         <View>
           <Text>Tu Dirección:</Text>
-          <Text>Los Apamates, Barcelona 6001, Anzoategui, Vnezuelaa</Text>
+          <Text>{this.state.formatted_address}</Text>
+          <View style={{width: '100%'}}>
+            <Button
+              title="Guardar Ubicación"
+              button_style="primary"
+              onPress={() => {}}
+            />
+          </View>
         </View>
       </View>
     );
   }
 }
-/*        */
