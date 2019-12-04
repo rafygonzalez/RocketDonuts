@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
-import Geolocation from '@react-native-community/geolocation';
+import RKMaps from '../../google_maps/maps';
+import geoCode from '../../google_maps/geoCode';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 
 const styles = StyleSheet.create({
@@ -25,43 +26,23 @@ export default class Location extends Component {
       mapisReady: false,
     };
     this._map = null;
-    this.animateCamera = this.animateCamera.bind(this);
     this.onMapReady = this.onMapReady.bind(this);
+    this.Maps = new RKMaps();
+    this.GeoCode = new geoCode();
   }
-
   async onMapReady() {
     try {
-      const position = await this.findCoordinates();
-      setTimeout(async () => await this.animateCamera(position), 1500);
+      const position = await this.Maps.getCurrentPosition();
+      setTimeout(
+        async () => await this.Maps.animateCamera(position.coords, this._map),
+        1500,
+      );
       this.setState({location: position});
+      const dir = await this.GeoCode.reverse(position.coords);
+      console.log(dir);
     } catch (e) {}
   }
-  animateCamera(location) {
-    return new Promise(resolve => {
-      this._map.animateCamera(
-        {
-          center: {
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-          },
-          zoom: 15,
-        },
-        15000,
-      );
-      resolve(true);
-    });
-  }
-  findCoordinates = () => {
-    return new Promise((resolve, reject) => {
-      Geolocation.getCurrentPosition(
-        position => {
-          resolve(position);
-        },
-        error => reject(error.message),
-        {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
-      );
-    });
-  };
+
   render() {
     const {location} = this.state;
     return (
