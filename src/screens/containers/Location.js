@@ -1,27 +1,16 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Text, ScrollView, ToastAndroid} from 'react-native';
 import RKMaps from '../../google_maps/maps';
 import geoCode from '../../google_maps/geoCode';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import Button from '../../ui/components/button';
-const styles = StyleSheet.create({
-  page: {
-    flex: 1,
-    backgroundColor: '#F5FCFF',
-  },
-  container: {
-    height: '60%',
-    backgroundColor: 'tomato',
-  },
-  map: {
-    ...StyleSheet.absoluteFillObject,
-  },
-});
+import {widthPercentageToDP} from 'react-native-responsive-screen';
 
 export default class Location extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: true,
       location: null,
       mapisReady: false,
       formatted_address: 'Cargando',
@@ -30,6 +19,24 @@ export default class Location extends Component {
     this.onMapReady = this.onMapReady.bind(this);
     this.Maps = new RKMaps();
     this.GeoCode = new geoCode();
+    this.saveCurrentPos = this.saveCurrentPos.bind(this);
+  }
+  async saveCurrentPos() {
+    try {
+      this.setState({loading: true});
+      const {location} = this.state;
+      var obj = {};
+      obj.LatLng = `${location.coords.latitude},${location.coords.longitude}`;
+      obj.formatted_address = this.state.formatted_address;
+      const result = await this.Maps.saveCurrentPosition(obj);
+      this.props.navigation.goBack();
+    } catch (e) {
+      ToastAndroid.show(
+        `Ha ocurrido un error, intente más tarde.`,
+        ToastAndroid.SHORT,
+      );
+      this.setState({loading: false});
+    }
   }
   async onMapReady() {
     try {
@@ -38,6 +45,7 @@ export default class Location extends Component {
       this.setState({
         location: position,
         formatted_address: dir[0].formatted_address,
+        loading: false,
       });
 
       setTimeout(
@@ -47,7 +55,7 @@ export default class Location extends Component {
     } catch (e) {}
   }
   render() {
-    const {location} = this.state;
+    const {location, loading} = this.state;
     return (
       <View style={styles.page}>
         <View style={styles.container}>
@@ -59,8 +67,10 @@ export default class Location extends Component {
             onMapReady={() => this.onMapReady()}
             style={styles.map}
             region={{
-              latitude: 10.1673862,
-              longitude: -64.677611,
+              latitude:
+                location !== null ? location.coords.latitude : 10.1673862,
+              longitude:
+                location !== null ? location.coords.longitude : -64.677611,
               latitudeDelta: 0.2,
               longitudeDelta: 0.2,
             }}>
@@ -78,18 +88,54 @@ export default class Location extends Component {
             )}
           </MapView>
         </View>
-        <View>
-          <Text>Tu Dirección:</Text>
-          <Text>{this.state.formatted_address}</Text>
-          <View style={{width: '100%'}}>
+        <ScrollView
+          style={{flex: 1}}
+          contentContainerStyle={styles.container_details}>
+          <Text style={styles.title_details}>Tu Dirección:</Text>
+          <Text style={styles.address_detail}>
+            {this.state.formatted_address}
+          </Text>
+          <View
+            opacity={!loading ? 1 : 0.5}
+            style={styles.button_details_container}>
             <Button
-              title="Guardar Ubicación"
+              title={!loading ? 'Guardar Ubicación' : 'Cargando...'}
               button_style="primary"
-              onPress={() => {}}
+              onPress={!loading ? () => this.saveCurrentPos() : () => {}}
             />
           </View>
-        </View>
+        </ScrollView>
       </View>
     );
   }
 }
+const styles = StyleSheet.create({
+  container_details: {
+    paddingHorizontal: '10%',
+    paddingVertical: '10%',
+  },
+  title_details: {
+    fontFamily: 'Poppins-Bold',
+    fontSize: widthPercentageToDP('4%'),
+    marginBottom: '3%',
+    color: '#313045',
+  },
+  address_detail: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: widthPercentageToDP('4%'),
+    marginBottom: '3%',
+    color: '#313045',
+  },
+  button_details_container: {},
+  page: {
+    flex: 1,
+    backgroundColor: '#EDEEF4',
+  },
+  container: {
+    height: '60%',
+    backgroundColor: 'tomato',
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
+});

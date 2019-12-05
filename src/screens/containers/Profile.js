@@ -12,6 +12,9 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import api from '../../firebase/api';
+
+import {firestore} from 'react-native-firebase';
 /*import MapboxGL from '@react-native-mapbox-gl/maps';
 MapboxGL.setAccessToken(
   'pk.eyJ1IjoicmFmeWdvbnphbGV6MDg5IiwiYSI6ImNqejhlMDVjODFrZ2kzaW1qbDV1bnh2cHoifQ.T3vurNbpjgq_aRL7QjuvpQ',
@@ -33,11 +36,25 @@ class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.handleDataUser = this.handleDataUser.bind(this);
   }
-  componentDidMount() {}
+  handleDataUser() {
+    const {currentUser, dispatch} = this.props;
+    return firestore()
+      .collection('Users')
+      .doc(currentUser.uid)
+      .onSnapshot(snap => {
+        dispatch({type: 'CURRENT_USER', payload: snap.data()});
+      });
+  }
+  componentDidMount() {
+    this.handleDataUser();
+  }
+  componentWillUnmount() {
+    this.handleDataUser();
+  }
   render() {
     const {currentUser} = this.props;
-    //console.log(currentUser);
     return (
       <LinearGradient colors={['#242441', '#55537B']} style={styles.background}>
         <View style={styles.Menu}>
@@ -108,6 +125,10 @@ class Profile extends Component {
                 </View>
               </View>
               <Divider />
+              {currentUser.addresses !== undefined &&
+                currentUser.addresses.map(address => {
+                  return <Text>{address.formatted_address}</Text>;
+                })}
             </View>
           </View>
         </ScrollView>

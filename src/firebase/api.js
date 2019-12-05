@@ -6,7 +6,7 @@ export const currentUser = () => auth().currentUser;
 
 class Api {
   constructor() {
-    this.currentUser = {};
+    this.currentUser = auth().currentUser;
   }
   Auth(props) {
     auth().onAuthStateChanged(user => {
@@ -15,17 +15,20 @@ class Api {
     });
   }
   Load(dispatch) {
-    this.getCurrentUser();
     return new Promise(async (resolve, reject) => {
       try {
-        const averageUSD = await this.getDolarTodayApi();
-        const AppConfig = await this.getConfig();
-        const DataUser = await this.getDataUser(this.currentUser.uid);
-        const fcmToken = await this.getFcmToken();
-        dispatch('USD_AVERAGE', averageUSD);
-        dispatch('CONFIG_PRODUCTS', AppConfig);
-        dispatch('CURRENT_USER', DataUser);
-        resolve('successfully');
+        if (currentUser !== null) {
+          const averageUSD = await this.getDolarTodayApi();
+          const AppConfig = await this.getConfig();
+          const DataUser = await this.getDataUser(this.currentUser.uid);
+          const fcmToken = await this.getFcmToken();
+          dispatch('USD_AVERAGE', averageUSD);
+          dispatch('CONFIG_PRODUCTS', AppConfig);
+          dispatch('CURRENT_USER', DataUser);
+          resolve('successfully');
+        } else {
+          reject('No hemos detectado un usuario.');
+        }
       } catch (e) {
         reject(e);
       }
@@ -92,6 +95,13 @@ class Api {
         handle(ordersTemp);
       });
   };
+  getDataUser = async uid => {
+    const snapshot = await firestore()
+      .collection('Users')
+      .doc(uid)
+      .get();
+    return snapshot.data();
+  };
   getUserOrders = async () => {
     const orders = await firestore()
       .collection('Orders')
@@ -133,17 +143,7 @@ class Api {
     });
     return {BankData, Products};
   }
-  getCurrentUser = () => {
-    this.currentUser = auth().currentUser;
-    return this.currentUser;
-  };
-  getDataUser = async uid => {
-    const snapshot = await firestore()
-      .collection('Users')
-      .doc(uid)
-      .get();
-    return snapshot.data();
-  };
+
   async makeAnOrder(order) {
     var min = 0;
     var max = 99999;
