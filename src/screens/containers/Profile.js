@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ToastAndroid,
+  ActivityIndicator,
+} from 'react-native';
 import Logo from '../../../assets/svg/LogoH.svg';
 import LinearGradient from 'react-native-linear-gradient';
 import Stars from '../../../assets/svg/Stars.svg';
@@ -8,13 +15,15 @@ import Button from '../../ui/components/button';
 import {connect} from 'react-redux';
 import MenuIcon from '../../../assets/svg/MenuIcon.svg';
 import {ScrollView} from 'react-native-gesture-handler';
+
+import Room from '../../../assets/svg/room.svg';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import api from '../../firebase/api';
-
 import {firestore} from 'react-native-firebase';
+import AccountCircle from '../../../assets/svg/account_circle.svg';
+import RKMaps from '../../google_maps/maps';
 /*import MapboxGL from '@react-native-mapbox-gl/maps';
 MapboxGL.setAccessToken(
   'pk.eyJ1IjoicmFmeWdvbnphbGV6MDg5IiwiYSI6ImNqejhlMDVjODFrZ2kzaW1qbDV1bnh2cHoifQ.T3vurNbpjgq_aRL7QjuvpQ',
@@ -35,8 +44,26 @@ const Divider = () => {
 class Profile extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      deletingAddress: false,
+    };
     this.handleDataUser = this.handleDataUser.bind(this);
+    this.deleteAddress = this.deleteAddress.bind(this);
+    this.Maps = new RKMaps();
+  }
+  deleteAddress(address) {
+    this.setState({deletingAddress: true});
+    this.Maps.deleteSavedPosition(address)
+      .then(() => {
+        this.setState({deletingAddress: false});
+      })
+      .catch(e => {
+        this.setState({deletingAddress: false});
+        ToastAndroid.show(
+          `Ha ocurrido un error, intente más tarde.`,
+          ToastAndroid.SHORT,
+        );
+      });
   }
   handleDataUser() {
     const {currentUser, dispatch} = this.props;
@@ -55,6 +82,7 @@ class Profile extends Component {
   }
   render() {
     const {currentUser} = this.props;
+    console.log(currentUser.addresses);
     return (
       <LinearGradient colors={['#242441', '#55537B']} style={styles.background}>
         <View style={styles.Menu}>
@@ -82,15 +110,14 @@ class Profile extends Component {
             }}>
             <View style={styles.box_profile}>
               <View style={styles.top}>
-                <Text style={styles.profile_title}>Perfil</Text>
-                <View>
-                  <Button
-                    title="Editar"
-                    button_style="primary"
-                    size="medium"
-                    onPress={() => {}}
-                  />
-                </View>
+                <AccountCircle width={wp('7.42%')} height={hp('4.21%')} />
+                <Text style={styles.fontInfo}>Perfil</Text>
+                <Button
+                  title="Editar"
+                  button_style="positive"
+                  size="medium"
+                  onPress={() => {}}
+                />
               </View>
               <Divider />
 
@@ -112,23 +139,53 @@ class Profile extends Component {
             </View>
             <View style={styles.box_addresses}>
               <View style={styles.top}>
-                <Text style={styles.fontInfo}>Direcciones </Text>
-                <View>
-                  <Button
-                    title="+"
-                    button_style="primary"
-                    size="small"
-                    onPress={() => {
-                      this.props.navigation.navigate('Location');
-                    }}
-                  />
-                </View>
+                <Room width={wp('7.42%')} height={hp('4.21%')} />
+                <Text style={styles.fontInfo}>Mis direcciones</Text>
+
+                <Button
+                  title="+"
+                  button_style="positive"
+                  size="small"
+                  onPress={() => {
+                    this.props.navigation.navigate('Location');
+                  }}
+                />
               </View>
+
               <Divider />
-              {currentUser.addresses !== undefined &&
-                currentUser.addresses.map(address => {
-                  return <Text>{address.formatted_address}</Text>;
-                })}
+
+              <View style={styles.addresses_container}>
+                {currentUser.addresses.length !== 0 ? (
+                  currentUser.addresses.map((address, index) => {
+                    return (
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                        }}>
+                        <Text style={styles.formatted_address_text}>
+                          {address.formatted_address}
+                        </Text>
+                        {this.state.deletingAddress ? (
+                          <ActivityIndicator size="large" color="#FF700F" />
+                        ) : (
+                          <Button
+                            title="-"
+                            button_style="negative"
+                            size="small"
+                            onPress={() => {
+                              this.deleteAddress(address);
+                            }}
+                          />
+                        )}
+                      </View>
+                    );
+                  })
+                ) : (
+                  <Text>Aún no tienes ninguna dirección agregada</Text>
+                )}
+              </View>
             </View>
           </View>
         </ScrollView>
@@ -146,6 +203,16 @@ const box = {
   paddingVertical: '5%',
 };
 const styles = StyleSheet.create({
+  formatted_address_text: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: hp('2%'),
+    color: '#151619',
+    maxWidth: '80%',
+  },
+  addresses_container: {
+    paddingHorizontal: '5%',
+    width: '100%',
+  },
   profile_title: {
     fontFamily: 'Rockwell',
     fontSize: wp('6%'),
@@ -164,9 +231,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   top: {
-    marginHorizontal: '3%',
+    paddingHorizontal: '5%',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   fontTitle: {
     marginTop: '3%',

@@ -203,6 +203,7 @@ class Api {
             lastname,
             birthDate,
             uid: email_uid,
+            addresses: [],
           });
         usercred = await auth().currentUser.linkWithCredential(credential);
         db.collection('Users')

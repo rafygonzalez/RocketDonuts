@@ -2,6 +2,25 @@ import Geolocation from '@react-native-community/geolocation';
 import {firestore} from 'react-native-firebase';
 import Api from '../firebase/api';
 export default class Maps {
+  deleteSavedPosition(address) {
+    return new Promise((resolve, reject) => {
+      firestore()
+        .collection('Users')
+        .doc(Api.currentUser.uid)
+        .update({
+          addresses: firestore.FieldValue.arrayRemove({
+            LatLng: address.LatLng,
+            formatted_address: address.formatted_address,
+          }),
+        })
+        .then(() => {
+          resolve(true);
+        })
+        .catch(e => {
+          reject(e.message);
+        });
+    });
+  }
   animateCamera(coords, ref) {
     return new Promise(resolve => {
       ref.animateCamera(

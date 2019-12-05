@@ -1,11 +1,21 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text, ScrollView, ToastAndroid} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  ScrollView,
+  ToastAndroid,
+  ActivityIndicator,
+} from 'react-native';
 import RKMaps from '../../google_maps/maps';
 import geoCode from '../../google_maps/geoCode';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import Button from '../../ui/components/button';
-import {widthPercentageToDP} from 'react-native-responsive-screen';
-
+import Room from '../../../assets/svg/room.svg';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 export default class Location extends Component {
   constructor(props) {
     super(props);
@@ -13,7 +23,7 @@ export default class Location extends Component {
       loading: true,
       location: null,
       mapisReady: false,
-      formatted_address: 'Cargando',
+      formatted_address: '',
     };
     this._map = null;
     this.onMapReady = this.onMapReady.bind(this);
@@ -88,23 +98,35 @@ export default class Location extends Component {
             )}
           </MapView>
         </View>
-        <ScrollView
-          style={{flex: 1}}
-          contentContainerStyle={styles.container_details}>
-          <Text style={styles.title_details}>Tu Dirección:</Text>
-          <Text style={styles.address_detail}>
-            {this.state.formatted_address}
-          </Text>
+        {!loading ? (
+          <ScrollView
+            style={{flex: 1}}
+            contentContainerStyle={styles.container_details}>
+            <Text style={styles.title_details}>Tu Dirección:</Text>
+            <View style={{flexDirection: 'row'}}>
+              <Room width={wp('7.42%')} height={hp('4.21%')} />
+              <Text style={styles.address_detail}>
+                {this.state.formatted_address}
+              </Text>
+            </View>
+
+            <View
+              opacity={!loading ? 1 : 0.5}
+              style={styles.button_details_container}>
+              <Button
+                title={'Guardar Mi Ubicación'}
+                button_style="primary"
+                onPress={() => this.saveCurrentPos()}
+              />
+            </View>
+          </ScrollView>
+        ) : (
           <View
-            opacity={!loading ? 1 : 0.5}
-            style={styles.button_details_container}>
-            <Button
-              title={!loading ? 'Guardar Ubicación' : 'Cargando...'}
-              button_style="primary"
-              onPress={!loading ? () => this.saveCurrentPos() : () => {}}
-            />
+            style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <Text style={styles.title_details}>Cargando...</Text>
+            <ActivityIndicator size="large" color="#FF700F" />
           </View>
-        </ScrollView>
+        )}
       </View>
     );
   }
@@ -116,15 +138,16 @@ const styles = StyleSheet.create({
   },
   title_details: {
     fontFamily: 'Poppins-Bold',
-    fontSize: widthPercentageToDP('4%'),
+    fontSize: wp('4%'),
     marginBottom: '3%',
     color: '#313045',
   },
   address_detail: {
     fontFamily: 'Poppins-Regular',
-    fontSize: widthPercentageToDP('4%'),
+    fontSize: wp('4%'),
     marginBottom: '3%',
     color: '#313045',
+    marginLeft: '3%',
   },
   button_details_container: {},
   page: {
