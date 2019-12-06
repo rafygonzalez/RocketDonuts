@@ -21,6 +21,17 @@ import {connect} from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
 import {storage} from 'react-native-firebase';
 
+const makeAddressesArray = addresses => {
+  let array = [];
+  addresses.forEach((address, index) => {
+    array.push({
+      label: address.formatted_address,
+      value: address.LatLng,
+    });
+  });
+  return array;
+};
+
 const MakeOrder = props => {
   const {
     optionHandler,
@@ -32,8 +43,8 @@ const MakeOrder = props => {
     imageSource,
     onBack,
   } = props; // functions
-
   const {
+    addresses,
     address,
     orderId,
     step,
@@ -50,8 +61,10 @@ const MakeOrder = props => {
     return (
       <SelectAnAddress
         pickerOnChangeValue={pickerOnChangeValue}
-        address={address}
+        addresses={makeAddressesArray(addresses)}
+        optionHandler={optionHandler}
         onBack={onBack}
+        address={address}
       />
     );
   } else if (step == 2 && option == 'factory') {
@@ -133,6 +146,8 @@ class CompleteOrder extends Component {
     order.payment_method = this.state.payment_method;
     order.cashAmount = this.state.amount;
     order.usdAverage = this.props.global.usdAverage;
+    order.serviceType = this.state.option;
+    order.selectedAddress = this.state.address;
     order.state = 'Por Confirmar';
     order.uid = API.currentUser.uid;
     order.date = new Date();
@@ -290,7 +305,6 @@ class CompleteOrder extends Component {
     }
   }
   render() {
-    const {step, option, payment_method} = this.state;
     return (
       <LinearGradient colors={['#242441', '#55537B']} style={styles.background}>
         <View style={styles.container}>
@@ -302,12 +316,13 @@ class CompleteOrder extends Component {
               step={this.state.step}
               option={this.state.option}
               payment_method={this.state.payment_method}
-              address={this.state.address}
+              addresses={this.props.global.currentUser.addresses}
               orderId={this.state.orderId}
               amount={this.state.amount}
               imageSource={this.state.imageSource.uri}
               uploadProgress={this.state.uploadProgress}
               uploading={this.state.uploading}
+              address={this.state.address}
               //functions
               optionHandler={this.optionHandler}
               pickerOnChangeValue={this.pickerOnChangeValue}

@@ -10,16 +10,23 @@ import Picker from '../../../ui/components/picker';
 const Buttons = props => {
   return (
     <View style={{width: '100%'}}>
-      <Button title="Continuar" button_style="primary" onPress={() => {}} />
+      <Button
+        title="Continuar"
+        button_style="primary"
+        onPress={() => props.onPress()}
+      />
     </View>
   );
 };
+
 const SelectAnAddress = props => {
+  const {addresses} = props;
+  console.log(props.address);
   return (
     <Body
       title="Selecciona tu dirección"
       onBack={props.onBack}
-      buttons_component={<Buttons />}>
+      buttons_component={<Buttons onPress={props.optionHandler} />}>
       <Text style={styles.title}>¿Donde deseas que aterricemos?</Text>
       <Text style={styles.description}>
         Selecciona la dirección de tu preferencia para que nuestro astronauta
@@ -29,17 +36,20 @@ const SelectAnAddress = props => {
         <Picker
           title={'Mis Direcciones'}
           selectedValue={props.address}
-          onValueChange={(itemValue, itemIndex) =>
-            props.pickerOnChangeValue(itemValue, 'address')
-          }
-          Picker_Items={[
-            {label: 'Anzoategui, Lecheria, Club de vela', value: '0'},
-          ]}
+          onValueChange={(itemValue, itemIndex) => {
+            console.log(itemIndex);
+            props.pickerOnChangeValue(itemValue, 'address');
+          }}
+          Picker_Items={addresses}
         />
       </View>
     </Body>
   );
 };
+
+/*      {label: address.formatted_address, 
+              value: address.LatLng
+              }*/
 const styles = StyleSheet.create({
   description: {
     fontFamily: 'Rockwell',
