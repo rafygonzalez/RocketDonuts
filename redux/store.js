@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 const orderPersistConfig = {
   key: 'root',
   storage: AsyncStorage,
+  blacklist: ['CompleteOrder'],
 };
 const signPersistConfig = {
   key: 'sign',

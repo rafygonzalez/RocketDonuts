@@ -5,6 +5,11 @@ export const CONFIG_PRODUCTS = 'CONFIG_PRODUCTS';
 export const SET_ORDER_TOTAL_PRICE = 'SET_ORDER_TOTAL_PRICE';
 export const SET_ORDER_TOTAL_PRICE_DOLAR = 'SET_ORDER_TOTAL_PRICE_DOLAR';
 
+export const SELECT_OPTION_SCREEN = 'COMPLETE_ORDER/SELECT_OPTION_SCREEN';
+
+import SelectAnOption from '../../src/screens/components/Complete_Order/SelectAnOption';
+import SelectPaymentOption from '../../src/screens/components/Complete_Order/SelectPayment';
+
 const initialState = {
   config: {},
   order: [],
@@ -12,6 +17,30 @@ const initialState = {
   totalPrice: 0,
   totalPriceUSD: 0,
   CustomDonut: '',
+  CompleteOrder: {
+    currentScreen: 'SelectAnOption',
+    Screens: {
+      SelectAnOption: {
+        component: SelectAnOption,
+        options: ['Delivery', 'PickUp'],
+        selectedOption: '',
+      },
+      SelectPaymentOption: {
+        component: SelectPaymentOption,
+        options: [
+          'Transferencia',
+          'Pago Movil',
+          'Efectivo Bs.S',
+          'Efectivo Dolares',
+        ],
+        selectedOption: '',
+      },
+      ShowBankData: {},
+      AttachScreenShot: {},
+      ShowSreenshot: {},
+      Finish: {},
+    },
+  },
 };
 
 export default (state = initialState, action) => {
@@ -61,6 +90,21 @@ export default (state = initialState, action) => {
       return {
         ...state,
         config: action.payload,
+      };
+    }
+    case SELECT_OPTION_SCREEN: {
+      return {
+        ...state,
+        CompleteOrder: {
+          ...state.CompleteOrder,
+          Screens: {
+            ...state.CompleteOrder.Screens,
+            [action.payload.Screen]: {
+              ...state.CompleteOrder.Screens[action.payload.Screen],
+              selectedOption: action.payload.Selected,
+            },
+          },
+        },
       };
     }
     default:

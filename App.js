@@ -28,7 +28,7 @@ import OrderScreen from './src/screens/containers/Order';
 import CustomDonut from './src/screens/containers/CustomDonut';
 import CustomBagel from './src/screens/containers/CustomBagel';
 import ShoppingCart from './src/screens/containers/Shopping_Cart';
-import CompleteOrder from './src/screens/containers/Complete_Order';
+import CompleteOrder from './src/screens/containers/Complete_Order/Complete_Order';
 
 import ProfileScreen from './src/screens/containers/Profile';
 import Location from './src/screens/containers/Location';
