@@ -7,6 +7,8 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {connect} from 'react-redux';
+import {getScreen} from '../../../../redux/modules/orderReducer';
+import {bindActionCreators} from 'redux';
 const Buttons = props => {
   console.log(props);
   return (
@@ -15,26 +17,14 @@ const Buttons = props => {
         title="Servicio Delivery"
         button_style="primary"
         onPress={() => {
-          props.dispatch({
-            type: 'COMPLETE_ORDER/SELECT_OPTION_SCREEN',
-            payload: {
-              Screen: props.CompleteOrder.currentScreen,
-              Selected: 'Delivery',
-            },
-          });
+          props.actions.getScreen('next', 'Delivery');
         }}
       />
       <Button
         title="Buscar a la Fábrica"
         button_style="simple"
         onPress={() => {
-          props.dispatch({
-            type: 'COMPLETE_ORDER/SELECT_OPTION_SCREEN',
-            payload: {
-              Screen: props.CompleteOrder.currentScreen,
-              Selected: 'PickUp',
-            },
-          });
+          props.actions.getScreen('next', 'PickUp');
         }}
         extra_style={{marginTop: '3%'}}
       />
@@ -63,5 +53,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = reducers => {
   return reducers.order;
 };
-
-export default connect(mapStateToProps)(SelectAnOption);
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators({getScreen}, dispatch),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(SelectAnOption);

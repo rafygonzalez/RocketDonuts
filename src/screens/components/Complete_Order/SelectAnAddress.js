@@ -39,7 +39,6 @@ const SelectAnAddress = props => {
   const [addressValue, setAddressValue] = useState(addresses[0].value);
 
   const pickerOnChangeValue = value => {
-    console.log(value);
     setAddressValue(value);
   };
   const selectAddress = () => {

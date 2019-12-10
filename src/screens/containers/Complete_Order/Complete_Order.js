@@ -42,29 +42,29 @@ class CompleteOrder extends Component {
   }
 }
 const styles = StyleSheet.create({
-  ActivityIndicator: {
-    marginTop: 32,
-  },
-  Logo_Container: {
-    flex: 1,
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  background: {
-    backgroundColor: '#313045',
-    height: '100%',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  container: {
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 16,
-  },
-});
+    ActivityIndicator: {
+      marginTop: 32,
+    },
+    Logo_Container: {
+      flex: 1,
+      position: 'absolute',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    background: {
+      backgroundColor: '#313045',
+      height: '100%',
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    container: {
+      position: 'absolute',
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: 16,
+    },
+  });
 const mapStateToProps = reducers => {
   return {order: reducers.order, global: reducers.globalReducer};
 };

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, ActivityIndicator} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import Stars from '../../../assets/svg/Stars.svg';
 import Logo from '../../../assets/svg/Logo_With_Planets.svg';
 import LinearGradient from 'react-native-linear-gradient';
@@ -31,90 +31,7 @@ const makeAddressesArray = addresses => {
   });
   return array;
 };
-const ScreensController = () => {
-  const screens = [
-    'SelectAnOption',
-    'SelectPaymentOption',
-    'ShowBankData',
-    'AttachScreenShot',
-    'Finish',
-  ];
-  const options = {
-    SelectAnOption: {
-      options: ['Delivery', 'PickUp'],
-      selectedOption: '',
-    },
-    SelectPaymentOption: {
-      options: [
-        'Transferencia',
-        'Pago Movil',
-        'Efectivo Bs.S',
-        'Efectivo Dolares',
-      ],
-      selectedOption: '',
-    },
-    ShowBankData: {},
-    AttachScreenShot: {},
-    ShowSreenshot: {},
-    Finish: {},
-  };
 
-  const Screens = Object.keys(options);
-  // Solucion a las pantallas
-  if (currentScreen == Screens[0]) {
-    // Check Selection
-    if (
-      options[Screens[0]].selectedOption == 'Delivery' ||
-      options[Screens[0]].selectedOption == 'PickUp'
-    ) {
-      // Return Screen
-      return 'SelectPaymentOption';
-    }
-  } else if (currentScreen == Screens[1]) {
-    // Check Selection
-    if (
-      options[Screens[1]].selectedOption == 'Transferencia' ||
-      options[Screens[1]].selectedOption == 'Pago Movil'
-    ) {
-      // Return Screen
-      return 'ShowBankData';
-    } else if (
-      options[Screens[1]].selectedOption == 'Efectivo Bs.S' ||
-      options[Screens[1]].selectedOption == 'Efectivo Dolares'
-    ) {
-      // Return Screen
-      return 'Finish';
-    } else if (goBackisTrue) {
-      // Go Back
-      return 'goBack to SelectAnOption';
-    }
-  } else if (currentScreen == Screens[2]) {
-    // Check Selection
-    if (accept) {
-      // Return Screen
-      return 'AttachScreenShot';
-    } else if (goBackisTrue) {
-      // Go Back
-      return 'goBack to SelectPaymentOption';
-    }
-  } else if (currentScreen == Screens[3]) {
-    // Check Selection
-    if (attached) {
-      return 'ShowScreenShot';
-    } else if (goBackIsTrue) {
-      // Go Back
-      return 'goBack to Show Bank Data';
-    }
-  } else if (currentScreen == Screens[4]) {
-    // Check Selection
-    if (accept) {
-      return 'Finish';
-    } else if (goBackisTrue) {
-      // Go Back
-      return 'goBack to AttachScreenShot';
-    }
-  }
-};
 const MakeOrder = props => {
   const {
     optionHandler,

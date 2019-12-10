@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import Body from './Body';
 import Button from '../../../ui/components/button';
@@ -11,19 +11,20 @@ import Picker from '../../../ui/components/picker';
 import {connect} from 'react-redux';
 
 const Buttons = props => {
+  const Button_Text_State = payment_method => {
+    if (payment_method == 'bs' || payment_method == 'dolar') {
+      return 'Realizar Pedido';
+    } else {
+      return 'Continuar';
+    }
+  };
   return (
     <View style={{width: '100%'}}>
       <Button
-        title={
-          props.payment_method == 'bs'
-            ? 'Realizar Pedido'
-            : props.payment_method == 'dolar'
-            ? 'Realizar Pedido'
-            : 'Continuar'
-        }
+        title={Button_Text_State(props.payment_method)}
         button_style="primary"
         onPress={() => {
-          props.optionHandler();
+          props.selectPaymentMethod();
         }}
       />
     </View>
@@ -32,20 +33,12 @@ const Buttons = props => {
 const Layout = props => {
   return props.children;
 };
-getCurrentDate = () => {
-  const today = new Date();
-  return {
-    Fecha: `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`,
-    Hora: `${today.getHours()}:${today.getMinutes()}`,
-  };
-};
-
 const Input = props => {
   if (props.payment_method == 'bs' || props.payment_method == 'dolar') {
     return (
       <TextInput
         title="Por favor, ingresa el monto para poder entregarte cambio."
-        onChangeText={text => props.Global_OnChange(text, 'amount')}
+        onChangeText={amount => props.setAmount(amount)}
         value={props.amount}
       />
     );
@@ -55,6 +48,22 @@ const Input = props => {
 };
 const SelectPayment = props => {
   const {orderQuantity} = props;
+  const [payment_method, setPaymentMethod] = useState('');
+  const [amount, setAmount] = useState('');
+
+  const pickerOnChangeValue = value => {
+    setPaymentMethod(value);
+  };
+  const selectPaymentMethod = () => {
+    props.dispatch({
+      type: 'COMPLETE_ORDER/SELECT_OPTION_SCREEN',
+      payload: {
+        Screen: props.CompleteOrder.currentScreen,
+        Selected: payment_method,
+      },
+    });
+  };
+
   return (
     <Layout>
       <Body title="Detalles de tu pedido" onBack={false}>
@@ -103,27 +112,29 @@ const SelectPayment = props => {
         onBack={props.onBack}
         buttons_component={
           <Buttons
-            payment_method={props.payment_method}
+            selectPaymentMethod={selectPaymentMethod}
+            payment_method={payment_method}
             optionHandler={props.optionHandler}
           />
         }>
         <ScrollView style={styles.scroll_view}>
           <Picker
             title={'Metodo de pago'}
-            selectedValue={props.payment_method}
+            selectedValue={payment_method}
             onValueChange={(itemValue, itemIndex) =>
-              props.pickerOnChangeValue(itemValue, 'payment_method')
+              pickerOnChangeValue(itemValue)
             }
             Picker_Items={[
               {label: 'Transferencia', value: 'transferencia'},
               {label: 'Pago Móvil', value: 'pago_movil'},
-              {label: 'Efectivo Bs.S', value: 'bs'},
-              {label: 'Efectivo Dólares', value: 'dolar'},
+              {label: 'Efectivo Bs.S', value: 'efecbs'},
+              {label: 'Efectivo Dólares', value: 'efecdolar'},
             ]}
           />
           <Input
-            payment_method={props.payment_method}
-            Global_OnChange={props.Global_OnChange}
+            payment_method={payment_method}
+            amount={amount}
+            setAmount={setAmount}
           />
         </ScrollView>
       </Body>

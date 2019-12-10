@@ -7,6 +7,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {connect} from 'react-redux';
+
 const Buttons = props => {
   return (
     <View style={{width: '100%'}}>
