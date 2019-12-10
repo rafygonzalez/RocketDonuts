@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import Body from './Body';
 import Button from '../../../ui/components/button';
@@ -7,26 +7,56 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Picker from '../../../ui/components/picker';
+import {connect} from 'react-redux';
+
 const Buttons = props => {
   return (
     <View style={{width: '100%'}}>
       <Button
         title="Continuar"
         button_style="primary"
-        onPress={() => props.onPress()}
+        onPress={() => {
+          props.selectAddress();
+        }}
       />
     </View>
   );
 };
 
+const makeAddressesArray = addresses => {
+  let array = [];
+  addresses.forEach((address, index) => {
+    array.push({
+      label: address.formatted_address,
+      value: address.LatLng,
+    });
+  });
+  return array;
+};
+
 const SelectAnAddress = props => {
-  const {addresses} = props;
-  console.log(props.address);
+  const addresses = makeAddressesArray(props.Global.currentUser.addresses);
+  const [addressValue, setAddressValue] = useState(addresses[0].value);
+
+  const pickerOnChangeValue = value => {
+    console.log(value);
+    setAddressValue(value);
+  };
+  const selectAddress = () => {
+    const filterVal = ({value}) => value == addressValue;
+    props.dispatch({
+      type: 'COMPLETE_ORDER/SELECT_OPTION_SCREEN',
+      payload: {
+        Screen: props.Order.CompleteOrder.currentScreen,
+        Selected: addresses.filter(filterVal)[0],
+      },
+    });
+  };
   return (
     <Body
       title="Selecciona tu dirección"
       onBack={props.onBack}
-      buttons_component={<Buttons onPress={props.optionHandler} />}>
+      buttons_component={<Buttons selectAddress={selectAddress} {...props} />}>
       <Text style={styles.title}>¿Donde deseas que aterricemos?</Text>
       <Text style={styles.description}>
         Selecciona la dirección de tu preferencia para que nuestro astronauta
@@ -35,10 +65,9 @@ const SelectAnAddress = props => {
       <View style={{width: '100%', marginVertical: '5%'}}>
         <Picker
           title={'Mis Direcciones'}
-          selectedValue={props.address}
+          selectedValue={addressValue}
           onValueChange={(itemValue, itemIndex) => {
-            console.log(itemIndex);
-            props.pickerOnChangeValue(itemValue, 'address');
+            pickerOnChangeValue(itemValue);
           }}
           Picker_Items={addresses}
         />
@@ -50,6 +79,7 @@ const SelectAnAddress = props => {
 /*      {label: address.formatted_address, 
               value: address.LatLng
               }*/
+
 const styles = StyleSheet.create({
   description: {
     fontFamily: 'Rockwell',
@@ -65,4 +95,8 @@ const styles = StyleSheet.create({
     marginVertical: hp('3%'),
   },
 });
-export default SelectAnAddress;
+
+const mapStateToProps = reducers => {
+  return {Order: reducers.order, Global: reducers.globalReducer};
+};
+export default connect(mapStateToProps)(SelectAnAddress);

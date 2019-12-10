@@ -6,9 +6,10 @@ export const SET_ORDER_TOTAL_PRICE = 'SET_ORDER_TOTAL_PRICE';
 export const SET_ORDER_TOTAL_PRICE_DOLAR = 'SET_ORDER_TOTAL_PRICE_DOLAR';
 
 export const SELECT_OPTION_SCREEN = 'COMPLETE_ORDER/SELECT_OPTION_SCREEN';
-
+export const SET_CURRENT_SCREEN = 'COMPLETE_ORDER/SET_CURRENT_SCREEN';
 import SelectAnOption from '../../src/screens/components/Complete_Order/SelectAnOption';
 import SelectPaymentOption from '../../src/screens/components/Complete_Order/SelectPayment';
+import SelectAnAddress from '../../src/screens/components/Complete_Order/SelectAnAddress';
 
 const initialState = {
   config: {},
@@ -24,6 +25,10 @@ const initialState = {
         component: SelectAnOption,
         options: ['Delivery', 'PickUp'],
         selectedOption: '',
+      },
+      SelectAnAddress: {
+        component: SelectAnAddress,
+        selectedAddress: '',
       },
       SelectPaymentOption: {
         component: SelectPaymentOption,
@@ -90,6 +95,15 @@ export default (state = initialState, action) => {
       return {
         ...state,
         config: action.payload,
+      };
+    }
+    case SET_CURRENT_SCREEN: {
+      return {
+        ...state,
+        CompleteOrder: {
+          ...state.CompleteOrder,
+          currentScreen: action.payload,
+        },
       };
     }
     case SELECT_OPTION_SCREEN: {

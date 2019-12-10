@@ -8,6 +8,7 @@ import {
 } from 'react-native-responsive-screen';
 import {connect} from 'react-redux';
 const Buttons = props => {
+  console.log(props);
   return (
     <View style={{width: '100%'}}>
       <Button
