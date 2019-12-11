@@ -138,7 +138,13 @@ class CompleteOrder extends Component {
     this.decrementSteps = this.decrementSteps.bind(this);
   }
   makeOrderObject() {
+    var min = 0;
+    var max = 99999;
+    var orderid = Math.floor(Math.random() * (max - min)) + min;
     let order = {};
+    const {path, filename} = this.props.CompleteOrder.Screens[
+      'AttachScreenShot'
+    ].selectedOption.imageSource;
     order.order = this.props.order.order;
     order.totalPrice = this.props.order.totalPrice;
     order.totalPriceUSD = this.props.order.totalPriceUSD;
@@ -151,6 +157,11 @@ class CompleteOrder extends Component {
     order.state = 'Por Confirmar';
     order.uid = API.currentUser.uid;
     order.date = new Date();
+    order.codeNumber = orderid;
+    order.imageSource = {
+      path,
+      filename,
+    };
     return order;
   }
   decrementSteps() {

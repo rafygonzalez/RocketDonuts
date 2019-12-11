@@ -1,4 +1,4 @@
-import {auth, firestore, messaging} from 'react-native-firebase';
+import {auth, firestore, messaging, storage} from 'react-native-firebase';
 import {GoogleSignin} from '@react-native-community/google-signin';
 export const signOut = () => auth().signOut();
 
@@ -143,25 +143,69 @@ class Api {
     });
     return {BankData, Products};
   }
+  uploadCaptureToStorage(imageSource, orderId) {
+    return new Promise((resolve, reject) => {
+      const fileName = imageSource.fileName;
+      const folder = this.currentUser.uid;
+      var storageRef = storage().ref();
+      var imagesRef = storageRef.child(folder + '/orders/' + orderId);
+      var fileRef = imagesRef.child(fileName);
+      var uploadTask = fileRef.putFile(imageSource.path);
+
+      uploadTask.on(
+        'state_changed',
+        function(snapshot) {
+          var progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+
+          switch (snapshot.state) {
+            case storage.TaskState.PAUSED: // or 'paused'
+              ////console.log('Upload is paused');
+              break;
+            case storage.TaskState.RUNNING: // or 'running'
+              ////console.log('Upload is running');
+              break;
+          }
+        },
+        function(error) {
+          // A full list of error codes is available at
+          // https://firebase.google.com/docs/storage/web/handle-errors
+
+          switch (error.code) {
+            case 'storage/unauthorized':
+              // User doesn't have permission to access the object
+              break;
+
+            case 'storage/canceled':
+              break;
+            case 'storage/unknown':
+              break;
+          }
+          reject(error.code);
+        },
+        function(snapshot) {
+          const {downloadURL} = snapshot;
+          //  this.updateOrder(order, {downloadURL});
+          resolve(true);
+          // Upload completed successfully, now we can get the download URL
+        },
+      );
+    });
+  }
 
   async makeAnOrder(order) {
-    var min = 0;
-    var max = 99999;
-    var orderid = Math.floor(Math.random() * (max - min)) + min;
-    order.codeNumber = orderid;
     try {
+      await this.uploadCaptureToStorage(order.imageSource, order.codeNumber);
       await firestore()
         .collection('Users')
         .doc(this.currentUser.uid)
-        .update({orders: firestore.FieldValue.arrayUnion(orderid)});
-
+        .update({orders: firestore.FieldValue.arrayUnion(order.codeNumber)});
       await firestore()
         .collection('Orders')
-        .doc(`${orderid}`)
+        .doc(`${order.codeNumber}`)
         .set(order);
     } catch (error) {
-      //console.log(error);
-      // manejar errores
+      console.log(error);
     }
     return orderid;
   }

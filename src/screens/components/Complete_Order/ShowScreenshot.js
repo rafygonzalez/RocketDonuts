@@ -6,13 +6,16 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {connect} from 'react-redux';
+import {getScreen, makeAnOrder} from '../../../../redux/modules/orderReducer';
+import {bindActionCreators} from 'redux';
 const Buttons = props => {
   return (
     <View style={{width: '100%'}}>
       <Button
         title="Aceptar"
         button_style="primary"
-        onPress={() => props.optionHandler()}
+        onPress={() => props.actions.makeAnOrder()}
       />
     </View>
   );
@@ -23,10 +26,17 @@ const ShowScreenshot = props => {
     <Body
       title="Captura de pantalla"
       onBack={props.onBack}
-      buttons_component={<Buttons optionHandler={props.optionHandler} />}>
+      buttons_component={<Buttons {...props} />}>
       <Text style={styles.title}>Vista previa</Text>
       <View style={styles.uploadAvatar_container}>
-        <Image source={{uri: props.avatarSource}} style={styles.uploadAvatar} />
+        <Image
+          source={{
+            uri:
+              props.CompleteOrder.Screens['AttachScreenShot'].selectedOption
+                .imageSource.uri,
+          }}
+          style={styles.uploadAvatar}
+        />
       </View>
 
       {props.uploading && (
@@ -69,4 +79,10 @@ const styles = StyleSheet.create({
     marginVertical: hp('1%'),
   },
 });
-export default ShowScreenshot;
+const mapStateToProps = reducers => {
+  return reducers.order;
+};
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators({getScreen, makeAnOrder}, dispatch),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(ShowScreenshot);

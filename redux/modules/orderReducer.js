@@ -15,6 +15,7 @@ import ShowBankData from '../../src/screens/components/Complete_Order/ShowBankDa
 import AttachScreenshot from '../../src/screens/components/Complete_Order/AttachScreenshot';
 import ShowScreenshot from '../../src/screens/components/Complete_Order/ShowScreenshot';
 import Finish from '../../src/screens/components/Complete_Order/Finish';
+import api from '../../src/firebase/api';
 
 const initialState = {
   config: {},
@@ -133,7 +134,47 @@ export default (state = initialState, action) => {
       return state;
   }
 };
+function makeOrderObject(order, globalReducer) {
+  var min = 0;
+  var max = 99999;
+  var orderid = Math.floor(Math.random() * (max - min)) + min;
+  let objOrder = {};
 
+  const {path, fileName} = order.CompleteOrder.Screens[
+    'AttachScreenShot'
+  ].selectedOption.imageSource;
+
+  objOrder.order = order.order;
+  objOrder.totalPrice = order.totalPrice;
+  objOrder.totalPriceUSD = order.totalPriceUSD;
+  objOrder.quantity = order.orderQuantity;
+  objOrder.usdAverage = globalReducer.usdAverage;
+
+  objOrder.payment_method =
+    order.CompleteOrder.Screens['SelectPaymentOption'].selectedOption;
+  // objOrder.cashAmount = this.state.amount;
+  objOrder.serviceType =
+    order.CompleteOrder.Screens['SelectAnOption'].selectedOption;
+  objOrder.selectedAddress =
+    order.CompleteOrder.Screens['SelectAnAddress'].selectedOption;
+
+  objOrder.state = 'Por Confirmar';
+  objOrder.uid = globalReducer.currentUser.uid;
+  objOrder.codeNumber = orderid;
+  objOrder.imageSource = {
+    path,
+    fileName,
+  };
+  return objOrder;
+}
+
+export function makeAnOrder() {
+  return (dispatch, getState) => {
+    let {order, globalReducer} = getState();
+    let objOrder = makeOrderObject(order, globalReducer);
+    api.makeAnOrder(objOrder);
+  };
+}
 export function getScreen(direction, optionSelected) {
   return async (dispatch, getState) => {
     try {
