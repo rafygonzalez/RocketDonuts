@@ -7,6 +7,7 @@ export const SET_ORDER_TOTAL_PRICE_DOLAR = 'SET_ORDER_TOTAL_PRICE_DOLAR';
 
 export const SELECT_OPTION_SCREEN = 'COMPLETE_ORDER/SELECT_OPTION_SCREEN';
 export const SET_CURRENT_SCREEN = 'COMPLETE_ORDER/SET_CURRENT_SCREEN';
+export const SET_ORDER_STATUS = 'COMPLETE_ORDER/SET_ORDER_STATUS';
 
 import SelectAnOption from '../../src/screens/components/Complete_Order/SelectAnOption';
 import SelectPaymentOption from '../../src/screens/components/Complete_Order/SelectPayment';
@@ -15,7 +16,6 @@ import ShowBankData from '../../src/screens/components/Complete_Order/ShowBankDa
 import AttachScreenshot from '../../src/screens/components/Complete_Order/AttachScreenshot';
 import ShowScreenshot from '../../src/screens/components/Complete_Order/ShowScreenshot';
 import Finish from '../../src/screens/components/Complete_Order/Finish';
-import api from '../../src/firebase/api';
 
 const initialState = {
   config: {},
@@ -130,152 +130,16 @@ export default (state = initialState, action) => {
         },
       };
     }
+    case SET_ORDER_STATUS: {
+      return {
+        ...state,
+        CompleteOrder: {
+          ...state.CompleteOrder,
+          orderStatus: action.payload.orderStatus,
+        },
+      };
+    }
     default:
       return state;
   }
 };
-function makeOrderObject(order, globalReducer) {
-  var min = 0;
-  var max = 99999;
-  var orderid = Math.floor(Math.random() * (max - min)) + min;
-  let objOrder = {};
-
-  const {path, fileName} = order.CompleteOrder.Screens[
-    'AttachScreenShot'
-  ].selectedOption.imageSource;
-
-  objOrder.order = order.order;
-  objOrder.totalPrice = order.totalPrice;
-  objOrder.totalPriceUSD = order.totalPriceUSD;
-  objOrder.quantity = order.orderQuantity;
-  objOrder.usdAverage = globalReducer.usdAverage;
-
-  objOrder.payment_method =
-    order.CompleteOrder.Screens['SelectPaymentOption'].selectedOption;
-  // objOrder.cashAmount = this.state.amount;
-  objOrder.serviceType =
-    order.CompleteOrder.Screens['SelectAnOption'].selectedOption;
-  objOrder.selectedAddress =
-    order.CompleteOrder.Screens['SelectAnAddress'].selectedOption;
-
-  objOrder.state = 'Por Confirmar';
-  objOrder.uid = globalReducer.currentUser.uid;
-  objOrder.codeNumber = orderid;
-  objOrder.imageSource = {
-    path,
-    fileName,
-  };
-  return objOrder;
-}
-
-export function makeAnOrder() {
-  return (dispatch, getState) => {
-    let {order, globalReducer} = getState();
-    let objOrder = makeOrderObject(order, globalReducer);
-    api.makeAnOrder(objOrder);
-  };
-}
-export function getScreen(direction, optionSelected) {
-  return async (dispatch, getState) => {
-    try {
-      let states = getState();
-      const {currentScreen} = states.order.CompleteOrder;
-
-      await dispatch(setOpcionSelected(currentScreen, optionSelected));
-
-      states = getState();
-      const {CompleteOrder} = states.order;
-
-      const NextScreen = handleScreen(direction, CompleteOrder);
-      await dispatch(setCurrentScreen(NextScreen));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-}
-
-function setCurrentScreen(screen) {
-  return {
-    type: SET_CURRENT_SCREEN,
-    payload: screen,
-  };
-}
-function setOpcionSelected(currentScreen, option) {
-  return {
-    type: SELECT_OPTION_SCREEN,
-    payload: {
-      Screen: currentScreen,
-      Selected: option,
-    },
-  };
-}
-
-function handleScreen(go, CompleteOrder) {
-  const {currentScreen} = CompleteOrder;
-  const objScreens = Object.keys(CompleteOrder.Screens);
-  const isSelected = (screen, option) => {
-    return (
-      CompleteOrder.Screens[screen].selectedOption ==
-      CompleteOrder.Screens[screen].options[option]
-    );
-  };
-  switch (currentScreen) {
-    case objScreens[0]:
-      if (go == 'next') {
-        if (isSelected(objScreens[0], 0)) {
-          return objScreens[1];
-        } else if (isSelected(objScreens[0], 1)) {
-          return objScreens[2];
-        }
-      } else if (go == 'back') {
-      }
-      break;
-    case objScreens[1]:
-      if (go == 'next') {
-        return objScreens[2];
-      } else if (go == 'back') {
-        return objScreens[0];
-      }
-      break;
-    case objScreens[2]:
-      if (go == 'next') {
-        if (isSelected(objScreens[2], 0) || isSelected(objScreens[2], 1)) {
-          return objScreens[3];
-        } else if (
-          isSelected(objScreens[2], 2) ||
-          isSelected(objScreens[2], 3)
-        ) {
-          return objScreens[6];
-        }
-      } else if (go == 'back') {
-        if (isSelected(objScreens[0], 0)) {
-          return objScreens[1];
-        }
-        return objScreens[0];
-      }
-      break;
-    case objScreens[3]:
-      if (go == 'next') {
-        return objScreens[4];
-      } else if (go == 'back') {
-        return objScreens[2];
-      }
-      break;
-    case objScreens[4]:
-      if (go == 'next') {
-        return objScreens[5];
-      } else if (go == 'back') {
-        return objScreens[3];
-      }
-      break;
-    case objScreens[5]:
-      if (go == 'next') {
-        return objScreens[6];
-      } else if (go == 'back') {
-        return objScreens[4];
-      }
-      break;
-    default:
-      return objScreens[0];
-  }
-}

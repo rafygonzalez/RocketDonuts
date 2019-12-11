@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {View} from 'react-native';
-import {getScreen} from '../../../../redux/modules/orderReducer';
+import {getScreen} from '../../../../redux/actions/orderActions';
 import {bindActionCreators} from 'redux';
 
 const Container = props => {

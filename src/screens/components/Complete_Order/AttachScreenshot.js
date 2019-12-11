@@ -8,7 +8,7 @@ import {
 } from 'react-native-responsive-screen';
 import ImagePicker from 'react-native-image-picker';
 import {connect} from 'react-redux';
-import {getScreen} from '../../../../redux/modules/orderReducer';
+import {getScreen} from '../../../../redux/actions/orderActions';
 import {bindActionCreators} from 'redux';
 const errorHandlerUploadCapture = (resolve, reject, response) => {
   if (response.didCancel) {

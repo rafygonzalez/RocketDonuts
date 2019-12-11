@@ -7,7 +7,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {connect} from 'react-redux';
-import {getScreen, makeAnOrder} from '../../../../redux/modules/orderReducer';
+import {getScreen, makeAnOrder} from '../../../../redux/actions/orderActions';
 import {bindActionCreators} from 'redux';
 const Buttons = props => {
   return (
@@ -15,7 +15,11 @@ const Buttons = props => {
       <Button
         title="Aceptar"
         button_style="primary"
-        onPress={() => props.actions.makeAnOrder()}
+        onPress={async () => {
+          await props.actions.makeAnOrder();
+
+          props.actions.getScreen('next', true);
+        }}
       />
     </View>
   );

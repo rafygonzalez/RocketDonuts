@@ -186,7 +186,7 @@ class Api {
         function(snapshot) {
           const {downloadURL} = snapshot;
           //  this.updateOrder(order, {downloadURL});
-          resolve(true);
+          resolve(downloadURL);
           // Upload completed successfully, now we can get the download URL
         },
       );
@@ -195,20 +195,27 @@ class Api {
 
   async makeAnOrder(order) {
     try {
-      await this.uploadCaptureToStorage(order.imageSource, order.codeNumber);
+      const downloadUrl = await this.uploadCaptureToStorage(
+        order.imageSource,
+        order.codeNumber,
+      );
+      order.imageSource.downloadUrl = downloadUrl;
+
       await firestore()
         .collection('Users')
         .doc(this.currentUser.uid)
         .update({orders: firestore.FieldValue.arrayUnion(order.codeNumber)});
+
       await firestore()
         .collection('Orders')
         .doc(`${order.codeNumber}`)
         .set(order);
+      return order.codeNumber;
     } catch (error) {
-      console.log(error);
+      return error;
     }
-    return orderid;
   }
+
   async updateOrder(order, object) {
     await firestore()
       .collection('Orders')

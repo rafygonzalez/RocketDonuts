@@ -7,7 +7,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {connect} from 'react-redux';
-import {getScreen} from '../../../../redux/modules/orderReducer';
+import {getScreen} from '../../../../redux/actions/orderActions';
 import {bindActionCreators} from 'redux';
 const Buttons = props => {
   return (

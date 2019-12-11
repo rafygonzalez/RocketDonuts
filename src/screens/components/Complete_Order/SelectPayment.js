@@ -9,7 +9,7 @@ import {
 } from 'react-native-responsive-screen';
 import Picker from '../../../ui/components/picker';
 import {connect} from 'react-redux';
-import {getScreen} from '../../../../redux/modules/orderReducer';
+import {getScreen} from '../../../../redux/actions/orderActions';
 import {bindActionCreators} from 'redux';
 const Buttons = props => {
   const Button_Text_State = payment_method => {

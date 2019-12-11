@@ -2,8 +2,9 @@ import React from 'react';
 import {SafeAreaView, View, Text, StyleSheet} from 'react-native';
 import Button from '../../../ui/components/button';
 import Body from './Body';
-import API from '../../../firebase/api';
+import {connect} from 'react-redux';
 const Finish = props => {
+  console.log(props);
   return (
     <Body>
       <Text style={styles.title_congratulations}>
@@ -13,11 +14,13 @@ const Finish = props => {
         En breves momentos procesaremos la orden, podrás ver su estado a través
         de las notificaciones o podrás visualizarlo en la sección "Mis Pedidos"
       </Text>
-      <Text style={styles.title_code}>Código:#{props.orderId}</Text>
+      <Text style={styles.title_code}>
+        Código:#{props.CompleteOrder.orderStatus.value}
+      </Text>
       <Button
         title="Continuar"
         button_style="primary"
-        onPress={() => props.FinishOrder()}
+        onPress={() => {}}
         extra_style={{marginTop: 32}}
       />
     </Body>
@@ -52,4 +55,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
 });
-export default Finish;
+
+const mapStateToProps = reducers => {
+  return reducers.order;
+};
+export default connect(mapStateToProps)(Finish);
