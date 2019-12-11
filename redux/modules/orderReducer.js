@@ -152,6 +152,7 @@ export function getScreen(direction, optionSelected) {
     }
   };
 }
+
 function setCurrentScreen(screen) {
   return {
     type: SET_CURRENT_SCREEN,
@@ -167,6 +168,7 @@ function setOpcionSelected(currentScreen, option) {
     },
   };
 }
+
 function handleScreen(go, CompleteOrder) {
   const {currentScreen} = CompleteOrder;
   const objScreens = Object.keys(CompleteOrder.Screens);
@@ -205,6 +207,9 @@ function handleScreen(go, CompleteOrder) {
           return objScreens[6];
         }
       } else if (go == 'back') {
+        if (isSelected(objScreens[0], 0)) {
+          return objScreens[1];
+        }
         return objScreens[0];
       }
       break;

@@ -9,7 +9,8 @@ import {
 } from 'react-native-responsive-screen';
 import Picker from '../../../ui/components/picker';
 import {connect} from 'react-redux';
-
+import {getScreen} from '../../../../redux/modules/orderReducer';
+import {bindActionCreators} from 'redux';
 const Buttons = props => {
   const Button_Text_State = payment_method => {
     if (payment_method == 'bs' || payment_method == 'dolar') {
@@ -46,22 +47,23 @@ const Input = props => {
     return null;
   }
 };
+const paymentsMethods = [
+  {label: 'Transferencia', value: 'transferencia'},
+  {label: 'Pago Móvil', value: 'pago_movil'},
+  {label: 'Efectivo Bs.S', value: 'efecbs'},
+  {label: 'Efectivo Dólares', value: 'efecdolar'},
+];
 const SelectPayment = props => {
   const {orderQuantity} = props;
-  const [payment_method, setPaymentMethod] = useState('');
+
+  const [payment_method, setPaymentMethod] = useState(paymentsMethods[0].value);
   const [amount, setAmount] = useState('');
 
   const pickerOnChangeValue = value => {
     setPaymentMethod(value);
   };
   const selectPaymentMethod = () => {
-    props.dispatch({
-      type: 'COMPLETE_ORDER/SELECT_OPTION_SCREEN',
-      payload: {
-        Screen: props.CompleteOrder.currentScreen,
-        Selected: payment_method,
-      },
-    });
+    props.actions.getScreen('next', payment_method);
   };
 
   return (
@@ -124,12 +126,7 @@ const SelectPayment = props => {
             onValueChange={(itemValue, itemIndex) =>
               pickerOnChangeValue(itemValue)
             }
-            Picker_Items={[
-              {label: 'Transferencia', value: 'transferencia'},
-              {label: 'Pago Móvil', value: 'pago_movil'},
-              {label: 'Efectivo Bs.S', value: 'efecbs'},
-              {label: 'Efectivo Dólares', value: 'efecdolar'},
-            ]}
+            Picker_Items={paymentsMethods}
           />
           <Input
             payment_method={payment_method}
@@ -190,4 +187,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = reducers => {
   return reducers.order;
 };
-export default connect(mapStateToProps)(SelectPayment);
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators({getScreen}, dispatch),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(SelectPayment);

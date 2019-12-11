@@ -10,7 +10,6 @@ import {connect} from 'react-redux';
 import {getScreen} from '../../../../redux/modules/orderReducer';
 import {bindActionCreators} from 'redux';
 const Buttons = props => {
-  console.log(props);
   return (
     <View style={{width: '100%'}}>
       <Button

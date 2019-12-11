@@ -7,7 +7,8 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {connect} from 'react-redux';
-
+import {getScreen} from '../../../../redux/modules/orderReducer';
+import {bindActionCreators} from 'redux';
 const Buttons = props => {
   return (
     <View style={{width: '100%'}}>
@@ -15,7 +16,7 @@ const Buttons = props => {
         title="Continuar"
         button_style="primary"
         onPress={() => {
-          props.optionHandler();
+          props.getScreen('next', true);
         }}
       />
     </View>
@@ -26,7 +27,7 @@ const ShowBankData = props => {
     <Body
       title="Datos Bancarios"
       onBack={props.onBack}
-      buttons_component={<Buttons optionHandler={props.optionHandler} />}>
+      buttons_component={<Buttons getScreen={props.actions.getScreen} />}>
       {props.datos == 'transferencia' ? (
         <View style={styles.container}>
           <Text style={styles.title}>Banco</Text>
@@ -84,4 +85,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = reducers => {
   return reducers.order;
 };
-export default connect(mapStateToProps)(ShowBankData);
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators({getScreen}, dispatch),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(ShowBankData);

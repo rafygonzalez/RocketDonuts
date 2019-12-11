@@ -8,7 +8,8 @@ import {
 } from 'react-native-responsive-screen';
 import Picker from '../../../ui/components/picker';
 import {connect} from 'react-redux';
-
+import {getScreen} from '../../../../redux/modules/orderReducer';
+import {bindActionCreators} from 'redux';
 const Buttons = props => {
   return (
     <View style={{width: '100%'}}>
@@ -43,13 +44,7 @@ const SelectAnAddress = props => {
   };
   const selectAddress = () => {
     const filterVal = ({value}) => value == addressValue;
-    props.dispatch({
-      type: 'COMPLETE_ORDER/SELECT_OPTION_SCREEN',
-      payload: {
-        Screen: props.Order.CompleteOrder.currentScreen,
-        Selected: addresses.filter(filterVal)[0],
-      },
-    });
+    props.actions.getScreen('next', addresses.filter(filterVal)[0]);
   };
   return (
     <Body
@@ -98,4 +93,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = reducers => {
   return {Order: reducers.order, Global: reducers.globalReducer};
 };
-export default connect(mapStateToProps)(SelectAnAddress);
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators({getScreen}, dispatch),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(SelectAnAddress);
