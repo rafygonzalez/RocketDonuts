@@ -92,14 +92,14 @@ export function getScreen(direction, optionSelected) {
   return async (dispatch, getState) => {
     try {
       let states = getState();
-      const {currentScreen} = states.order.CompleteOrder;
+      let {currentScreen} = states.order.CompleteOrder;
 
       await dispatch(setOpcionSelected(currentScreen, optionSelected));
 
       states = getState();
-      const {CompleteOrder} = states.order;
+      let {CompleteOrder} = states.order;
 
-      const NextScreen = handleScreen(direction, CompleteOrder);
+      let NextScreen = handleScreen(direction, CompleteOrder);
       await dispatch(setCurrentScreen(NextScreen));
     } catch (error) {
       console.error(error);
@@ -172,6 +172,7 @@ function setOpcionSelected(currentScreen, option) {
   };
 }
 function handleScreen(go, CompleteOrder) {
+  console.warn(go);
   const {currentScreen} = CompleteOrder;
   const objScreens = Object.keys(CompleteOrder.Screens);
   const isSelected = (screen, option) => {
