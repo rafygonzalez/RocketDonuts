@@ -7,9 +7,17 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {connect} from 'react-redux';
-import {getScreen, makeAnOrder} from '../../../../redux/actions/orderActions';
+import {
+  getScreen,
+  makeAnOrder,
+  onListenerUpload,
+  uploadCaptureToStorage,
+} from '../../../../redux/actions/orderActions';
 import {bindActionCreators} from 'redux';
 const Buttons = props => {
+  if (props.CompleteOrder.orderStatus.status == 'UPLOADING') {
+    return null;
+  }
   return (
     <View style={{width: '100%'}}>
       <Button
@@ -17,7 +25,6 @@ const Buttons = props => {
         button_style="primary"
         onPress={async () => {
           await props.actions.makeAnOrder();
-
           props.actions.getScreen('next', true);
         }}
       />
@@ -25,6 +32,7 @@ const Buttons = props => {
   );
 };
 const ShowScreenshot = props => {
+  console.log(props.CompleteOrder.orderStatus.status);
   ////console.log(props.avatarSource);
   return (
     <Body
@@ -43,18 +51,15 @@ const ShowScreenshot = props => {
         />
       </View>
 
-      {props.uploading && (
+      {props.CompleteOrder.orderStatus.status == 'UPLOADING' && (
         <View style={{width: '100%'}}>
           <Text style={styles.title}>
-            {props.uploadProgress == 100
-              ? 'Completado'
-              : `Subiendo ${props.uploadProgress.toFixed(2)} %`}
+            {`Subiendo ${props.CompleteOrder.orderStatus.value} %`}
           </Text>
-
           <ProgressBarAndroid
             styleAttr="Horizontal"
             indeterminate={false}
-            progress={props.uploadProgress / 100}
+            progress={props.CompleteOrder.orderStatus.value}
           />
         </View>
       )}

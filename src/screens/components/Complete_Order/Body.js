@@ -12,15 +12,22 @@ const Body = props => {
     <View style={styles.body_container}>
       {props.title !== undefined && (
         <Layout>
-          <TouchableOpacity
-            onPress={() => {
-              props.onBack();
-            }}>
+          {props.onBack !== false ? (
+            <TouchableOpacity
+              onPress={() => {
+                props.onBack();
+              }}>
+              <View style={styles.body_top}>
+                <BackArrow width={24} height={24} />
+                <Text style={styles.body_title}>{props.title}</Text>
+              </View>
+            </TouchableOpacity>
+          ) : (
             <View style={styles.body_top}>
-              {props.onBack !== false && <BackArrow width={24} height={24} />}
               <Text style={styles.body_title}>{props.title}</Text>
             </View>
-          </TouchableOpacity>
+          )}
+
           <Divider />
         </Layout>
       )}

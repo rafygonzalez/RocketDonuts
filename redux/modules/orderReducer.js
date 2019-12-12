@@ -8,6 +8,7 @@ export const SET_ORDER_TOTAL_PRICE_DOLAR = 'SET_ORDER_TOTAL_PRICE_DOLAR';
 export const SELECT_OPTION_SCREEN = 'COMPLETE_ORDER/SELECT_OPTION_SCREEN';
 export const SET_CURRENT_SCREEN = 'COMPLETE_ORDER/SET_CURRENT_SCREEN';
 export const SET_ORDER_STATUS = 'COMPLETE_ORDER/SET_ORDER_STATUS';
+export const COMPLETE_ORDER = 'COMPLETE_ORDER/COMPLETE_ORDER';
 
 import SelectAnOption from '../../src/screens/components/Complete_Order/SelectAnOption';
 import SelectPaymentOption from '../../src/screens/components/Complete_Order/SelectPayment';
@@ -54,6 +55,7 @@ const initialState = {
         component: Finish,
       },
     },
+    orderStatus: {status: 'INCOMPLETE', value: null},
   },
 };
 
@@ -137,6 +139,13 @@ export default (state = initialState, action) => {
           ...state.CompleteOrder,
           orderStatus: action.payload.orderStatus,
         },
+      };
+    }
+    case COMPLETE_ORDER: {
+      return {
+        ...state,
+        CompleteOrder: initialState.CompleteOrder,
+        order: initialState.order,
       };
     }
     default:

@@ -41,7 +41,7 @@ const HeaderBanner = props => {
         />
       ) : (
         <HeaderBannerSvg
-          width={wp('110.5%')}
+          width={wp('101%')}
           height={hpH}
           preserveAspectRatio="xMidYMid meet"
         />

@@ -34,7 +34,7 @@ const SelectAnOption = props => {
   return (
     <Body
       title="Selecciona una opción"
-      onBack={props.onBack}
+      onBack={false}
       buttons_component={<Buttons {...props} />}>
       <Text style={styles.title}>¿Quieres que te lo llevemos?</Text>
     </Body>

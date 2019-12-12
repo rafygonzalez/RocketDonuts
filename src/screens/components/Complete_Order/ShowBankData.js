@@ -28,7 +28,8 @@ const ShowBankData = props => {
       title="Datos Bancarios"
       onBack={props.onBack}
       buttons_component={<Buttons getScreen={props.actions.getScreen} />}>
-      {props.datos == 'transferencia' ? (
+      {props.CompleteOrder.Screens['SelectPaymentOption'].selectedOption ==
+      'transferencia' ? (
         <View style={styles.container}>
           <Text style={styles.title}>Banco</Text>
           <Text style={styles.description}>{props.config.BankData.Banco}</Text>

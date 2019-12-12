@@ -2,16 +2,87 @@ import {
   SET_ORDER_STATUS,
   SET_CURRENT_SCREEN,
   SELECT_OPTION_SCREEN,
+  COMPLETE_ORDER,
 } from '../modules/orderReducer';
-import api from '../../src/firebase/api';
 
+import {firestore, storage} from 'react-native-firebase';
+
+export function uploadCaptureToStorage(imageSource, orderId, uid, dispatch) {
+  return new Promise((resolve, reject) => {
+    const fileName = imageSource.fileName;
+    var storageRef = storage().ref();
+    var imagesRef = storageRef.child(uid + '/orders/' + orderId);
+    var fileRef = imagesRef.child(fileName);
+    var uploadTask = fileRef.putFile(imageSource.path);
+    uploadTask.on(
+      'state_changed',
+      function(snapshot) {
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(progress);
+        switch (snapshot.state) {
+          case storage.TaskState.PAUSED: // or 'paused'
+            console.log('Upload is paused');
+            break;
+          case storage.TaskState.RUNNING: // or 'running'
+            dispatch(setOrderStatus('UPLOADING', progress));
+            break;
+        }
+      },
+      function(error) {
+        // A full list of error codes is available at
+        // https://firebase.google.com/docs/storage/web/handle-errors
+
+        switch (error.code) {
+          case 'storage/unauthorized':
+            // User doesn't have permission to access the object
+            break;
+
+          case 'storage/canceled':
+            console.log('Upload is canceled');
+            break;
+          case 'storage/unknown':
+            break;
+        }
+        console.log(error.code);
+      },
+      function(snapshot) {
+        const {downloadURL} = snapshot;
+
+        resolve(downloadURL);
+        // Upload completed successfully, now we can get the download URL
+      },
+    );
+  });
+}
+export const emptyStates = () => dispatch => {
+  dispatch({type: COMPLETE_ORDER});
+};
 export function makeAnOrder() {
   return async (dispatch, getState) => {
     try {
+      dispatch(setOrderStatus('UPLOADING', 0));
       let {order, globalReducer} = getState();
       let objOrder = makeOrderObject(order, globalReducer);
-      const orderId = await api.makeAnOrder(objOrder);
-      await dispatch(setOrderStatus('COMPLETED', orderId));
+
+      const downloadUrl = await uploadCaptureToStorage(
+        objOrder.imageSource,
+        objOrder.codeNumber,
+        objOrder.uid,
+        dispatch,
+      );
+      objOrder.imageSource.downloadUrl = downloadUrl;
+
+      await firestore()
+        .collection('Users')
+        .doc(objOrder.uid)
+        .update({orders: firestore.FieldValue.arrayUnion(objOrder.codeNumber)});
+
+      await firestore()
+        .collection('Orders')
+        .doc(`${objOrder.codeNumber}`)
+        .set(objOrder);
+
+      await dispatch(setOrderStatus('COMPLETED', objOrder.codeNumber));
     } catch (e) {
       await dispatch(setOrderStatus('ERROR', e));
     }
@@ -118,6 +189,7 @@ function handleScreen(go, CompleteOrder) {
           return objScreens[2];
         }
       } else if (go == 'back') {
+        return objScreens[0];
       }
       break;
     case objScreens[1]:

@@ -1,10 +1,16 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView, View, Text, StyleSheet} from 'react-native';
 import Button from '../../../ui/components/button';
 import Body from './Body';
 import {connect} from 'react-redux';
+import {emptyStates} from '../../../../redux/actions/orderActions';
+import {bindActionCreators} from 'redux';
 const Finish = props => {
-  console.log(props);
+  useEffect(() => {
+    return () => {
+      props.actions.emptyStates();
+    };
+  }, []);
   return (
     <Body>
       <Text style={styles.title_congratulations}>
@@ -20,7 +26,9 @@ const Finish = props => {
       <Button
         title="Continuar"
         button_style="primary"
-        onPress={() => {}}
+        onPress={() => {
+          props.navigation.navigate('Inicio');
+        }}
         extra_style={{marginTop: 32}}
       />
     </Body>
@@ -59,4 +67,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = reducers => {
   return reducers.order;
 };
-export default connect(mapStateToProps)(Finish);
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators({emptyStates}, dispatch),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Finish);

@@ -20,7 +20,7 @@ import Divider from '../Divider';
 
 export default Modal_Order = props => {
   const {totalPrice, totalPriceUSD, quantity} = props.order;
-
+  console.log(props.order.imageSource.downloadUrl);
   return (
     <Modal
       animationType="fade"
@@ -43,7 +43,7 @@ export default Modal_Order = props => {
                 onLoad={() => {
                   console.log('Loaded...');
                 }}
-                source={{uri: props.order.downloadURL}}
+                source={{uri: props.order.imageSource.downloadUrl}}
                 style={styles.uploadAvatar}
               />
             </View>
