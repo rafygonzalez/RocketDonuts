@@ -88,6 +88,7 @@ class Home extends Component {
             back_button={false}
             menu_button
           />
+
           <View style={[styles.stars_container]}>
             <Estrellas
               width={wp('100%')}

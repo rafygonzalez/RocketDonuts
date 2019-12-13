@@ -7,12 +7,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {connect} from 'react-redux';
-import {
-  getScreen,
-  makeAnOrder,
-  onListenerUpload,
-  uploadCaptureToStorage,
-} from '../../../../redux/actions/orderActions';
+import {getScreen, makeAnOrder} from '../../../../redux/actions/orderActions';
 import {bindActionCreators} from 'redux';
 const Buttons = props => {
   if (props.CompleteOrder.orderStatus.status == 'UPLOADING') {

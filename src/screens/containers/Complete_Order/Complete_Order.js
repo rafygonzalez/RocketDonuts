@@ -15,6 +15,7 @@ class CompleteOrder extends Component {
     super(props);
     this.backHandler = null;
   }
+
   componentDidMount() {
     this.backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
@@ -31,7 +32,7 @@ class CompleteOrder extends Component {
     if (currentScreen == 'Finish') {
       this.props.navigation.navigate('Inicio');
     } else if (currentScreen == 'SelectAnOption') {
-      this.props.navigation.goBack();
+      this.props.navigation.navigate('ShoppingCart');
     } else {
       this.props.actions.getScreen('back', false);
     }
@@ -40,6 +41,8 @@ class CompleteOrder extends Component {
   };
   render() {
     const {CompleteOrder} = this.props.order;
+    console.log(CompleteOrder.currentScreen);
+    console.log(CompleteOrder);
     const Screen = CompleteOrder.Screens[CompleteOrder.currentScreen].component;
     return (
       <LinearGradient colors={['#242441', '#55537B']} style={styles.background}>

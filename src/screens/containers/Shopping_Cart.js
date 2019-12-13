@@ -25,8 +25,6 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-
-import API from '../../firebase/api';
 const Divider = () => {
   return (
     <View
@@ -52,6 +50,7 @@ class ShoppingCart extends Component {
   static navigationOptions = {
     header: null,
   };
+
   DeleteOrder() {
     Alert.alert(
       `¿Deseas cancelar tu pedido?`,
@@ -121,9 +120,6 @@ class ShoppingCart extends Component {
     });
   }
 
-  makeAnOrder = () => {
-    API.makeAnOrder(this.props.order.order);
-  };
   render() {
     const {orderQuantity, totalPriceUSD} = this.props.order;
     return (
@@ -140,6 +136,7 @@ class ShoppingCart extends Component {
             preserveAspectRatio="xMidYMid meet"
           />
         </View>
+        {console.log('render Shoppingcart')}
         <View style={{alignItems: 'center', top: '1%'}}>
           <View style={styles.order_container}>
             <ScrollView

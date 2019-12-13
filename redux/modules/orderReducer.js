@@ -26,7 +26,6 @@ const initialState = {
   totalPriceUSD: 0,
   CustomDonut: '',
   CompleteOrder: {
-    currentScreen: 'SelectAnOption',
     Screens: {
       SelectAnOption: {
         component: SelectAnOption,
@@ -48,7 +47,7 @@ const initialState = {
       AttachScreenShot: {
         component: AttachScreenshot,
       },
-      ShowSreenshot: {
+      ShowScreenshot: {
         component: ShowScreenshot,
       },
       Finish: {
@@ -56,6 +55,16 @@ const initialState = {
       },
     },
     orderStatus: {status: 'INCOMPLETE', value: null},
+    keys: [
+      'SelectAnOption',
+      'SelectAnAddress',
+      'SelectPaymentOption',
+      'ShowBankData',
+      'AttachScreenShot',
+      'ShowScreenshot',
+      'Finish',
+    ],
+    currentScreen: 'SelectAnOption',
   },
 };
 

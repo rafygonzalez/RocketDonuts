@@ -149,15 +149,19 @@ const AuthStack = createStackNavigator(
     headerMode: 'none',
   },
 );
+const CustomProducts = createStackNavigator({
+  CustomDonut: {
+    screen: CustomDonut,
+  },
+  CustomBagel: {
+    screen: CustomBagel,
+  },
+});
+
 const NavigationApp = createStackNavigator(
   {
     App: MainDrawer,
-    CustomDonut: {
-      screen: CustomDonut,
-    },
-    CustomBagel: {
-      screen: CustomBagel,
-    },
+    CustomProducts: CustomProducts,
     ShoppingCart: ShoppingCart,
     CompleteOrder: {
       screen: CompleteOrder,

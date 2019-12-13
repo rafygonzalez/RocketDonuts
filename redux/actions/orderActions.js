@@ -89,18 +89,14 @@ export function makeAnOrder() {
   };
 }
 export function getScreen(direction, optionSelected) {
-  return async (dispatch, getState) => {
+  return (dispatch, getState) => {
     try {
       let states = getState();
-      let {currentScreen} = states.order.CompleteOrder;
-
-      await dispatch(setOpcionSelected(currentScreen, optionSelected));
-
-      states = getState();
       let {CompleteOrder} = states.order;
-
-      let NextScreen = handleScreen(direction, CompleteOrder);
-      await dispatch(setCurrentScreen(NextScreen));
+      let {currentScreen} = CompleteOrder;
+      let NextScreen = handleScreen(direction, CompleteOrder, optionSelected);
+      dispatch(setOpcionSelected(currentScreen, optionSelected));
+      dispatch(setCurrentScreen(NextScreen));
     } catch (error) {
       console.error(error);
     }
@@ -171,16 +167,21 @@ function setOpcionSelected(currentScreen, option) {
     },
   };
 }
-function handleScreen(go, CompleteOrder) {
-  console.warn(go);
-  const {currentScreen} = CompleteOrder;
-  const objScreens = Object.keys(CompleteOrder.Screens);
+function handleScreen(go, CompleteOrder, optionSelected) {
+  const {currentScreen, keys} = CompleteOrder;
+  const objScreens = keys;
+
   const isSelected = (screen, option) => {
-    return (
-      CompleteOrder.Screens[screen].selectedOption ==
-      CompleteOrder.Screens[screen].options[option]
-    );
+    if (go == 'back') {
+      return (
+        CompleteOrder.Screens[screen].selectedOption ==
+        CompleteOrder.Screens[screen].options[option]
+      );
+    } else {
+      return optionSelected == CompleteOrder.Screens[screen].options[option];
+    }
   };
+
   switch (currentScreen) {
     case objScreens[0]:
       if (go == 'next') {
