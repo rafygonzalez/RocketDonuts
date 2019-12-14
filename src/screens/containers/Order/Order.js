@@ -8,22 +8,22 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
-import HeaderBanner from '../../sections/components/Header_Banner';
-import Item_Box_Order from '../components/Item_Box_Order';
-import Item_Box_Small from '../components/Item_Box_Small';
-import Divider from '../../ui/components/divider';
-import Button from '../../ui/components/button';
+import Estrellas from '../../../../assets/svg/Estrellas_bw.svg';
+import HeaderBanner from '../../../sections/components/Header_Banner';
+import Item_Box_Order from '../../components/Order/Item_Box_Order';
+import Item_Box_Small from '../../components/Order/Item_Box_Small';
+import Divider from '../../../ui/components/divider';
+import Button from '../../../ui/components/button';
 
-import {getDonut} from '../components/Donuts_List';
-import {Dona, Rosquilla} from '../components/Products';
+import {getDonut} from '../../components/Custom_Products/Donuts_List';
+import {Dona, Rosquilla} from '../../components/Custom_Products/Products';
 //Redux
 import {connect} from 'react-redux';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {Product_Box} from '../components/Product_Box';
+import {Product_Box} from '../../components/Product_Box';
 class Order extends Component {
   constructor(props) {
     super(props);

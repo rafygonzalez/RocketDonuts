@@ -1,17 +1,17 @@
 import React, {Component} from 'react';
 import {View, SafeAreaView, StyleSheet, ScrollView} from 'react-native';
-import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
-import HeaderBanner from '../../sections/components/Header_Banner';
+import Estrellas from '../../../../assets/svg/Estrellas_bw.svg';
+import HeaderBanner from '../../../sections/components/Header_Banner';
 //Redux
 import {connect} from 'react-redux';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import Box from '../components/My_Orders/Box';
-import Modal_Order from '../components/My_Orders/Modal_Order';
-import api from '../../firebase/api';
-import Modal from '../../ui/components/Modal';
+import Box from '../../components/My_Orders/Box';
+import Modal_Order from '../../components/My_Orders/Modal_Order';
+import api from '../../../firebase/api';
+import Modal from '../../../ui/components/Modal';
 const Layout = props => {
   return props.children;
 };

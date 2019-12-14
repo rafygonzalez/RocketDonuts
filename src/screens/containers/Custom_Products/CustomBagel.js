@@ -10,13 +10,13 @@ import {
   Alert,
   BackHandler,
 } from 'react-native';
-import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
-import HeaderBanner from '../../sections/components/Header_Banner';
-import {Product_Box} from '../components/Product_Box';
-import Item_Box from '../components/Item_Box';
-import Button from '../../ui/components/button';
+import Estrellas from '../../../../assets/svg/Estrellas_bw.svg';
+import HeaderBanner from '../../../sections/components/Header_Banner';
+import {Product_Box} from '../../components/Product_Box';
+import Item_Box from '../../components/Custom_Products/Item_Box';
+import Button from '../../../ui/components/button';
 // Products
-import {RosquillaSola} from '../components/Products';
+import {RosquillaSola} from '../../components/Custom_Products/Products';
 
 // Covers
 import {
@@ -24,7 +24,7 @@ import {
   CArequipe,
   CChocolateB,
   CGlaseado,
-} from '../components/Donuts_Covers';
+} from '../../components/Custom_Products/Donuts_Covers';
 // Topings
 import {
   TChocolate,
@@ -32,7 +32,7 @@ import {
   TCoco,
   TColores,
   TMani,
-} from '../components/Donuts_Toppings';
+} from '../../components/Custom_Products/Donuts_Toppings';
 
 //Redux
 import {connect} from 'react-redux';

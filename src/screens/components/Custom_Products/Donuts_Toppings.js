@@ -1,9 +1,9 @@
 import React from 'react';
-import ToppingChocolate from '../../../assets/svg/T.Chocolate.svg';
-import ToppingChRosadas from '../../../assets/svg/T.ChRosadas.svg';
-import ToppingCoco from '../../../assets/svg/T.Coco.svg';
-import ToppingColores from '../../../assets/svg/T.Colores.svg';
-import ToppingMani from '../../../assets/svg/T.Mani.svg';
+import ToppingChocolate from '../../../../assets/svg/T.Chocolate.svg';
+import ToppingChRosadas from '../../../../assets/svg/T.ChRosadas.svg';
+import ToppingCoco from '../../../../assets/svg/T.Coco.svg';
+import ToppingColores from '../../../../assets/svg/T.Colores.svg';
+import ToppingMani from '../../../../assets/svg/T.Mani.svg';
 
 export const Chocolate = props => (
   <ToppingChocolate width={props.width} height={props.height} />

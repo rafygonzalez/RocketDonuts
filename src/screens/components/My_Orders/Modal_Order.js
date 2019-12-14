@@ -14,8 +14,8 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Layout from '../Layout';
-import OrderDetail from '../Order_Detail';
-import {getDonut, getDonutDescription} from '../Donuts_List';
+import OrderDetail from '../Order/Order_Detail';
+import {getDonut, getDonutDescription} from '../Custom_Products/Donuts_List';
 import Divider from '../Divider';
 
 export default Modal_Order = props => {

@@ -1,9 +1,9 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
-import Estrellas from '../../../assets/svg/Estrellas.svg';
-import Logo from '../../../assets/svg/LogoH.svg';
-import CustomButton from '../../ui/components/button';
+import Estrellas from '../../../../assets/svg/Estrellas.svg';
+import Logo from '../../../../assets/svg/LogoH.svg';
+import CustomButton from '../../../ui/components/button';
 import firebase from 'react-native-firebase';
 import {connect} from 'react-redux';
 import Loading from './Splash';

@@ -10,11 +10,11 @@ import {
   BackHandler,
   Alert,
 } from 'react-native';
-import Estrellas from '../../../assets/svg/Estrellas_bw.svg';
-import HeaderBanner from '../../sections/components/Header_Banner';
-import {Product_Box} from '../components/Product_Box';
-import Dona from '../../../assets/svg/Dona.svg';
-import Rosquilla from '../../../assets/svg/Rosquilla.svg';
+import Estrellas from '../../../../assets/svg/Estrellas_bw.svg';
+import HeaderBanner from '../../../sections/components/Header_Banner';
+import {Product_Box} from '../../components/Product_Box';
+import Dona from '../../../../assets/svg/Dona.svg';
+import Rosquilla from '../../../../assets/svg/Rosquilla.svg';
 //Redux
 import {connect} from 'react-redux';
 import {auth} from 'react-native-firebase';
@@ -22,9 +22,9 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import API from '../../firebase/api';
-import Modal_Loading from '../../ui/components/Modal';
-import NotificationsAndroid from '../../firebase/notifications';
+import API from '../../../firebase/api';
+import Modal_Loading from '../../../ui/components/Modal';
+import NotificationsAndroid from '../../../firebase/notifications';
 //import NetInfo from "@react-native-community/netinfo";
 class Home extends Component {
   constructor(props) {
@@ -111,7 +111,7 @@ class Home extends Component {
             <Product_Box
               imageBackground
               onPress={() => {}}
-              imgSrc={require('../../../assets/img/Promo-Espacial.png')}
+              imgSrc={require('../../../../assets/img/Promo-Espacial.png')}
               item_name={'Promo Espacial'}
             />
             <Modal_Loading modalVisible={this.state.loading} />

@@ -15,26 +15,26 @@ import {createStackNavigator} from 'react-navigation-stack';
 import {createDrawerNavigator, DrawerItems} from 'react-navigation-drawer';
 
 //Screns
-import WelcomeScreen from './src/screens/containers/Welcome';
-import LoginScreen from './src/screens/containers/Login';
+import WelcomeScreen from './src/screens/containers/InitApp/Welcome';
+import LoginScreen from './src/screens/containers/Auth/Login';
 
 import LoginWithPhone from './src/sections/containers/LoginWithPhone';
-import RegisterScreen from './src/screens/containers/Register';
+import RegisterScreen from './src/screens/containers/Auth/Register';
 import RegisterWithPhone from './src/sections/containers/RegisterWithPhone';
 import Register_EmailNotVerified from './src/sections/components/Register_EmailNotVerified';
 
-import HomeScreen from './src/screens/containers/Home';
-import OrderScreen from './src/screens/containers/Order';
-import CustomDonut from './src/screens/containers/CustomDonut';
-import CustomBagel from './src/screens/containers/CustomBagel';
-import ShoppingCart from './src/screens/containers/Shopping_Cart';
+import HomeScreen from './src/screens/containers/Home/Home';
+import OrderScreen from './src/screens/containers/Order/Order';
+import CustomDonut from './src/screens/containers/Custom_Products/CustomDonut';
+import CustomBagel from './src/screens/containers/Custom_Products/CustomBagel';
+import ShoppingCart from './src/screens/containers/Order/Shopping_Cart';
 import CompleteOrder from './src/screens/containers/Complete_Order/Complete_Order';
 
-import ProfileScreen from './src/screens/containers/Profile';
-import Location from './src/screens/containers/Location';
-import MyOrders from './src/screens/containers/My_Orders';
+import ProfileScreen from './src/screens/containers/Profile/Profile';
+import Location from './src/screens/containers/Profile/Location';
+import MyOrders from './src/screens/containers/Order/My_Orders';
 //
-import Loading from './src/screens/containers/Splash';
+import Loading from './src/screens/containers/InitApp/Splash';
 import firebase from 'react-native-firebase';
 
 import HomeIcon from './assets/svg/Home.svg';

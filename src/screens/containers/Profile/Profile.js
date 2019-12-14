@@ -7,23 +7,23 @@ import {
   ToastAndroid,
   ActivityIndicator,
 } from 'react-native';
-import Logo from '../../../assets/svg/LogoH.svg';
+import Logo from '../../../../assets/svg/LogoH.svg';
 import LinearGradient from 'react-native-linear-gradient';
-import Stars from '../../../assets/svg/Stars.svg';
-import ProfileImage from '../../../assets/svg/Profile_Image_men.svg';
-import Button from '../../ui/components/button';
+import Stars from '../../../../assets/svg/Stars.svg';
+import ProfileImage from '../../../../assets/svg/Profile_Image_men.svg';
+import Button from '../../../ui/components/button';
 import {connect} from 'react-redux';
-import MenuIcon from '../../../assets/svg/MenuIcon.svg';
+import MenuIcon from '../../../../assets/svg/MenuIcon.svg';
 import {ScrollView} from 'react-native-gesture-handler';
 
-import Room from '../../../assets/svg/room.svg';
+import Room from '../../../../assets/svg/room.svg';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {firestore} from 'react-native-firebase';
-import AccountCircle from '../../../assets/svg/account_circle.svg';
-import RKMaps from '../../google_maps/maps';
+import AccountCircle from '../../../../assets/svg/account_circle.svg';
+import RKMaps from '../../../google_maps/maps';
 /*import MapboxGL from '@react-native-mapbox-gl/maps';
 MapboxGL.setAccessToken(
   'pk.eyJ1IjoicmFmeWdvbnphbGV6MDg5IiwiYSI6ImNqejhlMDVjODFrZ2kzaW1qbDV1bnh2cHoifQ.T3vurNbpjgq_aRL7QjuvpQ',

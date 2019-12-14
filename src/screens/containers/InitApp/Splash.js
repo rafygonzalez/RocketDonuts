@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet, ActivityIndicator} from 'react-native';
-import Stars from '../../../assets/svg/Stars.svg';
-import Logo from '../../../assets/svg/LogoV.svg';
+import Stars from '../../../../assets/svg/Stars.svg';
+import Logo from '../../../../assets/svg/LogoV.svg';
 import LinearGradient from 'react-native-linear-gradient';
 const SplashScreen = props => {
   return (

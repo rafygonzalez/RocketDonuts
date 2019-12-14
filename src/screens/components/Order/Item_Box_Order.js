@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, Dimensions, Text} from 'react-native';
-import Button from '../../ui/components/button';
+import Button from '../../../ui/components/button';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,

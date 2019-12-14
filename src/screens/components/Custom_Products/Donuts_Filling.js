@@ -1,8 +1,8 @@
 import React from 'react';
-import RellenoChocolate from '../../../assets/svg/R.Chocolate.svg';
-import RellenoArequipe from '../../../assets/svg/R.Arequipe.svg';
-import RellenoChocolateB from '../../../assets/svg/R.ChocBlanco.svg';
-import RellenoCPastelera from '../../../assets/svg/R.CPastelera.svg';
+import RellenoChocolate from '../../../../assets/svg/R.Chocolate.svg';
+import RellenoArequipe from '../../../../assets/svg/R.Arequipe.svg';
+import RellenoChocolateB from '../../../../assets/svg/R.ChocBlanco.svg';
+import RellenoCPastelera from '../../../../assets/svg/R.CPastelera.svg';
 
 export const Chocolate = props => (
   <RellenoChocolate width={props.width} height={props.height} />

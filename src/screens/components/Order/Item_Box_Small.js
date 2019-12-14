@@ -10,7 +10,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-const Item_Box = props => {
+const Item_Box_Small = props => {
   const Item = props.item;
   return (
     <TouchableOpacity onPress={props.onPress} style={[styles.container]}>
@@ -44,4 +44,4 @@ const styles = StyleSheet.create({
   },
   text: {fontFamily: 'Rockwell', color: 'black', fontSize: wp('5%')},
 });
-export default Item_Box;
+export default Item_Box_Small;

@@ -7,11 +7,11 @@ import {
   ToastAndroid,
   ActivityIndicator,
 } from 'react-native';
-import RKMaps from '../../google_maps/maps';
-import geoCode from '../../google_maps/geoCode';
+import RKMaps from '../../../google_maps/maps';
+import geoCode from '../../../google_maps/geoCode';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
-import Button from '../../ui/components/button';
-import Room from '../../../assets/svg/room.svg';
+import Button from '../../../ui/components/button';
+import Room from '../../../../assets/svg/room.svg';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,

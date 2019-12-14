@@ -10,17 +10,17 @@ import {
   Alert,
   BackHandler,
 } from 'react-native';
-import Estrellas from '../../../assets/svg/Stars.svg';
-import HeaderBanner from '../../sections/components/Header_Banner';
-import OrderDetail from '../components/Order_Detail';
-import Button from '../../ui/components/button';
+import Estrellas from '../../../../assets/svg/Stars.svg';
+import HeaderBanner from '../../../sections/components/Header_Banner';
+import OrderDetail from '../../components/Order/Order_Detail';
+import Button from '../../../ui/components/button';
 
-import {getDonut, getDonutDescription} from '../components/Donuts_List';
-import {Dona, Rosquilla} from '../components/Products';
+import {getDonut, getDonutDescription} from '../../components/Custom_Products/Donuts_List';
+import {Dona, Rosquilla} from '../../components/Custom_Products/Products';
 //Redux
 import {connect} from 'react-redux';
 
-import Layout from '../components/Layout';
+import Layout from '../../components/Layout';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
