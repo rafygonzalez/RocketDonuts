@@ -162,6 +162,7 @@ class Profile extends Component {
                           flexDirection: 'row',
                           alignItems: 'center',
                           justifyContent: 'space-between',
+                          marginVertical:'5%'
                         }}>
                         <Text style={styles.formatted_address_text}>
                           {address.formatted_address}
