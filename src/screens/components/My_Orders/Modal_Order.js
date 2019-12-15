@@ -20,7 +20,6 @@ import Divider from '../Divider';
 
 export default Modal_Order = props => {
   const {totalPrice, totalPriceUSD, quantity} = props.order;
-  console.log(props.order.imageSource.downloadUrl);
   return (
     <Modal
       animationType="fade"

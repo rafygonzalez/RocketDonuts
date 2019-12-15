@@ -8,7 +8,10 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {connect} from 'react-redux';
-import {getScreen} from '../../../../redux/actions/orderActions';
+import {
+  getScreen,
+  setCurrentScreenAction,
+} from '../../../../redux/actions/orderActions';
 import {bindActionCreators} from 'redux';
 class CompleteOrder extends Component {
   constructor(props) {
@@ -32,6 +35,7 @@ class CompleteOrder extends Component {
     if (currentScreen == 'Finish') {
       this.props.navigation.navigate('Inicio');
     } else if (currentScreen == 'SelectAnOption') {
+      this.props.actions.setCurrentScreenAction(null);
       this.props.navigation.navigate('ShoppingCart');
     } else {
       this.props.actions.getScreen('back', false);
@@ -41,9 +45,10 @@ class CompleteOrder extends Component {
   };
   render() {
     const {CompleteOrder} = this.props.order;
-    console.log(CompleteOrder.currentScreen);
-    console.log(CompleteOrder);
-    const Screen = CompleteOrder.Screens[CompleteOrder.currentScreen].component;
+    const Screen =
+      CompleteOrder.currentScreen == null
+        ? CompleteOrder.Screens['SelectAnOption'].component
+        : CompleteOrder.Screens[CompleteOrder.currentScreen].component;
     return (
       <LinearGradient colors={['#242441', '#55537B']} style={styles.background}>
         <View style={styles.container}>
@@ -88,6 +93,6 @@ const mapStateToProps = reducers => {
   return {order: reducers.order, global: reducers.globalReducer};
 };
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({getScreen}, dispatch),
+  actions: bindActionCreators({getScreen, setCurrentScreenAction}, dispatch),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CompleteOrder);

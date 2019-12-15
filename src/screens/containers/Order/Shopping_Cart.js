@@ -25,6 +25,8 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {setCurrentScreen} from '../../../../redux/actions/orderActions';
+import Modal_Loading from '../../../ui/components/Modal'
 const Divider = () => {
   return (
     <View
@@ -41,7 +43,7 @@ const Divider = () => {
 class ShoppingCart extends Component {
   constructor(props) {
     super(props);
-    this.state = {total: 0};
+    this.state = {totalbs: 0,totalusd:0,loading:true};
     this.HeaderBanner_OnBack = this.HeaderBanner_OnBack.bind(this);
     this.DeleteOrder = this.DeleteOrder.bind(this);
     this.getCurrentDate = this.getCurrentDate.bind(this);
@@ -50,7 +52,15 @@ class ShoppingCart extends Component {
   static navigationOptions = {
     header: null,
   };
-
+  shouldComponentUpdate(prevProps,nextState){
+    if(prevProps.order.CompleteOrder.currentScreen == null){
+      return true
+    }
+    if(prevProps.order.totalPriceUSD == 0){
+      return true
+    }
+    return false
+  }
   DeleteOrder() {
     Alert.alert(
       `¿Deseas cancelar tu pedido?`,
@@ -109,8 +119,8 @@ class ShoppingCart extends Component {
 
     const averageUsd = this.props.global.usdAverage;
     const totalOrder = TotalUSD * averageUsd;
-    this.setState({total: totalOrder.toFixed(2)});
-    this.props.dispatch({
+  
+   this.props.dispatch({
       type: 'SET_ORDER_TOTAL_PRICE',
       payload: totalOrder.toFixed(2),
     });
@@ -118,10 +128,17 @@ class ShoppingCart extends Component {
       type: 'SET_ORDER_TOTAL_PRICE_DOLAR',
       payload: TotalUSD.toFixed(2),
     });
+    this.setState({totalbs: totalOrder.toFixed(2),
+      totalusd: TotalUSD.toFixed(2),
+      loading:false});
   }
 
   render() {
-    const {orderQuantity, totalPriceUSD} = this.props.order;
+    const {orderQuantity} = this.props.order;
+
+    if(this.state.loading){
+      return null
+    }
     return (
       <SafeAreaView style={styles.area_container}>
         <HeaderBanner
@@ -136,7 +153,6 @@ class ShoppingCart extends Component {
             preserveAspectRatio="xMidYMid meet"
           />
         </View>
-        {console.log('render Shoppingcart')}
         <View style={{alignItems: 'center', top: '1%'}}>
           <View style={styles.order_container}>
             <ScrollView
@@ -192,7 +208,7 @@ class ShoppingCart extends Component {
                 ]}>
                 <Text style={styles.detail_description_title}>Total Bs.S:</Text>
                 <Text style={styles.detail_description_value}>
-                  {this.state.total}
+                  {this.state.totalbs}
                 </Text>
               </View>
               <View style={[styles.detail_description_container]}>
@@ -200,7 +216,7 @@ class ShoppingCart extends Component {
                   Total Dólares:
                 </Text>
                 <Text style={styles.detail_description_value}>
-                  {totalPriceUSD}
+                {this.state.totalusd}
                 </Text>
               </View>
             </View>
@@ -217,6 +233,7 @@ class ShoppingCart extends Component {
                 title="Continuar"
                 button_style="primary"
                 onPress={() => {
+                  this.props.dispatch(setCurrentScreen('SelectAnOption'))
                   this.props.navigation.navigate('CompleteOrder');
                 }}
                 extra_style={{marginLeft: '3%'}}

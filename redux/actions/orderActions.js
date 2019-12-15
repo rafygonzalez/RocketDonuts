@@ -152,7 +152,12 @@ function setOrderStatus(status, value) {
     },
   };
 }
-function setCurrentScreen(screen) {
+export function setCurrentScreenAction(screen) {
+  return dispatch => {
+    dispatch({type: SET_CURRENT_SCREEN, payload: screen});
+  };
+}
+export function setCurrentScreen(screen) {
   return {
     type: SET_CURRENT_SCREEN,
     payload: screen,

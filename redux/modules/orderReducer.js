@@ -64,7 +64,7 @@ const initialState = {
       'ShowScreenshot',
       'Finish',
     ],
-    currentScreen: 'SelectAnOption',
+    currentScreen: null,
   },
 };
 
