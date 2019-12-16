@@ -104,12 +104,12 @@ class CustomBagel extends Component {
         console.error('Error customizing donut');
     }
   }
- FinishCustomization(type) {
+  FinishCustomization(type) {
     let id = Math.random()
       .toString(36)
       .substring(7);
 
-    await this.props.dispatch({
+    this.props.dispatch({
       type: 'CUSTOM_DONUT',
       payload: {
         type: type,
@@ -121,6 +121,7 @@ class CustomBagel extends Component {
         id: id,
       },
     });
+
     this.setState({
       selectedProduct: '',
       customizeStep: 1,

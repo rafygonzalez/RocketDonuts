@@ -62,7 +62,7 @@ class Order extends Component {
     const index = orderArray.findIndex(isDonut);
     if (orderArray[index].quantity > 1) {
       orderArray[index].quantity -= 1;
-      this.setState({order: orderArray});
+      //  this.setState({order: orderArray});
       this.props.dispatch({
         type: 'SET_ORDER',
         payload: {orderArray: orderArray},
@@ -89,7 +89,7 @@ class Order extends Component {
     const isDonut = ({id}) => id == idDonut;
     const index = orderArray.findIndex(isDonut);
     orderArray.splice(index, 1);
-    this.setState({order: orderArray});
+    // this.setState({order: orderArray});
     this.props.dispatch({
       type: 'SET_ORDER',
       payload: {orderArray: orderArray},
@@ -111,7 +111,7 @@ class Order extends Component {
         {
           text: 'OK',
           onPress: () => {
-            this.setState({order: []});
+            //  this.setState({order: []});
             this.props.dispatch({
               type: 'SET_ORDER',
               payload: {orderArray: []},
@@ -148,7 +148,8 @@ class Order extends Component {
     this.GoTo('ShoppingCart');
   }
   render() {
-    //console.log(this.props.Order.order);
+    console.log(this.props);
+    const {order} = this.props.Order;
     return (
       <SafeAreaView style={styles.area_container}>
         <HeaderBanner
@@ -164,10 +165,10 @@ class Order extends Component {
             preserveAspectRatio="xMidYMid meet"
           />
         </View>
-        {this.props.Order.order.length > 0 && (
+        {order.length > 0 && (
           <ScrollView style={{maxHeight: hp('30%')}} persistentScrollbar={true}>
             <View style={styles.products_container}>
-              {this.props.Order.order.map((Donut, index) => {
+              {order.map((Donut, index) => {
                 return (
                   <Item_Box_Order
                     item={getDonut(Donut.cover, Donut.topping, Donut.type)}
@@ -182,10 +183,10 @@ class Order extends Component {
             </View>
           </ScrollView>
         )}
-        {this.props.Order.order.length > 0 && <Divider />}
+        {order.length > 0 && <Divider />}
 
         <View style={styles.title_container_add_more}>
-          {this.props.Order.order.length > 0 ? (
+          {order.length > 0 ? (
             <View>
               <Text style={styles.title_add_more}>¿Deseas algo mas?</Text>
 
@@ -242,8 +243,8 @@ class Order extends Component {
           )}
         </View>
 
-        {this.props.Order.order.length > 0 && <Divider />}
-        {this.props.Order.order.length > 0 && (
+        {order.length > 0 && <Divider />}
+        {order.length > 0 && (
           <View
             style={{
               flex: 1,
