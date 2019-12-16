@@ -40,7 +40,7 @@ export default Modal_Order = props => {
             <View style={styles.uploadAvatar_container}>
               <Image
                 onLoad={() => {
-                  console.log('Loaded...');
+                  //   console.log('Loaded...');
                 }}
                 source={{uri: props.order.imageSource.downloadUrl}}
                 style={styles.uploadAvatar}

@@ -90,7 +90,7 @@ class LoginWithPhone extends React.Component {
         }
       } catch (error) {
         this.setState({loading: false});
-        console.warn(error.code);
+        //console.warn(error.code);
         switch (error.code) {
           case 'auth/user-not-found':
             Alert.alert(

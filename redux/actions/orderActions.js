@@ -18,10 +18,10 @@ export function uploadCaptureToStorage(imageSource, orderId, uid, dispatch) {
       'state_changed',
       function(snapshot) {
         var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log(progress);
+        //  console.log(progress);
         switch (snapshot.state) {
           case storage.TaskState.PAUSED: // or 'paused'
-            console.log('Upload is paused');
+            //   console.log('Upload is paused');
             break;
           case storage.TaskState.RUNNING: // or 'running'
             dispatch(setOrderStatus('UPLOADING', progress));
@@ -38,12 +38,12 @@ export function uploadCaptureToStorage(imageSource, orderId, uid, dispatch) {
             break;
 
           case 'storage/canceled':
-            console.log('Upload is canceled');
+            //  console.log('Upload is canceled');
             break;
           case 'storage/unknown':
             break;
         }
-        console.log(error.code);
+        // console.log(error.code);
       },
       function(snapshot) {
         const {downloadURL} = snapshot;

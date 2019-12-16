@@ -61,7 +61,7 @@ class Api {
           resolve(true);
         })
         .catch(error => {
-          console.error(`Error al insertar el token en la BD => ${error}`);
+          //  console.error(`Error al insertar el token en la BD => ${error}`);
           reject(error);
         });
     });
@@ -78,7 +78,7 @@ class Api {
           resolve(true);
         })
         .catch(error => {
-          console.error(`Error al insertar el token en la BD => ${error}`);
+          //    console.error(`Error al insertar el token en la BD => ${error}`);
           reject(error);
         });
     });

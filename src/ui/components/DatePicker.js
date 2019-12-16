@@ -23,7 +23,7 @@ const DatePicker = props => {
         props.setBirthDate(`${day}/${month + 1}/${year}`);
       }
     } catch ({code, message}) {
-      console.warn('Cannot open date picker', message);
+      //console.warn('Cannot open date picker', message);
     }
   };
   return (

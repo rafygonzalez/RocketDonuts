@@ -101,7 +101,7 @@ class CustomDonut extends Component {
         this.setState({toppingDonut: name});
         break;
       default:
-        console.error('Error customizing donut');
+      //  console.error('Error customizing donut');
     }
   }
   FinishCustomization(type) {

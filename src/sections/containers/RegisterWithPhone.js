@@ -272,7 +272,7 @@ class RegisterWithPhone extends React.Component {
             break;
         }
 
-        console.warn(error);
+        //  console.warn(error);
       });
   }
 

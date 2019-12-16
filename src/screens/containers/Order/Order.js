@@ -184,7 +184,7 @@ class Order extends Component {
     this.GoTo('ShoppingCart');
   }
   render() {
-    console.log('Render Order...');
+    // console.log('Render Order...');
     const {order} = this.props.Order;
     return (
       <SafeAreaView style={styles.area_container}>

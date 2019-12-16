@@ -108,7 +108,7 @@ class ShoppingCart extends Component {
 
   render() {
     const {orderQuantity, totalPrice, totalPriceUSD} = this.props.order;
-    console.log('Render Shopping Cart:', this.props);
+    //   console.log('Render Shopping Cart:', this.props);
 
     return (
       <SafeAreaView style={styles.area_container}>

@@ -56,7 +56,7 @@ class Home extends Component {
             this.messageListener = this.NotificationInstance.onMessageListener();
           })
           .catch(e => {
-            console.warn('Error cargando la app:' + e);
+            // console.warn('Error cargando la app:' + e);
             this.setState({loading: false, error: true});
           });
       }
