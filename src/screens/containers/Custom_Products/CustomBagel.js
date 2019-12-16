@@ -104,7 +104,7 @@ class CustomBagel extends Component {
         console.error('Error customizing donut');
     }
   }
-  async FinishCustomization(type) {
+ FinishCustomization(type) {
     let id = Math.random()
       .toString(36)
       .substring(7);
