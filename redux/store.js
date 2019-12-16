@@ -8,7 +8,7 @@ import thunk from 'redux-thunk';
 const orderPersistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  blacklist: ['CompleteOrder'],
+  blacklist: ['CompleteOrder', 'config'],
 };
 const signPersistConfig = {
   key: 'sign',

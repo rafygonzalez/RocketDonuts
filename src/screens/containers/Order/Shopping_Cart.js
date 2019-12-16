@@ -15,8 +15,11 @@ import HeaderBanner from '../../../sections/components/Header_Banner';
 import OrderDetail from '../../components/Order/Order_Detail';
 import Button from '../../../ui/components/button';
 
-import {getDonut, getDonutDescription} from '../../components/Custom_Products/Donuts_List';
-import {Dona, Rosquilla} from '../../components/Custom_Products/Products';
+import {
+  getDonut,
+  getDonutDescription,
+} from '../../components/Custom_Products/Donuts_List';
+
 //Redux
 import {connect} from 'react-redux';
 
@@ -26,7 +29,11 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {setCurrentScreen} from '../../../../redux/actions/orderActions';
-import Modal_Loading from '../../../ui/components/Modal'
+
+import {withNavigationFocus} from 'react-navigation';
+
+const isEqual = require('lodash/isEqual');
+
 const Divider = () => {
   return (
     <View
@@ -43,23 +50,23 @@ const Divider = () => {
 class ShoppingCart extends Component {
   constructor(props) {
     super(props);
-    this.state = {totalbs: 0,totalusd:0,loading:true};
+    this.state = {totalbs: 0, totalusd: 0};
     this.HeaderBanner_OnBack = this.HeaderBanner_OnBack.bind(this);
     this.DeleteOrder = this.DeleteOrder.bind(this);
     this.getCurrentDate = this.getCurrentDate.bind(this);
-    this.getAmount = this.getAmount.bind(this);
   }
   static navigationOptions = {
     header: null,
   };
-  shouldComponentUpdate(prevProps,nextState){
-    if(prevProps.order.CompleteOrder.currentScreen == null){
-      return true
+  shouldComponentUpdate(prevProps, nextState) {
+    if (prevProps.isFocused) {
+      if (isEqual(prevProps.order, this.props.order)) {
+        return false;
+      }
+
+      return true;
     }
-    if(prevProps.order.totalPriceUSD == 0){
-      return true
-    }
-    return false
+    return false;
   }
   DeleteOrder() {
     Alert.alert(
@@ -79,7 +86,7 @@ class ShoppingCart extends Component {
               type: 'SET_ORDER',
               payload: {orderArray: []},
             });
-            this.GoTo('Inicio');
+            this.props.navigation.navigate('Inicio');
           },
         },
       ],
@@ -88,9 +95,6 @@ class ShoppingCart extends Component {
   }
   HeaderBanner_OnBack() {
     this.props.navigation.goBack();
-  }
-  componentDidMount() {
-    this.getAmount();
   }
 
   getCurrentDate() {
@@ -102,43 +106,10 @@ class ShoppingCart extends Component {
     };
   }
 
-  getAmount() {
-    const {config, orderQuantity} = this.props.order;
-    const DonutPrice = config.Products.Donuts.usdPrice;
-    const BagelPrice = config.Products.Bagel.usdPrice;
-    var totalDonutPrice = 0;
-    var totalBagelPrice = 0;
-    var TotalUSD = 0;
-    if (orderQuantity.totalDonut !== 0) {
-      totalDonutPrice = DonutPrice * orderQuantity.totalDonut;
-    }
-    if (orderQuantity.totalBagel !== 0) {
-      totalBagelPrice = BagelPrice * orderQuantity.totalBagel;
-    }
-    TotalUSD = totalDonutPrice + totalBagelPrice;
-
-    const averageUsd = this.props.global.usdAverage;
-    const totalOrder = TotalUSD * averageUsd;
-  
-   this.props.dispatch({
-      type: 'SET_ORDER_TOTAL_PRICE',
-      payload: totalOrder.toFixed(2),
-    });
-    this.props.dispatch({
-      type: 'SET_ORDER_TOTAL_PRICE_DOLAR',
-      payload: TotalUSD.toFixed(2),
-    });
-    this.setState({totalbs: totalOrder.toFixed(2),
-      totalusd: TotalUSD.toFixed(2),
-      loading:false});
-  }
-
   render() {
-    const {orderQuantity} = this.props.order;
+    const {orderQuantity, totalPrice, totalPriceUSD} = this.props.order;
+    console.log('Render Shopping Cart:', this.props);
 
-    if(this.state.loading){
-      return null
-    }
     return (
       <SafeAreaView style={styles.area_container}>
         <HeaderBanner
@@ -208,7 +179,7 @@ class ShoppingCart extends Component {
                 ]}>
                 <Text style={styles.detail_description_title}>Total Bs.S:</Text>
                 <Text style={styles.detail_description_value}>
-                  {this.state.totalbs}
+                  {totalPrice}
                 </Text>
               </View>
               <View style={[styles.detail_description_container]}>
@@ -216,7 +187,7 @@ class ShoppingCart extends Component {
                   Total Dólares:
                 </Text>
                 <Text style={styles.detail_description_value}>
-                {this.state.totalusd}
+                  {totalPriceUSD}
                 </Text>
               </View>
             </View>
@@ -233,7 +204,7 @@ class ShoppingCart extends Component {
                 title="Continuar"
                 button_style="primary"
                 onPress={() => {
-                  this.props.dispatch(setCurrentScreen('SelectAnOption'))
+                  this.props.dispatch(setCurrentScreen('SelectAnOption'));
                   this.props.navigation.navigate('CompleteOrder');
                 }}
                 extra_style={{marginLeft: '3%'}}
@@ -314,4 +285,4 @@ const styles = StyleSheet.create({
 const mapStateToProps = reducers => {
   return {order: reducers.order, global: reducers.globalReducer};
 };
-export default connect(mapStateToProps)(ShoppingCart);
+export default connect(mapStateToProps)(withNavigationFocus(ShoppingCart));

@@ -24,6 +24,12 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {Product_Box} from '../../components/Product_Box';
+import {withNavigationFocus} from 'react-navigation';
+import {
+  SET_ORDER_QUANTITY,
+  SET_ORDER_TOTAL_PRICE_DOLAR,
+  SET_ORDER_TOTAL_PRICE,
+} from '../../../../redux/modules/orderReducer';
 class Order extends Component {
   constructor(props) {
     super(props);
@@ -38,11 +44,17 @@ class Order extends Component {
     this.GoTo = this.GoTo.bind(this);
     this.GoToCart = this.GoToCart.bind(this);
     this.getQuantityOrder = this.getQuantityOrder.bind(this);
+    this.getAmount = this.getAmount.bind(this);
   }
   static navigationOptions = {
     header: null,
   };
-
+  shouldComponentUpdate(prevProps, nextState) {
+    if (prevProps.isFocused) {
+      return true;
+    }
+    return false;
+  }
   DonutIncrement(id) {
     const idDonut = id;
     let orderArray = this.props.Order.order;
@@ -139,16 +151,40 @@ class Order extends Component {
     });
     return {totalDonut, totalBagel};
   }
+  getAmount(orderQuantity) {
+    const {config} = this.props.Order;
+    const DonutPrice = config.Products.Donuts.usdPrice;
+    const BagelPrice = config.Products.Bagel.usdPrice;
+    var totalDonutPrice = 0;
+    var totalBagelPrice = 0;
+    var TotalUSD = 0;
+    if (orderQuantity.totalDonut !== 0) {
+      totalDonutPrice = DonutPrice * orderQuantity.totalDonut;
+    }
+    if (orderQuantity.totalBagel !== 0) {
+      totalBagelPrice = BagelPrice * orderQuantity.totalBagel;
+    }
+    TotalUSD = totalDonutPrice + totalBagelPrice;
+
+    const averageUsd = this.props.Global.usdAverage;
+    const totalOrder = TotalUSD * averageUsd;
+    this.props.dispatch({
+      type: SET_ORDER_TOTAL_PRICE,
+      payload: totalOrder.toFixed(2),
+    });
+    this.props.dispatch({
+      type: SET_ORDER_TOTAL_PRICE_DOLAR,
+      payload: TotalUSD.toFixed(2),
+    });
+    this.props.dispatch({type: SET_ORDER_QUANTITY, payload: orderQuantity});
+  }
   GoToCart() {
     const quantity = this.getQuantityOrder();
-    this.props.dispatch({
-      type: 'SET_ORDER_QUANTITY',
-      payload: quantity,
-    });
+    this.getAmount(quantity);
     this.GoTo('ShoppingCart');
   }
   render() {
-    console.log(this.props);
+    console.log('Render Order...');
     const {order} = this.props.Order;
     return (
       <SafeAreaView style={styles.area_container}>
@@ -315,6 +351,6 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = state => {
-  return {Order: state.order};
+  return {Order: state.order, Global: state.globalReducer};
 };
-export default connect(mapStateToProps)(Order);
+export default connect(mapStateToProps)(withNavigationFocus(Order));
