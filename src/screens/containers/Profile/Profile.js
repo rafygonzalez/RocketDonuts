@@ -50,6 +50,7 @@ class Profile extends Component {
     this.handleDataUser = this.handleDataUser.bind(this);
     this.deleteAddress = this.deleteAddress.bind(this);
     this.Maps = new RKMaps();
+    this.test = this.test.bind(this);
   }
   deleteAddress(address) {
     this.setState({deletingAddress: true});
@@ -80,8 +81,18 @@ class Profile extends Component {
   componentWillUnmount() {
     this.handleDataUser();
   }
+  test() {
+    const {currentUser} = this.props;
+    if (currentUser.addresses == undefined) {
+      return false;
+    } else if (currentUser.addresses.length == 0) {
+      return false;
+    }
+    return true;
+  }
   render() {
     const {currentUser} = this.props;
+    console.warn(currentUser.addresses);
     return (
       <LinearGradient colors={['#242441', '#55537B']} style={styles.background}>
         <View style={styles.Menu}>
@@ -154,7 +165,7 @@ class Profile extends Component {
               <Divider />
 
               <View style={styles.addresses_container}>
-                {currentUser.addresses.length !== 0 ? (
+                {this.test() ? (
                   currentUser.addresses.map((address, index) => {
                     return (
                       <View
@@ -162,7 +173,7 @@ class Profile extends Component {
                           flexDirection: 'row',
                           alignItems: 'center',
                           justifyContent: 'space-between',
-                          marginVertical:'5%'
+                          marginVertical: '5%',
                         }}>
                         <Text style={styles.formatted_address_text}>
                           {address.formatted_address}

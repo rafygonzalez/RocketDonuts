@@ -18,16 +18,16 @@ class RegisterWithPhone extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: 'Samael',
-      lastname: 'Mongollon',
-      email: 'samaeldavidruiz1996@gmail.com',
-      password: '123456',
-      repassword: '123456',
-      birthDate: '11/10/1996',
+      name: '',
+      lastname: '',
+      email: '',
+      password: '',
+      repassword: '',
+      birthDate: '',
       country: '',
       state: '',
       city: '',
-      areaCode: '424',
+      areaCode: '414',
       phoneNumber: '',
       verificationCode: '',
       userid: '',
@@ -179,7 +179,7 @@ class RegisterWithPhone extends React.Component {
               password,
               lastname,
               birthDate,
-              phoneNumber,
+              this.state.areaCode + phoneNumber,
               credential,
             ).then(result => {
               if (!result.success) {
